@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "van-overlay": "/dist/overlay/index"
+  },
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "签到领代币"
+}

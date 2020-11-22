@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-image": "/dist/image/index"
+
+  },
+  "enablePullDownRefresh":true,
+  "backgroundTextStyle":"dark",
+  "backgroundColor":"#ffffff",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "我的收藏"
+}

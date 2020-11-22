@@ -1,0 +1,24 @@
+<!--pages/advice/advice.wxml-->
+<view class="form">
+	<van-cell-group>
+		<van-field value="{{ contact }}" type='number' clearable label='联系方式' placeholder="可以留下手机号或邮箱，方便我们答复！" border="{{ false }}" bind:input="getcontact" />
+		<van-field value="{{ major }}" autosize="{{textarea_height}}" type="textarea" border required label='意见问题' placeholder="请描述您遇到的问题或是想要提的建议~" bind:input="getadvice" />
+	</van-cell-group>
+</view>
+<view class="about_advice">
+  <view class="title">
+    <view class="line"></view>
+    <text>关于意见和建议</text>
+  </view>
+  <view class="content">
+    您可以将您在使用小程序的过程中遇到的问题以及期望得到的解决方案提出来，我们在更新版本的时候会收集您的意见作为重要参考。如果您的意见或是建议被采纳我们将会以各种形式对您进行表示感谢
+  </view>
+</view>
+<view class="contact_us">
+  <view class="title">
+    <view class="line"></view>
+    <text>联系我们</text>
+  </view>
+  <view class="content">如果您有紧急情况向我们反映，可以直接通过邮箱：123.com同我们联系。感谢您对我们的支持！</view>
+</view>
+<button class="submit">提交</button>

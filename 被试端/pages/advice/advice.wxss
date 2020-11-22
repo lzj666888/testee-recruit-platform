@@ -1,0 +1,42 @@
+/* pages/advice/advice.wxss */
+.form{
+  margin-top: 30rpx;
+
+}
+.about_advice{
+margin-top: 260rpx;
+}
+.title{
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  font-weight: bold;
+font-size: 34rpx;
+
+}
+.line{
+  width: 8rpx;
+  background-color: #3283dd;
+  height: 40rpx;
+  border-radius: 8rpx;
+  margin-right: 14rpx;
+
+}
+.content{
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #515151;
+  
+}
+.contact_us{
+margin-top: 20rpx;
+}
+.submit{
+  background-color: #3283dd;
+  color: white;
+  font-size: 30rpx;
+  margin-top: 50rpx;
+border-radius: 30rpx;
+width: 500rpx !important;
+
+}

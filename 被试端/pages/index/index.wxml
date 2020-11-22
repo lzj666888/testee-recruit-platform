@@ -1,0 +1,39 @@
+<van-notice-bar left-icon="volume-o" text="{{notice}}" color='white' background-color='#3283dd' mode="closeable" bindonClose='closenotice' />
+<view class="top">
+	<text class="tittle">广大心理被试招募平台</text>
+	<van-search width="100rpx" shape="round" background="#3283dd" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="onSearch" bind:cancel="onCancel" />
+</view>
+<!-- 功能区 -->
+<view class="function">
+	<view class="fbox" wx:for='{{functiondata}}' data-index="{{index}}" wx:key='{{item}}' bindtap="tofunc_page">
+		<image src="{{item.url}}"></image>
+		<text>{{item.txt}}</text>
+	</view>
+</view>
+<van-sticky>
+	<view class="choose">
+		<van-dropdown-menu active-color='3283dd'>
+			<van-dropdown-item bindchange='changechoose' data-index='{{index}}' style='font-size:12rpx;color: #a6a6a6;' wx:for='{{choose}}' value="{{ item.valued }}" options="{{ item.option }}" wx:key='{{item}}' />
+		</van-dropdown-menu>
+	</view>
+</van-sticky>
+
+<!-- 实验 -->
+<view class="experiments" wx:for='{{experiments}}' wx:key='{{item}}' data-test_id="{{item.test_id}}" bindtap="toexperiment">
+	<view class="left">
+		<view class="lable">{{item.type}}</view>
+		<van-image class="fimage" radius='10px' width="3rem" height="3rem" src="{{item.tester_id.image}}" data-id="{{item.tester_id}}" />
+		<text class="name">{{item.tester_id.name}}</text>
+	</view>
+	<view class="center">
+		<text class="testname">{{item.name}}</text>
+		<text>时长：{{item.time}}</text>
+		<text>报酬：现结{{item.reward}}元 or 实验时{{item.duration}}h</text>
+		<text>地点：{{item.place}}</text>
+		<text>发布时间：{{item.send_time}}</text>
+	</view>
+	<view class="right">
+		<text>报名人数：{{item.enrollment}}</text>
+		<text>浏览人数：{{item.page_view}}</text>
+	</view>
+</view>

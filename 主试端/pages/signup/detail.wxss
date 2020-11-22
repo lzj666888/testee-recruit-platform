@@ -1,0 +1,142 @@
+/* pages/signup/detail.wxss */
+.state{
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-left: 3%;
+  margin-top: 30rpx;
+  display: block;
+}
+.info1{
+  display: flex;
+  width: 94%;
+  margin-left: 3%;
+  margin-top: 20rpx;
+  border-bottom: 1rpx solid #e6e6e6;
+}
+.avatar{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+}
+.baseinfo{
+  width: 20%;
+  margin-left: 14rpx;
+  display: flex;
+}
+.baseinfo image{
+  width: 40rpx;
+  height: 40rpx;
+}
+.name{
+  font-size: 26rpx;
+  color: #515151;
+}
+
+.score {
+  display: flex;
+  width: 80%;
+  justify-content: flex-end;
+  padding-top: 60rpx;
+  margin-bottom: 20rpx;
+}
+.score image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 18rpx;
+}
+.scores {
+  font-size: 20rpx;
+  color: #808080;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone {
+  display: flex;
+  margin: 2rpx 0;
+}
+
+.phone image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+  margin-top: 6rpx;
+}
+.info2{
+  margin-left: 4%;
+}
+.grade,.major,.collage,.phone {
+  margin: 40rpx;
+    font-size: 28rpx;
+    margin-left: 0;
+}
+.period_title{
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.period_txt{
+  font-size: 24rpx;
+  color: #707070;
+  margin-top: 30rpx;
+}
+.chat{
+  width: 48%;
+  margin-left: 50%;
+}
+.chat image{
+  width: 50rpx;
+  height: 50rpx;
+  margin-left: 190rpx;
+}
+.chat{
+  font-size: 24rpx;
+  color: #707070;
+  margin-top: 40rpx;
+}
+.chattop{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  margin-top: 130rpx;
+}
+.btns{
+  display: flex;
+  width: 76%;
+  margin-left: 12%;
+  justify-content: space-around;
+  margin-top: 50rpx;
+}
+.btns button{
+  width: 220rpx !important;
+  color: white;
+  border-radius: 30rpx;
+}
+/* 评分模块 */
+.rate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20rpx 0;
+}
+.confirm,.cancel{
+  width: 460rpx !important;
+  font-size: 28rpx;
+  color: white;
+  height: 80rpx;
+  line-height: 50rpx;
+  margin: 20rpx;
+  border-radius: 42rpx;
+}
+.confirm{
+  background-color: #2a82e4;
+}
+.cancel{
+  background-color: red;
+}
+.finish text,.unfinish text{
+  font-size: 22rpx;
+  color: #8a8a8a;
+}
+.pass{
+  color:red;font-weight:bold;font-size:32rpx;margin-top:50rpx;text-align:center;
+}

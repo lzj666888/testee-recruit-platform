@@ -1,0 +1,152 @@
+<!--pages/edit/edit.wxml-->
+<view class="form">
+	<van-cell-group border="{{ false }}">
+		<van-field clearable border="{{ false }}" maxlength='20' label='名称' placeholder="不超过20字" bind:input="getname" />
+		<van-field clearable border="{{ false }}" label='地点' placeholder="例：文逸楼360" bind:input="getplace" />
+		<van-field clearable border="{{ false }}" label='时长' placeholder="例：1.5h" bind:input="gettime" />
+		<view class="reward">
+			<text class="reward_title">报酬</text>
+			<view>
+				<input maxlength="10" placeholder="现结/元" bindinput="getmoney"></input>
+				<text class="or">or</text>
+				<input maxlength="10" placeholder="实验时/h" bindinput="gettest_time"></input>
+			</view>
+		</view>
+		<view class="cu-form-group gettpye">
+			<text class="gettype_title">类型</text>
+			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+				<view class="{{index?'selected picker':'picker'}}">
+					{{index?picker[index]:'实验类型'}}
+				</view>
+			</picker>
+		</view>
+		<view class="mylabels">
+			<text class="mylabel_title">标签</text>
+			<view class="mylabel">
+				<view class="label" wx:for='{{my_labels}}' wx:key='{{item}}'>
+					<text>{{item}}</text>
+					<image src="/images/delete.png" bindtap="delete" data-index="{{index}}"></image>
+				</view>
+			</view>
+		</view>
+		<image src="/images/addmore.png" class="addmore" bindtap="addmore"></image>
+		<van-field label='实验要求' border="{{ false }}" readonly />
+		<textarea wx:if='{{showneedarea}}' value='{{need}}' data-show='yes' bindblur='ifshowneedArea'
+			bindinput='getneed' class='textarea' placeholder='不超过100字' maxlength='100'></textarea>
+
+		<view wx:else class='textarea' bindtap='getneed1' style='color:{{need=="不超过100字"?"#888888":"black"}}'>
+			{{need}}
+		</view>
+
+		<van-field label='实验内容' border="{{ false }}" readonly />
+		<textarea wx:if='{{showcontentarea}}' value='{{content}}' data-show='yes' bindblur='ifshowcontentArea'
+			bindinput='getcontent' class='textarea' placeholder='不超过100字' maxlength='100'></textarea>
+
+		<view wx:else class='textarea' bindtap='getcontent1' style='color:{{content=="不超过100字"?"#888888":"black"}}'>
+			{{content}}
+		</view>
+		<van-field label='实验时间' border="{{ false }}" readonly />
+	</van-cell-group>
+	<van-popup show="{{ show }}" bind:close="onClose" round closeable>
+		<view class="add_panel">
+			<view class="input_label">
+				<van-cell-group border="{{ false }}">
+					<van-field clearable value='{{addlabel}}' border="{{ false }}" maxlength='6' label='标签' placeholder="不超过6个字"
+						bind:input="getlabel" />
+				</van-cell-group>
+			</view>
+			<view class="common_labels">
+				<text class="common">常见标签</text>
+				<view class="labels">
+					<view class="label" wx:for='{{common_labels}}' wx:key='{{item}}'>
+						<text bindtap="getcm_label" data-label="{{item}}">{{item}}</text>
+					</view>
+				</view>
+			</view>
+			<button class="btn" bindtap="addlabel">添加标签</button>
+		</view>
+	</van-popup>
+	<van-popup show="{{ addperiod_show }}" bind:close="on_close" round closeable>
+		<view class="addperiod_panel">
+			<view class="cu-form-group">
+				<view class="title">起始时间</view>
+				<picker mode="time" value="{{starttime}}" start="08:30" end="20:45" bindchange="startTimeChange">
+					<view class="picker">
+						{{starttime}}
+					</view>
+				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">结束时间</view>
+				<picker mode="time" value="{{endtime}}" start="09:00" end="20:45" bindchange="endTimeChange">
+					<view class="picker">
+						{{endtime}}
+					</view>
+				</picker>
+			</view>
+			<button class="btn" bindtap="addperiod">确认添加</button>
+		</view>
+	</van-popup>
+	<view class="time">
+		<view class="date">
+			<van-cell title="选择日期:" title-class='getdate' is-link value="{{ caletext }}" value-class='getdatevalue'
+				bind:click="ondisplay" />
+			<van-calendar wx:if="{{show_vancale}}" show="{{ showcale }}" type="multiple" bind:close="onclose" bind:confirm="onConfirm"
+				color='#3283dd' />
+		</view>
+		<view class="time_period">
+			<van-cell title="时间段:" border="{{false}}" title-class='getdate'
+				value-class='{{periods.length==0?"noperiod":"createform"}}' bind:click="createform" value='生成表格'>
+				<van-icon slot="right-icon" name="notes-o" size="18px" color='{{periods.length==0?"#8a8a8a":"#3283dd"}}'
+					class="custom-icon" />
+			</van-cell>
+			<van-checkbox-group value="{{ result }}" bind:change="onChange">
+				<van-cell-group border='{{false}}'>
+					<van-cell border='{{false}}' wx:for="{{ periods }}" wx:key="{{item}}" title="{{index+1}}、{{item}}"
+						bind:click="ondisplay" value-class="value-class" clickable title-class='periods' data-index="{{ index }}"
+						bind:click="toggle">
+						<van-checkbox catch:tap="noop" class="checkboxes-{{ index }}" name="{{ item }}" />
+					</van-cell>
+				</van-cell-group>
+			</van-checkbox-group>
+		</view>
+		<view class="btns">
+			<van-button icon="plus" size="small" round plain hairline color='#8a8a8a' type="primary" bind:click='addtime'>添加时段
+			</van-button>
+			<van-button icon="cross" size="small" round plain hairline color='#8a8a8a' type="primary" bind:click='deletetime'>
+				删除时段</van-button>
+		</view>
+	</view>
+	<view class="bottom_btn">
+		<button class="confirm" bindtap="confirm">发布实验</button>
+	</view>
+</view>
+<van-popup show="{{ createformshow }}" position="bottom" custom-style="height: {{(formdata.length+4)*48}}px"
+	bind:close="onclosecreate" closeable>
+	<view class="table">
+		<view class="tr bg-w">
+			<view class="th" wx:for='{{dates2}}'>{{item}}</view>
+		</view>
+		<block wx:for="{{formdata}}" wx:for-item="row" wx:for-index="row_index" wx:key="{{row.period}}">
+			<view class="tr" wx:if="{{row_index % 2 == 0}}">
+				<view class="td  bg-g">
+					{{row.period}}
+				</view>
+				<view class="td  bg-g" wx:for='{{Dates}}' wx:for-item="date" bindtap="selected" data-index="{{row_index}}"
+					data-date="{{date}}">
+					<image wx:if='{{!row[date]}}' src="../../images/not.png" class="not"></image>
+				</view>
+			</view>
+			<view class="tr" wx:else>
+				<view class="td bg-gg">
+					{{row.period}}
+				</view>
+				<view class="td bg-gg" wx:for='{{Dates}}' wx:for-item="date" bindtap="selected" data-index="{{row_index}}"
+					data-date="{{date}}">
+					<image wx:if='{{!row[date]}}' src="../../images/not.png" class="not"></image>
+				</view>
+			</view>
+		</block>
+	</view>
+	<button class="uploadform confirm" bindtap="uploadform">上传报名表</button>
+</van-popup>

@@ -1,0 +1,196 @@
+/* pages/index/index.wxss */
+.top {
+  width: 100%;
+  height: 150rpx;
+  background-color: #3283dd;
+  border-radius: 0 0 40rpx 40rpx;
+  position: relative;
+}
+
+/* 标题 */
+.tittle {
+  font-style: italic;
+  font-size: 46rpx;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 30rpx;
+  left: 50rpx;
+}
+
+.experiment {
+  width: 96%;
+  margin-left: 2%;
+  box-shadow: 0rpx 0rpx 18rpx 10rpx #e6e6e6;
+  margin-top: 30rpx;
+  border-radius: 24rpx;
+  padding: 10rpx 0;
+  margin-bottom: 20rpx;
+  margin-top: 20rpx;
+
+}
+
+.tab {
+  padding-top: 8rpx;
+  background-color: white;
+}
+
+/* 顶部样式 */
+.exp_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.state {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin: 10px;
+  width: 110rpx;
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: bold;
+  margin: 16rpx;
+}
+
+.exp_top image {
+  width: 50rpx;
+  height: 50rpx;
+  transform: rotate(90deg);
+  margin-right: 40rpx;
+  margin-top: 10rpx;
+}
+
+/* 底部样式 */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 左边 */
+.b-left {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.time {
+  display: flex;
+  margin: 6rpx 0;
+}
+
+.time image {
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx;
+}
+
+.time text {
+  font-size: 20rpx;
+  color: #515151;
+}
+
+.timeperiod {
+  display: flex;
+  margin: 10rpx;
+  margin-left: 20rpx;
+  color: #515151;
+}
+
+.period_title {
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.period {
+  font-size: 24rpx;
+  color: #515151;
+}
+
+/* 右边 */
+.lable {
+  font-size: 20rpx;
+  color: #136cf1;
+  background-color: #cfe1f5;
+  border-radius: 14rpx;
+  text-align: center;
+  font-weight: bold;
+  width: 100rpx;
+  height: 30rpx;
+  margin: 10rpx 0 10rpx 20rpx;
+  line-height: 30rpx;
+}
+
+.b-right {
+  width: 37%;
+  margin-right: 30rpx;
+  justify-content: flex-end;
+}
+
+.b-right image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.right_text,
+.b-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.enrollment,
+.page_view {
+  font-size: 20rpx;
+  color: #707070;
+  margin: 4rpx;
+}
+
+.enrollment_time {
+  font-size: 22rpx;
+  color: #515151;
+  margin-top: 10rpx;
+}
+
+.btn {
+  background-color: #3283dd;
+  width: 180rpx !important;
+  font-size: 24rpx;
+  padding: 12rpx;
+  font-weight: 500;
+  color: white;
+  border-radius: 26rpx;
+  margin: 20rpx 0 10rpx;
+}
+
+.publish{
+  margin: 20rpx auto;
+line-height: 60rpx;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #3283dd;
+  padding: 24rpx;
+  border-radius: 54rpx;
+  opacity: .8;
+}
+.publish image{
+  width: 60rpx;
+  height: 60rpx;
+}
+.publishactive{
+  background-color: #0872ec;
+  opacity: 1;
+}
+movable-area{
+  display: flex;
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+}
+movable-view{
+  position: fixed;
+  width: 128rpx;
+  height: 148rpx;
+}

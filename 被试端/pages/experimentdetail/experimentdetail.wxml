@@ -1,0 +1,116 @@
+<view class='top'>
+	<text class='tittle'>
+	{{experiment.name}}
+	</text>
+	<view class="lables">
+		<view class="lable">{{experiment.type}}</view>
+		<view class="lable" wx:for='{{experiment.lables}}' wx:key='{{item}}'>
+			{{item}}
+		</view>
+	</view>
+	<view class="details">
+		{{experiment.time}} {{experiment.reward}}元报酬 or 实验时{{experiment.duration}}h {{experiment.place}}
+	</view>
+	<view class="peoples">
+		<view class="enrollment">报名人数：{{experiment.enrollment}}</view>
+		<view class="page_view">
+			<image src="/images/pageview.png"></image>
+			<text>{{experiment.page_view}}</text>
+		</view>
+	</view>
+
+	<!-- 主试个人信息 -->
+	<view class="people-detail">
+		<van-image class="fimage" round width="3rem" height="3rem" 
+		src="{{experiment.tester_id.image}}"/>
+		<view class="other-detail">
+			<view class="topdetail">
+				<image src="/images/male.png" wx:if='{{tester.sex==1}}'></image>
+				<image src="/images/female.png" wx:if='{{tester.sex==2}}'></image>
+				<text>主试</text>
+			</view>
+			<text class="tester_name">{{experiment.tester_id.name}}</text>
+			<text class="major">{{tester.major}}{{tester.grade}}</text>
+			<view class="phone">
+				<text>联系方式：{{tester.phone}}</text>
+				<image src="/images/call.png" bindtap="call"></image>
+			</view>
+			<view class="phone">
+				<text>wx：{{tester.wx}}</text>
+				<image src="/images/cope.png" bindtap="copywx"></image>
+			</view>
+		</view>
+		<view class="score">
+			<image src="/images/collectioned.png"></image>
+			<view class="scores">
+				<text>信誉分：{{tester.credit_score}}</text>
+				<text>反馈分：{{tester.feedback_score}}</text>
+			</view>
+		</view>
+	</view>
+
+	<!-- 实验要求 -->
+	<view class="need">
+		<view class="needtittle">
+			<view class="xieline"></view>
+			<text>实验要求</text>
+		</view>
+		<text class="needtxt">{{experiment.need}}</text>
+	</view>
+	<!-- 实验内容 -->
+	<view class="need">
+		<view class="needtittle">
+			<view class="xieline"></view>
+			<text>实验内容</text>
+		</view>
+		<text class="needtxt">{{experiment.content}}</text>
+	</view>
+	<!-- 报名时间 -->
+	<view class="need">
+		<view class="needtittle">
+			<view class="xieline"></view>
+			<text>报名时间</text>
+		</view>
+		<text class="date">日期：{{experiment.date_start}}-{{experiment.date_end}}</text>
+		<view class="timeperiod">
+			<view class="tpleft">时段：</view>
+			<view class="tpright">
+				<view class="time" wx:for='{{experiment.time_periods}}'>
+					{{item.time_start}}-{{item.time_end}}
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 评分模块，已通过的时候才会显示出来 -->
+	<view class="rate" wx:if='{{state==1}}'>
+		<van-rate value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star" bind:change="onChange" />
+		<view wx:if='{{finish==0}}' class="unfinish">
+			<button class="confirm">确认完成实验，并对主试评分</button>
+			<button class="cancel">主试主动取消被试实验</button>
+			<text>确认完成实验并进行评分，待主试确认您完成实验后，您将获得50代币!</text>
+		</view>
+		<view wx:if='{{finish==1}}' class="finish">
+			<text>您已完成实验并进行了评分！</text>
+		</view>
+	</view>
+</view>
+<!-- 底部 -->
+<view class="bottom">
+	<view class="b-left">
+		<view class="share">
+			<button open-type="share" class="sharebtn" title='被试实验招募'>
+				<image src="/images/share.png"></image>
+				<text>分享</text>
+			</button>
+		</view>
+		<view class="share" bindtap="collection">
+			<image src="/images/collection.png"></image>
+			<text>收藏</text>
+		</view>
+		<view class="share">
+			<image src="/images/chart.png"></image>
+			<text>聊天</text>
+		</view>
+	</view>
+	<button class="b-right" disabled="{{btn_disable}}">{{btn_text}}</button>
+</view>

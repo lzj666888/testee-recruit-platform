@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "van-image": "/dist/image/index",
+    "van-rate": "/dist/rate/index"
+  },
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "详情"
+}

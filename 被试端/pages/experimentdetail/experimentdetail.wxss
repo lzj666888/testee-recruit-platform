@@ -1,0 +1,309 @@
+.top {
+  width: 96%;
+  margin-left: 2%;
+  position: absolute;
+  top: -20rpx;
+  /* margin-bottom: 120rpx; */
+}
+/* 保证苹果底部可显示 */
+.top>view:last-child{
+  margin-bottom: 120rpx;
+}
+.tittle {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.lables {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.lable {
+  font-size: 20rpx;
+  color: #136cf1;
+  background-color: #cfe1f5;
+  border-radius: 14rpx;
+  text-align: center;
+  font-weight: bold;
+  width: 100rpx;
+  height: 34rpx;
+  margin: 10rpx;
+  line-height: 34rpx;
+}
+
+.details,
+.enrollment {
+  font-size: 22rpx;
+  color: #808080;
+  margin-top: 14rpx;
+}
+
+.peoples {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 6rpx solid #f1f1f1;
+  height: 70rpx;
+}
+
+.page_view {
+  display: flex;
+  margin-top: 14rpx;
+}
+
+.page_view image {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.page_view text {
+  font-size: 22rpx;
+  color: #3283dd;
+  height: 36rpx;
+  line-height: 36rpx;
+}
+
+/* 个人信息 */
+.people-detail {
+  /* width: 96%; */
+  /* margin-left: 2%; */
+  display: flex;
+  margin-top: 30rpx;
+  border-bottom: 6rpx solid #f1f1f1;
+  height: 250rpx;
+}
+
+.fimage {
+  position: relative;
+  top: 20rpx;
+}
+
+.other-detail {
+  width: 58%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 24rpx;
+}
+
+.other-detail text {
+  font-size: 22rpx;
+  color: #808080;
+  margin: 6rpx;
+}
+
+.topdetail {
+  display: flex;
+  align-items: center;
+}
+
+.topdetail image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.topdetail text {
+  font-size: 22rpx;
+  background-color: #ff8d1a;
+  color: white;
+  border-radius: 0 12rpx;
+  width: 60rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  margin-left: 10rpx;
+}
+
+.tester_name {
+  font-weight: bold;
+  font-size: 30rpx !important;
+  color: #515151 !important;
+}
+
+.major {
+  margin: 4rpx 0;
+}
+
+.phone {
+  display: flex;
+  margin: 2rpx 0;
+}
+
+.phone image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+  margin-top: 6rpx;
+}
+
+.score {
+  display: flex;
+}
+
+.score image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 18rpx;
+}
+
+.scores {
+  font-size: 20rpx;
+  color: #808080;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 实验需求 */
+.need {
+  border-bottom: 6rpx solid #f1f1f1;
+}
+
+.needtittle {
+  display: flex;
+  margin-left: 20rpx;
+  margin-top: 14rpx;
+}
+
+/* 斜线 */
+.xieline {
+  width: 4rpx;
+  height: 46rpx;
+  background-color: #136cf1;
+  transform: rotate(28deg);
+}
+
+.needtittle text {
+  font-size: 30rpx;
+  background-color: #cfe1f5;
+  border-radius: 24rpx 0;
+  text-align: center;
+  font-weight: bold;
+  width: 140rpx;
+  height: 46rpx;
+  line-height: 46rpx;
+  margin-left: 14rpx;
+  color: #515151;
+}
+
+.needtxt {
+  font-size: 28rpx;
+  color: #515151;
+  position: relative;
+  top: -30rpx;
+  left: 10rpx;
+}
+
+/* 日期 */
+.date {
+  font-size: 28rpx;
+  color: #515151;
+  position: relative;
+  left: 10rpx;
+  top: 10rpx;
+}
+
+/* 时段 */
+.timeperiod {
+  display: flex;
+  margin-bottom: 10rpx;
+}
+
+.tpleft {
+  font-size: 28rpx;
+  color: #515151;
+  margin: 20rpx 0 0 10rpx;
+}
+
+.tpright {
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+}
+
+.tpright .time {
+  font-size: 28rpx;
+  color: #515151;
+  height: 30rpx;
+  margin-bottom: 14rpx;
+}
+
+/* 底部 */
+.bottom {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 4rpx solid #f1f1f1;
+  background-color: white;
+  justify-content: space-around;
+}
+
+.b-left {
+  display: flex;
+}
+
+.share,
+.sharebtn {
+  display: flex;
+  flex-direction: column;
+  color: #515151;
+  font-size: 19rpx;
+  margin: 10rpx 40rpx;
+}
+
+.sharebtn {
+  margin: 0 !important;
+  width: 40rpx !important;
+  padding: 0 !important;
+  display: flex;
+}
+button{
+  font-weight: 0 !important;
+}
+.share image,
+.sharebtn image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 6rpx;
+}
+
+.b-right {
+  width: 260rpx !important;
+  font-size: 30rpx;
+  background-color: #2a82e4;
+  color: white;
+  height: 70rpx;
+  margin: 10rpx 0 !important;
+  border-radius: 32rpx;
+}
+/* 设置按钮禁用时样式 */
+button[disabled]{
+  background-color: #9ac0ec !important;
+  color: white !important;
+}
+
+/* 评分模块 */
+.rate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.confirm,.cancel{
+  width: 460rpx !important;
+  font-size: 28rpx;
+  color: white;
+  height: 80rpx;
+  line-height: 50rpx;
+  margin: 20rpx;
+  border-radius: 42rpx;
+}
+.confirm{
+  background-color: #43cf7c;
+}
+.cancel{
+  background-color: red;
+}
+.finish text,.unfinish text{
+  font-size: 22rpx;
+  color: #8a8a8a;
+}

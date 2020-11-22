@@ -1,0 +1,31 @@
+<!--pages/edit/edit.wxml-->
+<view class="form">
+	<van-cell-group>
+		<van-field value="{{ name }}" required clearable maxlength='5' label='姓名' placeholder="请输入姓名" border="{{ false }}" bind:input="getname" />
+		<van-field value="{{ major }}" required clearable label='专业' placeholder="请输入专业" border="{{ false }}" bind:input="getmajor" />
+		<van-field value="{{ grade }}" required clearable label='年级' placeholder="请输入年级" border="{{ false }}" bind:input="getgrade" />
+		<van-field value="{{ college }}" required clearable label='学院' placeholder="请输入学院" border="{{ false }}" bind:input="getcollege" />
+		<van-field value="{{ phone }}" maxlength='11' type='number' error-message="{{error}}" required clearable label='手机号码' placeholder="请输入手机号码" border="{{ false }}" bind:input="getphone" bindblur='checkphone' />
+		<view class="getsms">
+			<van-field value="{{ sms }}" type='number' center required clearable label="短信验证码" placeholder="请输入短信验证码" border="{{ false }}" use-button-slot>
+			</van-field>
+			<text class="sms" bindtap="getsms" hidden='{{send_sms}}'>获取验证码</text>
+			<van-count-down class="control-count-down"  auto-start="{{ false }}" time="{{ time }}" use-slot bind:change="onChange" bind:finish='timefinish'>
+				<text class="time" wx:if='{{send_sms}}' >{{ timeData.seconds }}s</text>
+			</van-count-down>
+		</view>
+		<view class="sex">
+			<van-field required clearable label='性别' readonly border="{{ false }}" />
+			<radio-group bindchange="radioChange" class='radios'>
+				<label class="radio">
+					<radio value="male" checked="true" color="#3283dd" />男
+				</label>
+				<label class="radio">
+					<radio value="female" color="#3283dd" />女
+				</label>
+			</radio-group>
+		</view>
+		<van-field value="{{ wx }}" type='number' clearable label='微信号' placeholder="请输入微信号" border="{{ false }}" bind:input="getwx" />
+	</van-cell-group>
+	<button class="confirm" bindtap="confirm">确认提交</button>
+</view>

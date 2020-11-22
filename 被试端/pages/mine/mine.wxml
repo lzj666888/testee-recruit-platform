@@ -1,0 +1,78 @@
+<!--pages/mine/mine.wxml-->
+<view class="info">
+	<view class="l_info">
+		<van-image class="fimage" round width="3.5rem" height="3.5rem" src="{{bei_tester.image}}" />
+	</view>
+	<view class="c_info">
+		<text class="name">{{bei_tester.name}}</text>
+		<text class="bei_tester">被试</text>
+	</view>
+	<view class="edit" bindtap="edit">
+		<text>编辑</text>
+		<image src="/images/edit.png"></image>
+	</view>
+</view>
+<!-- 分数 -->
+<view class="scores">
+	<view class="score">
+		<text>{{bei_tester.tokens}}</text>
+		<text>代币数</text>
+	</view>
+	<view class="score">
+		<text>{{bei_tester.credit_score}}</text>
+		<text>信誉分</text>
+	</view>
+	<view class="score">
+		<text>{{bei_tester.performent_score}}</text>
+		<text>表示分</text>
+	</view>
+</view>
+<!-- 问号 -->
+<image src="/images/what.png" bindtap="showModal" data-target="Modal" class="what"></image>
+<view class="cu-modal {{modalName=='Modal'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">关于分数</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-black"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<view class="scoretxt">
+				1、代币数：本科生注册为主试想要发布被试
+				实验招募需要一定量的代币数，代币可以通过
+				日常签到或是完成被试实验进行获取。
+			</view>
+			<view class="scoretxt">
+				2、信誉分：被试如果未能在自己预约的时间
+				段完成实验或者主动取消预约实验都会扣取一
+				定信誉分。
+			</view>
+			<view class="scoretxt">
+				3、表现分：主试在被试完成实验后将会对其
+				在实验过程中的表现进行评分，评分会直接影
+				响到被试的表现分。
+			</view>
+	</view>
+</view>
+</view>
+
+
+<!-- 功能 -->
+<view class="functions">
+	<view class="function" bindtap="tomycollections">
+		<image src="/images/collections.png"></image>
+		<text>我的收藏</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function" bindtap="toadvice">
+		<image src="/images/advice.png"></image>
+		<text>意见反馈</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function">
+		<image src="/images/release.png"></image>
+		<text>发布实验</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+</view>

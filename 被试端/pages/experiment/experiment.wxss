@@ -1,0 +1,134 @@
+/* pages/experimentTrip/experimentTrip.wxss */
+.experiment {
+  width: 96%;
+  margin-left: 2%;
+  /* display: flex; */
+  box-shadow: 0rpx 0rpx 18rpx 10rpx #e6e6e6;
+  margin-top: 30rpx;
+  border-radius: 24rpx;
+  padding: 10rpx 0;
+  margin-bottom: 20rpx;
+  margin-top: 20rpx;
+
+}
+.tab{
+  padding-top: 8rpx;
+  background-color: white;
+}
+/* 顶部样式 */
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.state {
+  font-size: 28rpx;
+  margin: 10px;
+  font-weight: bold;
+  width: 120rpx;
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: bold;
+  margin: 16rpx;
+}
+
+.top image {
+  width: 50rpx;
+  height: 50rpx;
+  transform: rotate(90deg);
+  margin-right: 40rpx;
+  margin-top: 10rpx;
+}
+
+/* 底部样式 */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 左边 */
+.b-left {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.time {
+  display: flex;
+  margin: 6rpx 0;
+}
+
+.time image {
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx;
+}
+
+.time text {
+  font-size: 20rpx;
+  color: #515151;
+}
+
+.timeperiod {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.period_title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin: 10rpx 20rpx;
+}
+
+.period {
+  font-size: 24rpx;
+  color: #515151;
+  margin: 2rpx 20rpx 10rpx 20rpx;
+}
+
+/* 右边 */
+.lable {
+  font-size: 20rpx;
+  color: #136cf1;
+  background-color: #cfe1f5;
+  border-radius: 14rpx;
+  text-align: center;
+  font-weight: bold;
+  width: 100rpx;
+  height: 30rpx;
+  margin: 10rpx;
+  line-height: 30rpx;
+}
+
+.b-right {
+  display: flex;
+  flex-direction: column;
+  width: 37%;
+  align-items: flex-end;
+  margin-right: 30rpx;
+  justify-content: space-between;
+}
+.b-right image{
+  width: 100rpx;
+  height: 100rpx;
+}
+.right_text{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.enrollment,
+.page_view {
+  font-size: 20rpx;
+  color: #707070;
+  margin: 4rpx;
+}
+
+.enrollment_time {
+  font-size: 22rpx;
+  color: #515151;
+  margin-top: 10rpx;
+}

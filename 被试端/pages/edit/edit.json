@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "van-field": "/dist/field/index",
+    "van-count-down": "/dist/count-down/index"
+  },
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "个人信息"
+}

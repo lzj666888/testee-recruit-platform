@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "van-image": "/dist/image/index"
+  },
+  "backgroundColor":"#3283dd"
+}

@@ -1,0 +1,46 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/message/message",
+    "pages/edit/edit",
+    "pages/notices/notices",
+    "pages/remind/remind",
+    "pages/advice/advice",
+    "pages/mine/mine",
+    "pages/publish/publish",
+    "pages/signup/signup",
+    "pages/signup/detail"
+  ],
+  "navigateToMiniProgramAppIdList": [
+      "wx91d27dbf599dff74"
+    ], 
+  "window":{
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#3283dd",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#bfbfbf",
+    "selectedColor": "#3283dd",
+    "backgroundColor": "#fff",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "实验",
+      "iconPath": "/images/index.png",
+      "selectedIconPath": "/images/index-active.png"
+    },{
+      "iconPath": "/images/message.png",
+      "selectedIconPath": "/images/message-active.png",
+      "text": "消息",
+      "pagePath": "pages/message/message"
+    }, {
+      "iconPath": "/images/mine.png",
+      "selectedIconPath": "/images/mine-active.png",
+      "text": "我的",
+      "pagePath": "pages/mine/mine"
+    }]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

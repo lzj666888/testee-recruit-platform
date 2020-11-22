@@ -1,0 +1,135 @@
+/* pages/mine/mine.wxss */
+@import "/colorui/main.wxss";
+@import "/colorui/icon.wxss";
+page {
+  background-color: white !important;
+}
+
+.info {
+  height: 220rpx;
+  width: 100%;
+  display: flex;
+  background-color: #3283dd;
+  justify-content: space-around;
+}
+
+.info .l_info {
+  width: 16%;
+  margin-left: 20rpx;
+}
+
+.zhu_tester {
+  font-size: 22rpx;
+  background-color: #ff8d1a;
+  color: white;
+  border-radius: 0 12rpx;
+  width: 70rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+  margin: 22rpx 0 0 10rpx;
+
+}
+
+.info .c_info {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.info .edit {
+  width: 20%;
+  margin-right: 20rpx;
+  display: flex;
+  font-size: 24rpx;
+  color: white;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 120rpx;
+}
+
+.edit image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 6rpx;
+  margin-bottom: 2rpx;
+}
+
+.scores {
+  width: 68%;
+  margin-left: 16%;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  height: 140rpx;
+  border-radius: 26rpx;
+  position: relative;
+  top: -70rpx;
+  border-bottom: 2px solid #e6e6e6;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 26rpx;
+  justify-content: center;
+}
+
+.score text {
+  margin: 6rpx 0;
+  color: #707070;
+
+}
+
+.what {
+  width: 36rpx;
+  height: 36rpx;
+  position: absolute;
+  top: 150rpx;
+  right: 128rpx;
+}
+
+.scoretxt {
+  color: #515151;
+  text-align: left;
+  margin-top: 30rpx;
+  letter-spacing: 2rpx;
+  line-height: 40rpx;
+}
+
+.functions {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-left: 5%;
+}
+
+.function {
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  align-items: center;
+  margin-bottom: 76rpx;
+}
+.function image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.function text {
+  color: #515151;
+  width: 60%;
+  font-size: 30rpx;
+}
+
+.right_to {
+  width: 40rpx !important;
+  height: 40rpx !important;
+}

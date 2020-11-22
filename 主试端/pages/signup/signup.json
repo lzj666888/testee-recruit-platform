@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "van-tab": "/dist/tab/index",
+    "van-tabs": "/dist/tabs/index",
+    "van-search": "/dist/search/index",
+    "van-sticky": "/dist/sticky/index"
+  }
+  ,
+  "enablePullDownRefresh":true,
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "报名详情",
+  "backgroundTextStyle":"dark"
+}

@@ -1,0 +1,74 @@
+<!--pages/mine/mine.wxml-->
+<!--pages/mine/mine.wxml-->
+<view class="info">
+	<view class="l_info">
+		<van-image class="fimage" round width="3.5rem" height="3.5rem" src="{{zhu_tester.image}}" />
+	</view>
+	<view class="c_info">
+		<text class="name">{{zhu_tester.name}}</text>
+		<text class="zhu_tester">主试</text>
+	</view>
+	<view class="edit" bindtap="edit">
+		<text>编辑</text>
+		<image src="/images/edit.png"></image>
+	</view>
+</view>
+<!-- 分数 -->
+<view class="scores">
+	<view class="score">
+		<text>{{zhu_tester.credit_score}}</text>
+		<text>信誉分</text>
+	</view>
+	<view class="score">
+		<text>{{zhu_tester.feedback_score}}</text>
+		<text>反馈分</text>
+	</view>
+</view>
+<!-- 问号 -->
+<image src="/images/what.png" bindtap="showModal" data-target="Modal" class="what"></image>
+<view class="cu-modal {{modalName=='Modal'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">关于分数</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-black"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<view class="scoretxt">
+				1、信誉分：主试如果主动取消实验或者取消
+        已通过的被试参加实验的资格则会扣除一定的
+        信誉分。
+			</view>
+			<view class="scoretxt">
+				2、表现分：被试在完成实验后将会对主试进
+        行评分，评分会直接影响到主试的反馈分。
+			</view>
+	</view>
+</view>
+</view>
+
+
+<!-- 功能 -->
+<view class="functions">
+	<view class="function" bindtap="toadvice">
+		<image src="/images/advice.png"></image>
+		<text>意见反馈</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function" bindtap="toremind">
+		<image src="/images/remind.png"></image>
+		<text>实验提醒</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function" bindtap="tonoticeitem">
+		<image src="/images/noticeitem.png"></image>
+		<text>注意事项</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function" bindtap="tobeishi">
+		<image src="/images/beishi.png"></image>
+		<text>被试招募平台</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+</view>

@@ -1,0 +1,41 @@
+<!--pages/mycollection/mycollection.wxml-->
+<!-- 实验 -->
+<!-- wx:key唯一值有利于在修改时候提高性能 -->
+<view wx:for='{{experiments}}' class='experiments' wx:key='{{item.test_id}}' data-test_id="{{item.test_id}}" bindtap="toexperiment">
+	<view class="left">
+		<view class="lable">{{item.type}}</view>
+		<van-image class="fimage" radius='10px' width="3rem" height="3rem" src="{{item.tester_id.image}}" data-id="{{item.tester_id}}" />
+		<text class="name">{{item.tester_id.name}}</text>
+	</view>
+	<view class="center">
+		<text class="testname">{{item.name}}</text>
+		<text>时长：{{item.time}}</text>
+		<text>报酬：现结{{item.reward}}元 or 实验时{{item.duration}}h</text>
+		<text>地点：{{item.place}}</text>
+		<text>发布时间：{{item.send_time}}</text>
+	</view>
+	<view class="right">
+		<view class="timeing" wx:if='{{item.status==1}}'>
+			<image src="/images/timeing.png"></image>
+			<text>招募中</text>
+		</view>
+		<view class="timeout" wx:if='{{item.status==0}}'>
+			<image src="/images/timeout.png"></image>
+			<text>已结束</text>
+		</view>
+		<view class="b_text">
+			<text>报名人数：{{item.enrollment}}</text>
+			<text>浏览人数：{{item.page_view}}</text>
+		</view>
+		<view class="margin-tb-sm text-center">
+			<button catchtap="collect" data-index="{{index}}" class="cu-btn round line-black" wx:if='{{!item.collected}}'>
+				<text class="cuIcon-favor lg text-black"></text>
+				收藏
+			</button>
+			<button catchtap="collect" data-index="{{index}}" class="cu-btn round line-black" wx:if='{{item.collected}}'>
+				<text class="cuIcon-favorfill lg text-yellow"></text>
+				取消收藏
+			</button>
+		</view>
+	</view>
+</view>

@@ -1,0 +1,80 @@
+/* pages/signup/signup.wxss */
+.tab{
+  padding-top: 8rpx;
+  background-color: white;
+}
+.signup_item{
+  width: 96%;
+  border: 2rpx solid #91beef;
+  display: flex;
+  margin: 14rpx;
+  margin-left: 2%;
+  border-radius: 10rpx;
+  min-height: 150rpx;
+}
+.faceUrl{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.faceUrl>image{
+  width: 94rpx;
+    height: 94rpx;
+    border-radius: 12rpx;
+    margin-left: 12rpx;
+}
+.finished image,.unfinished image{
+  width: 24rpx;
+  height: 24rpx;
+  margin-left: 4rpx;
+}
+.finished,.unfinished{
+  display: flex;
+  align-items: center;
+    font-size: 24rpx;
+    margin: 4rpx 0 0 12rpx;
+}
+.finished{
+  color: green;
+}
+.unfinished{
+  color: red;
+}
+.per_info{
+  width: 30%;
+    margin: 32rpx 0 0 24rpx;
+}
+.info_top{
+  display: flex;
+}
+.info_top text{
+  font-size: 24rpx;
+}
+.info_top image{
+  width: 34rpx;
+  height: 34rpx;
+  margin-left: 4rpx;
+}
+.info_bottom{
+  font-size: 20rpx;
+  color: #707070;
+  margin-top: 14rpx;
+}
+.sign_info{
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 14rpx;
+}
+.state{
+  font-size: 30rpx;
+  font-weight: bold;
+}
+.sign_time{
+  color: #707070;
+  font-size: 22rpx;
+  margin-top: 20rpx;
+}
+

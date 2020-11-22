@@ -1,0 +1,60 @@
+<!--pages/signup/detail.wxml-->
+<text class="state" style="color:#3283dd" wx:if='{{tested.state==0}}'>待通过</text>
+<text class="state" style="color:red" wx:if='{{tested.state==-1}}'>未通过</text>
+<text class="state" style="color:green" wx:if='{{tested.state==1}}'>已通过</text>
+<view class="info1">
+  <image src="{{tested.imagesrc}}" class="avatar"></image>
+  <view class="baseinfo">
+    <image wx:if='{{tested.sex=="男"}}' src="/images/male.png"></image>
+    <image wx:else src="/images/female.png"></image>
+    <text class="name">{{tested.name}}</text>
+  </view>
+  <view class="score">
+    <image src="/images/collectioned.png"></image>
+    <view class="scores">
+      <text>信誉分：{{tested.credit_score}}</text>
+      <text>表现分：{{tested.performance_score}}</text>
+    </view>
+  </view>
+</view>
+<view class="info2">
+  <view class="grade">年级：{{tested.grade}}</view>
+  <view class="major">专业：{{tested.major}}</view>
+  <view class="collage">学院：{{tested.collage}}</view>
+  <view class="phone">
+    <text>联系方式：{{tested.phone}}</text>
+    <image src="/images/call.png" bindtap="call"></image>
+  </view>
+  <view class="phone">
+    <text>wx：{{tested.wx}}</text>
+    <image src="/images/cope.png" bindtap="copywx"></image>
+  </view>
+  <view class="period_title">实验时段</view>
+  <view class="period_txt">{{tested.time_period}}</view>
+  <view class="chat">
+    <view class="chattop" bindtap="tochat">
+      <image src="/images/chat.png"></image>
+      <view>私信他</view>
+    </view>
+    <view>报名时间：{{tested.enrollment_time}}</view>
+  </view>
+</view>
+<view class="btns" wx:if="{{tested.state==0}}">
+  <button bindtap="refuse" style="background-color:red;">拒绝</button>
+  <button bindtap="accept" style="background-color:#43cf7c">通过</button>
+</view>
+<!-- 评分模块，已通过的时候才会显示出来 -->
+<view class="rate" wx:if='{{tested.state==1&&tested.finish!=-1}}'>
+  <van-rate value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
+    bind:change="onChange" />
+  <view wx:if='{{tested.finish==0}}' class="unfinish">
+    <button class="confirm">确认被试完成实验并进行评分</button>
+    <button class="cancel">被试未在预定时段内完成实验</button>
+    <text>确认被试完成实验并进行评分，被试可获取相应实验时！</text>
+  </view>
+  <view wx:if='{{tested.finish==1}}' class="finish">
+    <text>您确认被试完成实验并进行了评分！</text>
+  </view>
+</view>
+<view wx:if="{{tested.state==-1}}" class="pass">您已拒接被试申请！</view>
+<view wx:if="{{tested.finish==-1}}" class="pass">被试未在预定时段内完成实验！</view>

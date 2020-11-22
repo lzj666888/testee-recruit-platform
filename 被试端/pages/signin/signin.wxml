@@ -1,0 +1,67 @@
+<image class="banner" mode="widthFix" src="/images/sign_banner.png"></image>
+<view class='gs_pillar'>
+	<view class='gs_post'>
+		<view></view>
+	</view>
+	<view class='gs_post'>
+		<view></view>
+	</view>
+	<view class='gs_post'>
+		<view></view>
+	</view>
+	<view class='gs_post'>
+		<view></view>
+	</view>
+	<view class='gs_post'>
+		<view></view>
+	</view>
+</view>
+<view class='sign-new'>
+	<view class='in'>
+		<view class='new-head'>
+			<view class='sig-tl'>
+				<view class='tln'>已连续签到<label class='n'>{{newSignNum}}</label>天</view>
+				<view class='tlf'>代币数：<label class='f'>{{newSignIntegral}}</label></view>
+			</view>
+
+			<!-- 未签到 -->
+			<view wx:if='{{!newSignBtnState}}' class='sig-qiu sig-qiu-no' bindtap='bindSignFn'>
+				<label class='ti'>签到</label>
+			</view>
+			<!-- 已签到 -->
+			<view wx:else class='sig-qiu sig-qiu-yes'>
+				<label class='ti'>已签到</label>
+			</view>
+		</view>
+
+		<view class='new-week'>
+			<view class='we-mod'>
+				<view class='mo-fen'>
+					<label class='f f3'>+3代币</label>
+					<label class='f f7'>+7代币</label>
+				</view>
+				<view class='mo-line'>
+					<block wx:for="{{newSignedArr}}" wx:for-item="v" wx:key="k">
+						<label class="q {{v.isSigned?'hover':''}}"></label>
+					</block>
+				</view>
+				<view class='mo-ri'>
+					<block wx:for="{{newSignedArr}}" wx:for-item="v" wx:key="k">
+						<label class="t">{{v.day}}</label>
+					</block>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view class="load" style="{{show?'':'top:calc((100vh - 750rpx)/2);opacity: 0;z-index:-1;'}}">
+ <image class="loadingpic" src="/images/light.png"></image>
+ <image class="load-imagae" src="/images/register.png"></image>
+ <view class="load-centent">
+ <view>签到成功</view>
+ <view>获得{{newdaibi}}代币</view>
+ <view bindtap="popup">好的</view>
+ </view>
+</view>
+<van-overlay show="{{ show }}"/>

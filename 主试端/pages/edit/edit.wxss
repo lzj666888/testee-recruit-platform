@@ -1,0 +1,37 @@
+/* pages/edit/edit.wxss */
+.form{
+  width: 94%;
+  margin-left: 3%;
+  margin-top: 30rpx;
+}
+.sex{
+  display: flex;
+  justify-content: space-between;
+}
+.radios{
+  width: 40%;
+  font-size: 26rpx;
+  padding-top: 20rpx;
+}
+.confirm{
+  background-color: #3283dd;
+  font-size: 30rpx;
+  border-radius: 24rpx;
+  color: white;
+  margin-top: 280rpx;
+}
+.getsms{
+  display: flex;
+}
+/* 获取验证码 */
+.sms,.time{
+  padding-top: 24rpx;
+  font-size: 30rpx;
+  color: #3283dd;
+  width: 26%;
+  
+}
+.time{
+  position: fixed;
+  right: -90rpx;
+}

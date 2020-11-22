@@ -1,0 +1,107 @@
+/* pages/mycollection/mycollection.wxss */
+@import "/colorui/main.wxss";
+@import "/colorui/icon.wxss";
+/* 实验模块 */
+.experiments {
+  width: 96%;
+  margin-left: 2%;
+  display: flex;
+  /* border-top: #e5e5e5 solid 4rpx; */
+  box-shadow: 0rpx 0rpx 18rpx 10rpx #e6e6e6;
+  margin-top: 30rpx;
+  border-radius: 24rpx;
+  /* height: 300rpx; */
+  padding: 10rpx 0;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  position: relative;
+  top: 30rpx;
+}
+
+/* 标签 */
+.lable {
+  font-size: 20rpx;
+  color: #136cf1;
+  background-color: #cfe1f5;
+  border-radius: 14rpx;
+  text-align: center;
+  font-weight: bold;
+  width: 100rpx;
+  height: 30rpx;
+  margin: 10rpx;
+  line-height: 30rpx;
+  position: relative;
+  top: -8rpx;
+}
+
+.name {
+  font-size: 24rpx;
+  color: #808080;
+  position: relative;
+  top: 16rpx;
+}
+
+.center .testname {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.center {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 20rpx;
+}
+
+.center text {
+  font-size: 22rpx;
+  margin: 8rpx 0;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  justify-content: space-between;
+  margin: 30rpx 0;
+}
+.b_text {
+  font-size: 18rpx;
+  color: #808080;
+  margin-bottom: 8rpx;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  bottom: -74rpx;
+  left: 34rpx;
+}
+
+/* 招募中和已结束 */
+.timeing,
+.timeout {
+  display: flex;
+  margin-left: 36rpx;
+}
+
+.timeing image,
+.timeout image {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.timeing text {
+  font-size: 24rpx;
+  color: #3283dd;
+  font-weight: bold;
+}
+
+.timeout text {
+  font-size: 24rpx;
+  color: #707070;
+  font-weight: bold;
+}

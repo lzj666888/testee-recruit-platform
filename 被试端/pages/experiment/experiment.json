@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-tab": "/dist/tab/index",
+    "van-tabs": "/dist/tabs/index",
+    "van-action-sheet": "/dist/action-sheet/index",
+    "van-sticky": "/dist/sticky/index"
+  },
+  "enablePullDownRefresh":true,
+  "backgroundTextStyle":"dark",
+  "backgroundColor":"#ffffff"
+}
