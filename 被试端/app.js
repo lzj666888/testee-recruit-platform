@@ -2,17 +2,12 @@
 
 App({
   onLaunch: function () {
+    this.getOpenId()
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -34,7 +29,46 @@ App({
       }
     })
   },
+
+  //获取  微信小程序 中 用户的唯一标识符
+  getOpenId() {
+    var code = '';
+    var that = this;
+    wx.login({
+      success(res) {
+        console.log('参数：', res)
+        code = res.code,
+          wx.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session',
+            method: 'GET',
+            data: {
+              appid: that.globalData.APP_ID,
+              secret: that.globalData.APP_SECRET,
+              grant_type: 'authorization_code',
+              js_code: code
+            },
+            success(res) {
+              console.log('success:', res)
+              that.globalData.openId = res.data.openid
+              console.log('app global openid:', that.globalData.openId)
+            },
+            fail(res) {
+              console.log('fail:', res)
+
+            }
+          })
+
+      },
+      fail(res){
+        console.log(res)
+      }
+    })
+
+  },
   globalData: {
-    userInfo: 123
+    userInfo: 123,
+    openId:'',   //用户唯一认证id
+    APP_ID:'wx3d0c29a20a305f28',   //小程序appId
+    APP_SECRET:'685ef10637631ae8e3db77e000f22f9e'  //小程序密匙
   }
 })
