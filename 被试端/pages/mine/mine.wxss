@@ -134,3 +134,25 @@ page {
   width: 40rpx !important;
   height: 40rpx !important;
 }
+
+.userinfo_title{
+  margin: 60rpx auto 30rpx;
+  width: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 36rpx;
+  color: #3283dd;
+}
+.userinfo_content{
+  width: 80%;
+  margin: 0 auto;
+  text-indent: 2em;
+  font-size: 30rpx;
+  line-height: 50rpx;
+}
+.userinfo_content+button{
+  margin-top: 20%;
+  color: white;
+  background-color: #3283dd;
+  border-radius: 20rpx;
+}

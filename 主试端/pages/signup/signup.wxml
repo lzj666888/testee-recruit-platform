@@ -1,7 +1,7 @@
 <!--pages/signup/signup.wxml-->
 <van-sticky>
 	<view class="tab">
-		<van-search width="100rpx" shape="round" placeholder="请输入要搜索的实验" input-align="center" bind:search="onSearch" bind:cancel="onCancel" />
+		<van-search width="100rpx" shape="round" placeholder="请输入要搜索的被试姓名" input-align="center" bind:search="onSearch" bind:cancel="onCancel" />
 		<van-tabs active="{{tab_index}}" type='card' color='#3283dd' bind:change='changetabbar'>
 			<van-tab wx:for='{{tabbars}}' title="{{item}}" wx:key='{{item}}'>
 			</van-tab>

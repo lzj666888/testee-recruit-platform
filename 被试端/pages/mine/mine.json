@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "van-image": "/dist/image/index"
+    "van-image": "/dist/image/index",
+    "van-popup": "/dist/popup/index"
   },
   "backgroundColor":"#3283dd"
 }
