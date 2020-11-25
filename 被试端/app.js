@@ -66,6 +66,7 @@ App({
 
   },
   globalData: {
+    serverUrl:'http://localhost:8080',    //服务器地址
     userInfo: 123,
     openId:'',   //用户唯一认证id
     APP_ID:'wx3d0c29a20a305f28',   //小程序appId
