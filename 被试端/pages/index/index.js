@@ -1,145 +1,59 @@
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    type:'',          //实验类型
+    descType: '',   //降序字段 performance_score主试评分 duration时长 reward薪酬
+    pageNum:0,          //第几页
+    pageSize:10,       //每一页的数据数量
     //实验
-    experiments: [{
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 2,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 3,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 4,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 6,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      }
-    ],
-    //筛选
-    choose: [{
+    experiments: [],
+    //类型筛选
+    typeSelect: [{
         option: [{
             text: '所有类型',
-            value: 0
+            value: ''
           },
           {
             text: '线上实验',
-            value: 1
+            value: '线上实验'
           },
           {
             text: '线下实验',
-            value: 2
+            value: '线下实验'
           },
           {
             text: '问卷调查',
-            value: 3
+            value: '问卷调查'
           },
         ],
-        valued: 0
-      },
-      {
-        option: [{
-            text: '综合排序',
-            value: 0
-          },
-          {
-            text: '酬费降序',
-            value: 1
-          },
-          {
-            text: '时长降序',
-            value: 2
-          },
-        ],
-        valued: 0
-      },
-      {
-        option: [{
-            text: '综合排序',
-            value: 0
-          },
-          {
-            text: '酬费降序',
-            value: 1
-          },
-          {
-            text: '时长降序',
-            value: 2
-          },
-        ],
-        valued: 0
+        valued: ''
       }
     ],
+    //降序筛选
+    descTypeSelect: [{
+      option: [{
+        text: '综合排序',
+        value: ''
+      },
+      {
+        text: '酬费降序',
+        value: 'reward'
+      },
+      {
+        text: '时长降序',
+        value: 'duration'
+      },
+      {
+        text: '评分降序',
+        value: 'performance_score'
+      },
+      ],
+      valued: ''
+    }],
     notice: '加入广大被试招募平台获取更多优质实验信息！',
     searchvalue: '',
     //小功能
@@ -181,35 +95,74 @@ Page({
     })
   },
   //改变筛选框
-  changechoose: function (e) {
+  typeChoose: function (e) {
+    this.setData({
+      type:e.detail
+    })
+    console.log('type',this.data.type)
+    var data = { type: this.data.type, descType: this.data.descType, pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+    this.selectExperimentsByExample(data, 0)
+  },
+  descTypeChoose: function (e) {
+    this.setData({
+      descType: e.detail
+    })
+    console.log('descType',this.data.descType)
+    var data = { type:this.data.type,descType:this.data.descType,pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+    this.selectExperimentsByExample(data, 0)
+  },
+
+  //根据关键词查询实验
+  selectExperimentsByKeWord:function(e){
     console.log(e)
-    var itemindex = e.currentTarget.dataset.index; //选中分类的index
-    var itemvalue = e.detail; //选中分类中的item的index
-    console.log(itemindex, itemvalue)
+    //将筛选条件变为默认
+    this.setData({
+      type:'',
+      descType:''
+    })
+    var data = {keyWord:e.detail,pageNum:this.data.pageNum,pageSize:this.data.pageSize};
+    this.selectExperimentsByExample(data,0);
   },
-  //搜索事件
-  onSearch: function (e) {
-    console.log(e.detail)
-    this.data.searchvalue = e.detail
-  },
+
+//根据关键词查询实验并筛选
+selectExperimentsByExample(dat,code){
+  var that = this;
+  wx.request({
+    url: app.globalData.serverUrl + '/selectExperimentByExample',
+    method:'POST',
+    data:dat,
+    success:res=>{
+      console.log(res);
+      that.handlerDataType(code,res.data.data);
+    },
+    fail:res=>{
+      console.log(res)
+    }
+  })
+},
+
+//操作实验数据的方式 1追加 0清空设置
+handlerDataType(code,data){
+  var dataArr = this.data.experiments;
+  if(code == 1)
+    {
+      for(var i=0; i<data.length; i++)
+        dataArr.push(data[i]);
+    }
+    else if(code == 0)
+      dataArr = data;
+    this.setData({
+      experiments:dataArr
+    })
+},
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.request({
-      url: 'http://localhost:8080/findAllExperiment', //仅为示例，并非真实的接口地址
-      method:'POST',
-      success (res) {
-        console.log(res.data)
-      },
-      fail(res){
-        wx.showToast({
-          title: '网络出现异常了~',
-          icon:'none'
-        })
-      }
-    })
-
+    //搜索所有实验
+    var data = {pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+    this.selectExperimentsByExample(data,1)
     //分享页面先跳转到主页再到指定页面
     if(options.url){
       let url = decodeURIComponent(options.url);
@@ -219,52 +172,5 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  
 })
