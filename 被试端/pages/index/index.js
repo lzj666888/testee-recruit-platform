@@ -1,4 +1,5 @@
 const app = getApp()
+const formatTime = require("../../utils/util").formatTime
 Page({
 
   /**
@@ -144,6 +145,9 @@ selectExperimentsByExample(dat,code){
 //操作实验数据的方式 1追加 0清空设置
 handlerDataType(code,data){
   var dataArr = this.data.experiments;
+  for (var i = 0; i < data.length; i++) 
+    data[i].sendTimestamp = formatTime(data[i].sendTimestamp)
+
   if(code == 1)
     {
       for(var i=0; i<data.length; i++)
