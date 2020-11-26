@@ -1,50 +1,50 @@
 <view class='top'>
 	<text class='tittle'>
-	{{experiment.name}}
+		{{experiment.name}}
 	</text>
 	<view class="lables">
 		<view class="lable">{{experiment.type}}</view>
-		<view class="lable" wx:for='{{experiment.lables}}' wx:key='{{item}}'>
+		<view class="lable" wx:for='{{experiment.labels}}' wx:key='{{item}}'>
 			{{item}}
 		</view>
 	</view>
 	<view class="details">
-		{{experiment.time}} {{experiment.reward}}元报酬 or 实验时{{experiment.duration}}h {{experiment.place}}
+		{{experiment.time}}分钟 {{experiment.reward}}元报酬 or 实验时{{experiment.duration}}h {{experiment.place}}
 	</view>
 	<view class="peoples">
 		<view class="enrollment">报名人数：{{experiment.enrollment}}</view>
 		<view class="page_view">
 			<image src="/images/pageview.png"></image>
-			<text>{{experiment.page_view}}</text>
+			<text>{{experiment.pageView}}</text>
 		</view>
 	</view>
 
 	<!-- 主试个人信息 -->
 	<view class="people-detail">
-		<van-image class="fimage" round width="3rem" height="3rem" 
-		src="{{experiment.tester_id.image}}"/>
+		<van-image class="fimage" round width="3rem" height="3rem" src="{{tester.faceUrl}}" />
 		<view class="other-detail">
 			<view class="topdetail">
-				<image src="/images/male.png" wx:if='{{tester.sex==1}}'></image>
-				<image src="/images/female.png" wx:if='{{tester.sex==2}}'></image>
+				<image src="/images/male.png" wx:if='{{tester.sex=="男"}}'></image>
+				<image src="/images/female.png" wx:if='{{tester.sex=="女"}}'></image>
 				<text>主试</text>
 			</view>
-			<text class="tester_name">{{experiment.tester_id.name}}</text>
+			<text class="tester_name">{{tester.username}}</text>
 			<text class="major">{{tester.major}}{{tester.grade}}</text>
 			<view class="phone">
 				<text>联系方式：{{tester.phone}}</text>
 				<image src="/images/call.png" bindtap="call"></image>
 			</view>
 			<view class="phone">
-				<text>wx：{{tester.wx}}</text>
+				<text>wx：{{tester.wechat}}</text>
 				<image src="/images/cope.png" bindtap="copywx"></image>
 			</view>
 		</view>
 		<view class="score">
 			<image src="/images/collectioned.png"></image>
 			<view class="scores">
-				<text>信誉分：{{tester.credit_score}}</text>
-				<text>反馈分：{{tester.feedback_score}}</text>
+				<text>信誉分：{{tester.creditScore}}</text>
+				<text wx:if="{{tester.performanceScore ==-1}}">反馈分：暂无</text>
+				<text wx:else>反馈分：{{tester.performanceScore}}</text>
 			</view>
 		</view>
 	</view>
@@ -55,7 +55,7 @@
 			<view class="xieline"></view>
 			<text>实验要求</text>
 		</view>
-		<text class="needtxt">{{experiment.need}}</text>
+		<text class="needtxt">{{experiment.requirement}}</text>
 	</view>
 	<!-- 实验内容 -->
 	<view class="need">
@@ -71,19 +71,38 @@
 			<view class="xieline"></view>
 			<text>报名时间</text>
 		</view>
-		<text class="date">日期：{{experiment.date_start}}-{{experiment.date_end}}</text>
-		<view class="timeperiod">
-			<view class="tpleft">时段：</view>
-			<view class="tpright">
-				<view class="time" wx:for='{{experiment.time_periods}}'>
-					{{item.time_start}}-{{item.time_end}}
-				</view>
+		<view class="table">
+			<view class="tr bg-w">
+				<view class="th" wx:for='{{dates2}}'>{{item}}</view>
 			</view>
+			<block wx:for="{{formdata}}" wx:for-item="row" wx:for-index="row_index" wx:key="{{row.period}}">
+				<view class="tr" wx:if="{{row_index % 2 == 0}}">
+					<view class="td  bg-g">
+						{{row.period}}
+					</view>
+					<view class="td  bg-g" wx:for='{{Dates}}' wx:for-item="date" bindtap="selected" data-index="{{row_index}}"
+						data-date="{{date}}">
+						<image wx:if='{{!row[date]}}' src="../../images/not.png" class="not"></image>
+						<image wx:if='{{row[date]=="selected"}}' src="../../images/select.png" class="not"></image>
+					</view>
+				</view>
+				<view class="tr" wx:else>
+					<view class="td bg-gg">
+						{{row.period}}
+					</view>
+					<view class="td bg-gg" wx:for='{{Dates}}' wx:for-item="date" bindtap="selected" data-index="{{row_index}}"
+						data-date="{{date}}">
+						<image wx:if='{{!row[date]}}' src="../../images/not.png" class="not"></image>
+						<image wx:if='{{row[date]=="selected"}}' src="../../images/select.png" class="not"></image>
+					</view>
+				</view>
+			</block>
 		</view>
 	</view>
 	<!-- 评分模块，已通过的时候才会显示出来 -->
 	<view class="rate" wx:if='{{state==1}}'>
-		<van-rate value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star" bind:change="onChange" />
+		<van-rate value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
+			bind:change="onChange" />
 		<view wx:if='{{finish==0}}' class="unfinish">
 			<button class="confirm">确认完成实验，并对主试评分</button>
 			<button class="cancel">主试主动取消被试实验</button>
@@ -112,5 +131,7 @@
 			<text>聊天</text>
 		</view>
 	</view>
-	<button class="b-right" disabled="{{btn_disable}}">{{btn_text}}</button>
+	<button class="b-right" disabled="{{btn_disable}}" bindtap="signin">{{btn_text}}</button>
 </view>
+<!-- 提示授权 -->
+<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>
