@@ -1,172 +1,160 @@
 // pages/experimentdetail/experimentdetail.js
+const formatTime = require("../../utils/util").formatTime
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    currentdate: -1,
+    currentindex: -1,
+    show_getuserinfo: false, //是否显示授权面板
     value: 0, //对主试的评分
     //报名按钮的文本
     btn_text: '我要报名',
     btn_disable: false, //报名按钮是否可用
     //主试信息
-    tester: {
-      sex: 1,
-      phone: '12345123451',
-      credit_score: 100, //信誉分
-      feedback_score: 99, //反馈分
-      wx: '12eor1',
-      major: '应用心理',
-      college: '教育学院',
-      grade: '研三'
-    },
+    tester: {},
     //实验状态，本来应该是在被试报名的实验里面的
     state: null,
     //实验完成度，本来应该是在被试报名的实验里面的
     finish: null,
     //实验
-    experiment: {
-      test_id: 1,
-      tester_id: {
-        image: '/images/p1.jpg',
-        name: '李同'
-      },
-      type: '线下实验',
-      lables: ['行为实验', '简单有趣', '有小礼物'],
-      name: '简单按键实验，问卷填写',
-      duration: 1,
-      reward: 10,
-      time: '30-35分钟',
-      place: '文清123',
-      send_time: '2020-09-12',
-      page_view: 123,
-      enrollment: 43,
-      need: `
-        1、认真完成实验
-        2、视力正常。
-        3、男生
-        1、认真完成实验
-        2、视力正常。
-        3、男生
-        `,
-      content: `
-        对电脑的信息提示做出本能反应，并在键盘输入相应的键，实验完后填写一份问卷。对电脑的信息提示做出本能反应，并在键盘输入相应的键，实验完后填写一份问卷。
-        `,
-      date_start: '2020-12-09',
-      date_end: '2020-12-14',
-      time_periods: [{
-          time_start: '8:30',
-          time_end: '9:30'
-        },
+    experiment: {},
+    formdata: [], //报名表
+    dates2: [], //表头
+    Dates: [], //日期们
+  },
+  //授权
+  GetUserInfo(e) {
+    console.log(e.detail)
+    if (JSON.stringify(e.detail) != '{}') {
+      getApp().globalData.isauth = true
+      this.setData({
+        show_getuserinfo: false
+      })
+    }
+  },
+  //点击报名
+  signin() {
+    if (!getApp().globalData.isauth) {
+      wx.showToast({
+        title: '请先授权',
+        icon: 'none'
+      })
+      this.setData({
+        show_getuserinfo: true
+      })
+      return;
+    } else {
+      if (this.data.currentdate === -1) {
+        wx.showToast({
+          title: '请选择时段后报名！',
+          icon: 'none'
+        })
+        return;
+      } else {
+        if(this.data.experiment.status!='招募中')
         {
-          time_start: '8:30',
-          time_end: '9:30'
-        },
-        {
-          time_start: '8:30',
-          time_end: '9:30'
-        },
-        {
-          time_start: '8:30',
-          time_end: '9:30'
-        },
-        {
-          time_start: '8:30',
-          time_end: '9:30'
-        },
-        {
-          time_start: '8:30',
-          time_end: '9:30'
+          wx.showToast({
+            title: '实验已结束，下次早点报名哦~',
+            icon:'none'
+          })
+          return;
         }
-      ]
-    },
-    //实验们
-    experiments: [{
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        lables: ['行为实验', '简单有趣', '有小礼物'],
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 2,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        lables: ['行为实验', '简单有趣', '有小礼物'],
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 3,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        lables: ['行为实验', '简单有趣', '有小礼物'],
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 4,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        lables: ['行为实验', '简单有趣', '有小礼物'],
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
-      },
-      {
-        test_id: 6,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        lables: ['行为实验', '简单有趣', '有小礼物'],
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43
+        var that = this;
+        //判断被试是否已经报名过了
+        wx.request({
+          url: 'http://localhost:8080/ifSigned', //仅为示例，并非真实的接口地址
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            userId: wx.getStorageSync('id'),
+            experimentId: that.data.experiment.id
+          },
+          success(res) {
+            console.log(res.data)
+            if (res.data.message === '被试已报名') {
+              wx.showToast({
+                title: '你已经报名了哦~',
+                icon: 'none'
+              })
+              return;
+            } else {
+              //进行报名
+              wx.request({
+                url: 'http://localhost:8080/sign', //仅为示例，并非真实的接口地址
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                  experimentId: that.data.experiment.id,
+                  userId: wx.getStorageSync('id'),
+                  timePeriod: that.data.currentdate + ' ' + that.data.formdata[that.data.currentindex].period,
+                  signTimestamp: parseInt(new Date().getTime() / 1000),
+                },
+                success(res) {
+                  console.log(formatTime(parseInt(new Date().getTime() / 1000)))
+                  console.log(res.data)
+                  wx.showModal({
+                    title: '提交报名成功',
+                    content: '等待主试通过报名！可前往实验页面查看审核状态。',
+                    success (res) {
+                      if (res.confirm) {
+                        console.log('用户点击确定')
+                      } else if (res.cancel) {
+                        console.log('用户点击取消')
+                      }
+                    }
+                  })
+                },
+                fail(res) {
+                  wx.showToast({
+                    title: '网络出现异常了~',
+                    icon: 'none'
+                  })
+                }
+              })
+            }
+          },
+          fail(res) {
+            wx.showToast({
+              title: '网络出现异常了~',
+              icon: 'none'
+            })
+          }
+        })
       }
-    ]
+    }
+  },
+  //选择日期进行报名
+  selected(e) {
+    var date = e.currentTarget.dataset.date;
+    var index = e.currentTarget.dataset.index;
+    var _formdata = this.data.formdata;
+    if (_formdata[index][date] === false) {
+      wx.showToast({
+        title: '该时段不可选，请重新选择！',
+        icon: 'none'
+      })
+      return
+    }
+    if (date == this.data.currentdate && index == this.data.currentindex) {
+      return;
+    }
+    _formdata[index][date] = 'selected'
+    if (this.data.currentdate != -1) {
+      _formdata[this.data.currentindex][this.data.currentdate] = true
+    }
+    this.data.currentdate = date
+    this.data.currentindex = index
+    this.setData({
+      formdata: _formdata
+    })
   },
   //对主试进行评分
   onChange(event) {
@@ -198,24 +186,79 @@ Page({
    */
   onLoad: function (options) {
     //获取实验详情信息
-    // for(var item of this.data.experiments){
-    //   if(item.test_id==options.test_id)
-    //   {
-    //     this.setData({
-    //       experiment:item
-    //     })
-    //     break;
-    //   }
-    // }
-    // console.log(options.state)
+    console.log('实验id' + options.test_id)
+    console.log('主试id' + options.tester_id)
+    var that = this
+    //获取主试个人信息
+    wx.request({
+      url: 'http://localhost:8080/getUser', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        id: options.tester_id
+      },
+      success(res) {
+        console.log(res.data)
+        var obj = res.data.data;
+        that.setData({
+          tester: obj
+        })
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+    //获取指定id的实验
+    wx.request({
+      url: 'http://localhost:8080/selectByExpId', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        id: options.test_id
+      },
+      success(res) {
+        if (res.data.code == 1) {
+          //将字符串标签转化为数组
+          res.data.data.labels = res.data.data.tag.split(',')
+          var _formdata = JSON.parse(res.data.data.timePeriods)
+          var keys = Object.keys(_formdata[0]);
+          keys.shift() //获得日期
+          that.setData({
+            experiment: res.data.data,
+            formdata: _formdata,
+            Dates: keys
+          })
+          keys.unshift('时间段/日期')
+          that.setData({
+            dates2: keys
+          })
+        } else {
+          wx.showToast({
+            title: '实验已被删除！',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+    //如果是在报名实验进入详情页执行下面
     try {
       var experiment = JSON.parse(options.experiment);
-    } 
-    catch(err)
-    {
+    } catch (err) {
       console.log(err)
-    }
-    finally {
+    } finally {
       //被试个人页面实验跳转才会执行
       if (experiment != undefined) {
         //获取实验状态,完成度

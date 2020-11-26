@@ -23,8 +23,9 @@
 		<text>信誉分</text>
 	</view>
 	<view class="score">
-		<text>{{bei_tester.performent_score}}</text>
-		<text>表示分</text>
+		<text wx:if="{{bei_tester.performent_score!=-1}}">{{bei_tester.performent_score}}</text>
+		<text wx:else>暂无</text>
+		<text>表现分</text>
 	</view>
 </view>
 <!-- 问号 -->
@@ -74,19 +75,5 @@
 		<image src="/images/right_to.png" class="right_to"></image>
 	</view>
 </view>
-<!-- 授权窗口 -->
-<van-popup show="{{ show_getuserinfo }}" bind:close="onClose"
-closeable
-round
-custom-style='width:600rpx;height:580rpx;'
->
-<view class="userinfo_title">
-	用户授权
-</view>
-<view class="userinfo_content">
-	用户授权后即可完成广大心理被试招募平台注册！完善相关信息后方可报名实验被试。
-</view>
-<!-- 需要使用 button 来授权登录 -->
-<button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
-<view wx:else>请升级微信版本</view>
-</van-popup>
+<!-- 提示授权面板 -->
+<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

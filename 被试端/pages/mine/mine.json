@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "van-image": "/dist/image/index",
-    "van-popup": "/dist/popup/index"
+    "getauth":"../../components/getauth/getauth"
   },
   "backgroundColor":"#3283dd"
 }

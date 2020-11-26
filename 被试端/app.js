@@ -3,31 +3,21 @@
 App({
   onLaunch: function () {
     this.getOpenId()
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
+    //检测用户是否已经授权
+      wx.getSetting({
+        success(res) {
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+            wx.getUserInfo({
+              success: function (res) {
+                console.log('用户信息：' + res.userInfo)
+                getApp().globalData.userInfo = res.userInfo
+                getApp().globalData.isauth = true//已经授权了
               }
-            }
-          })
+            })
+          }
         }
-      }
-    })
+      })
   },
 
   //获取  微信小程序 中 用户的唯一标识符
@@ -66,10 +56,11 @@ App({
 
   },
   globalData: {
+    userInfo:{},//用户信息
+    isauth:false,//用户是否已经授权了
     serverUrl:'http://localhost:8080',    //服务器地址
-    userInfo: 123,
     openId:'',   //用户唯一认证id
-    APP_ID:'wx3d0c29a20a305f28',   //小程序appId
-    APP_SECRET:'685ef10637631ae8e3db77e000f22f9e'  //小程序密匙
+    APP_ID:'wxff5313f0e69e6e11',   //小程序appId
+    APP_SECRET:'78bff6c654e62def2cff6e11dcfe0601'  //小程序密匙
   }
 })
