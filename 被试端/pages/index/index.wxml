@@ -1,7 +1,7 @@
 <van-notice-bar left-icon="volume-o" text="{{notice}}" color='white' background-color='#3283dd' mode="closeable" bindonClose='closenotice' />
 <view class="top">
 	<text class="tittle">广大心理被试招募平台</text>
-	<van-search width="100rpx" shape="round" background="#3283dd" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="onSearch" bind:cancel="onCancel" />
+	<van-search width="100rpx" shape="round" background="#3283dd" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="selectExperimentsByKeWord" bind:cancel="onCancel" />
 </view>
 <!-- 功能区 -->
 <view class="function">
@@ -13,9 +13,12 @@
 <van-sticky>
 	<view class="choose">
 		<van-dropdown-menu active-color='3283dd'>
-			<van-dropdown-item bindchange='changechoose' data-index='{{index}}' style='font-size:12rpx;color: #a6a6a6;' wx:for='{{choose}}' value="{{ item.valued }}" options="{{ item.option }}" wx:key='{{item}}' />
+			<van-dropdown-item bindchange='typeChoose' data-index='{{index}}' style='font-size:12rpx;color: #a6a6a6;' wx:for='{{typeSelect}}' value="{{ type }}" options="{{ item.option }}" wx:key='{{item}}' />
+      <van-dropdown-item bindchange='descTypeChoose' data-index='{{index}}' style='font-size:12rpx;color: #a6a6a6;' wx:for='{{descTypeSelect}}' value="{{ descType }}" options="{{ item.option }}" wx:key='{{item}}' />
 		</van-dropdown-menu>
+    
 	</view>
+  
 </van-sticky>
 
 <!-- 实验 -->

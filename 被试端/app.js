@@ -58,6 +58,7 @@ App({
   globalData: {
     userInfo:{},//用户信息
     isauth:false,//用户是否已经授权了
+    serverUrl:'http://localhost:8080',    //服务器地址
     openId:'',   //用户唯一认证id
     APP_ID:'wxff5313f0e69e6e11',   //小程序appId
     APP_SECRET:'78bff6c654e62def2cff6e11dcfe0601'  //小程序密匙
