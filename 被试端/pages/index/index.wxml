@@ -33,7 +33,7 @@
 		<text>时长：{{item.time}}</text>
 		<text>报酬：现结{{item.reward}}元 or 实验时{{item.duration}}h</text>
 		<text>地点：{{item.place}}</text>
-		<text>发布时间：{{item.send_timestamp}}</text>
+		<text>发布时间：{{item.sendTimestamp}}</text>
 	</view>
 	<view class="right">
 		<text>报名人数：{{item.enrollment}}</text>
