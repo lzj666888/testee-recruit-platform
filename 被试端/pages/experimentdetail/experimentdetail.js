@@ -1,5 +1,6 @@
 // pages/experimentdetail/experimentdetail.js
 const formatTime = require("../../utils/util").formatTime
+const regist = require("../../utils/api").regist
 const app = getApp()
 
 Page({
@@ -33,6 +34,11 @@ Page({
     console.log(e.detail)
     if (JSON.stringify(e.detail) != '{}') {
       getApp().globalData.isauth = true
+      regist()
+      wx.showToast({
+        title: '授权成功！',
+        icon:'none'
+      })
       this.setData({
         show_getuserinfo: false
       })

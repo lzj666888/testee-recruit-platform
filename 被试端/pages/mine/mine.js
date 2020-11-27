@@ -1,5 +1,6 @@
 // pages/mine/mine.js
 const app = getApp()
+const regist = require("../../utils/api").regist
 
 Page({
 
@@ -16,7 +17,7 @@ Page({
       name: '  ',
       image: null,
       tokens: 0, //代币数
-      credit_score: 0, //信誉分
+      credit_score: 100, //信誉分
       performent_score: -1, //表现分
     }
   },
@@ -32,25 +33,22 @@ Page({
   edit: function () {
     this.navto('edit')
   },
-//封装跳转函数
-navto(url)
-{
-  if(this.data.id)
-  {
-    wx.navigateTo({
-      url: `/pages/${url}/${url}?id=`+this.data.id
-    })
-  }
-  else{
-    wx.showToast({
-      title: '请先授权！',
-      icon:'none'
-    })
-    this.setData({
-      show_getuserinfo:true
-    })
-  }
-},
+  //封装跳转函数
+  navto(url) {
+    if (this.data.id) {
+      wx.navigateTo({
+        url: `/pages/${url}/${url}?id=` + this.data.id
+      })
+    } else {
+      wx.showToast({
+        title: '请先授权！',
+        icon: 'none'
+      })
+      this.setData({
+        show_getuserinfo: true
+      })
+    }
+  },
 
   showModal(e) {
     this.setData({
@@ -71,7 +69,7 @@ navto(url)
   },
   // 判断是否需要进行授权
   checkuserinfo() {
-    var that=this
+    var that = this
     if (getApp().globalData.isauth) {
       // 已经授权，可以直接调用 getUserInfo 获取头像昵称
       var obj = getApp().globalData.userInfo
@@ -95,11 +93,14 @@ navto(url)
   GetUserInfo(e) {
     var that = this
     console.log(e.detail)
-    if (JSON.stringify(e.detail)!='{}') {
-      getApp().globalData.isauth=true
+    if (JSON.stringify(e.detail) != '{}') {
+      getApp().globalData.isauth = true
       var obj = e.detail
-      //调用注册接口
-      that.regist()
+      //注册然后获取信息
+      regist().then(res => {
+        console.log(res)
+        that.getuser()
+      })
       //用户已经授权
       this.setData({
         show_getuserinfo: false,
@@ -117,43 +118,6 @@ navto(url)
       })
     }
   },
-  //注册函数并获取用户信息
-  regist() {
-    var that = this //调用注册接口
-    wx.request({
-      url: app.globalData.serverUrl+'/register', //仅为示例，并非真实的接口地址
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        openId: getApp().globalData.openId,
-        identity: '被试'
-      },
-      success(res) {
-        console.log(res.data)
-        if (res.data.code == -1) {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          })
-        } else if (res.data.code == 1) {
-          //缓存用户的id
-          var id = res.data.data
-          console.log('用户id：' + id)
-          wx.setStorageSync('id', id) //注册完后直接缓存id
-          //请求获取用户信息
-          that.getuser()
-        }
-      },
-      fail(res) {
-        wx.showToast({
-          title: '网络出现异常了~',
-          icon: 'none'
-        })
-      }
-    })
-  },
   //获取用户信息函数
   getuser() {
     var that = this;
@@ -161,11 +125,11 @@ navto(url)
     try {
       var id = wx.getStorageSync('id')
       if (id) {
-        console.log('用户id'+id)
-        this.data.id=id;
+        console.log('用户id' + id)
+        this.data.id = id;
         //请求获取用户信息
         wx.request({
-          url: app.globalData.serverUrl+'/getUser', //仅为示例，并非真实的接口地址
+          url: app.globalData.serverUrl + '/getUser', //仅为示例，并非真实的接口地址
           method: 'POST',
           header: {
             'content-type': 'application/x-www-form-urlencoded'
@@ -194,7 +158,7 @@ navto(url)
       } else {
         //调用注册接口重新获取id
         console.log('用户缓存id删除需要重新调用注册来获取')
-        that.regist()
+        regist()
       }
     } catch (e) {
       console.log(e)
@@ -205,7 +169,7 @@ navto(url)
    */
   onShow: function () {
     //如果没授权就再提醒
-    if (!getApp().globalData.isauth&& !this.data.checking) {
+    if (!getApp().globalData.isauth && !this.data.checking) {
       this.checkuserinfo()
     }
   },

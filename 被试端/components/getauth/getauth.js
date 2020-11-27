@@ -6,10 +6,7 @@ Component({
   properties: {
     show_getuserinfo: {
       type: Boolean,
-      value: false,
-      observer(){
-        console.log(this.data.show_getuserinfo)
-      }
+      value: false
     }
   },
 

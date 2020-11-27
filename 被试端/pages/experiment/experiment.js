@@ -1,5 +1,7 @@
 // pages/experimentTrip/experimentTrip.js
 const app = getApp()
+const regist = require("../../utils/api").regist
+
 Page({
 
   /**
@@ -129,6 +131,11 @@ Page({
     console.log(e.detail)
     if (JSON.stringify(e.detail) != '{}') {
       getApp().globalData.isauth = true
+      regist()
+      wx.showToast({
+        title: '授权成功！',
+        icon:'none'
+      })
       this.setData({
         show_getuserinfo: false
       })
@@ -298,7 +305,7 @@ Page({
     var experiment = this.data.experiments[index]; //点击的实验
     console.log(experiment)
     wx.navigateTo({
-      url: '/pages/experimentdetail/experimentdetail?experiment=' + JSON.stringify(experiment),
+      url: '/pages/experimentdetail/experimentdetail?experiment=' + JSON.stringify(experiment)+'&test_id='+1+'&tester_id='+2,
     })
   },
   /**
@@ -330,7 +337,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    //如果没授权就再提醒
+    if (!getApp().globalData.isauth) {
+      this.setData({
+        show_getuserinfo:true
+      })
+    }
   },
 
   /**
