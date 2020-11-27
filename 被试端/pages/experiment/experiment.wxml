@@ -49,3 +49,5 @@
 	</view>
 </view>
 <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" bind:cancel='onCancel' cancel-text="取消" />
+<!-- 提示授权 -->
+<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

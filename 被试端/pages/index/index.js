@@ -83,8 +83,9 @@ Page({
     //跳转到实验详情页面
     toexperiment: function (e) {
       var test_id=e.currentTarget.dataset.test_id;//获取实验id
+      var tester_id=e.currentTarget.dataset.tester_id;//获取主试id
       wx.navigateTo({
-        url: '/pages/experimentdetail/experimentdetail?test_id='+test_id,
+        url: '/pages/experimentdetail/experimentdetail?test_id='+test_id+"&tester_id="+tester_id,
       })
     },
   //点击跳转到功能页面

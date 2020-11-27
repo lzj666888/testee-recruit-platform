@@ -22,7 +22,7 @@
 </van-sticky>
 
 <!-- 实验 -->
-<view class="experiments" wx:for='{{experiments}}' wx:key='{{item}}' data-test_id="{{item.testId}}" bindtap="toexperiment">
+<view class="experiments" wx:for='{{experiments}}' wx:key='{{item}}' data-tester_id="{{item.testerId}}" data-test_id="{{item.id}}" bindtap="toexperiment">
 	<view class="left">
 		<view class="lable">{{item.type}}</view>
 		<van-image class="fimage" radius='10px' width="3rem" height="3rem" src="{{item.faceUrl}}" data-id="{{item.testerId}}" />
@@ -37,6 +37,6 @@
 	</view>
 	<view class="right">
 		<text>报名人数：{{item.enrollment}}</text>
-		<text>浏览人数：{{item.page_view}}</text>
+		<text>浏览人数：{{item.pageView}}</text>
 	</view>
 </view>

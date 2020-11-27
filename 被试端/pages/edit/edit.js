@@ -1,4 +1,6 @@
 // pages/edit/edit.js
+const app = getApp()
+
 Page({
 
   /**
@@ -38,7 +40,7 @@ Page({
     if (getdata.name && getdata.major && getdata.grade && getdata.college && getdata.phone && getdata.sex && getdata.phonetrue) {
       //修改个人信息
       wx.request({
-        url: 'http://localhost:8080/edit', //仅为示例，并非真实的接口地址
+        url: app.globalData.serverUrl+'/edit', //仅为示例，并非真实的接口地址
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'

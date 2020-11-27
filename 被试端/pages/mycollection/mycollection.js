@@ -1,4 +1,6 @@
 // pages/mycollection/mycollection.js
+const app = getApp()
+
 const formatTime = require("../../utils/util").formatTime
 Page({
 
@@ -16,7 +18,7 @@ Page({
     var _experiments = this.data.experiments;
     if (_experiments[index].collected == true) {
       wx.request({
-        url: 'http://localhost:8080/cancelCollectExp', //仅为示例，并非真实的接口地址
+        url: app.globalData.serverUrl+'/cancelCollectExp', //仅为示例，并非真实的接口地址
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
@@ -57,7 +59,7 @@ Page({
     } else {
       //收藏
       wx.request({
-        url: 'http://localhost:8080/collectExp', //仅为示例，并非真实的接口地址
+        url: app.globalData.serverUrl+'/collectExp', //仅为示例，并非真实的接口地址
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
@@ -118,7 +120,7 @@ Page({
   getcollections(){
     var that = this
     wx.request({
-      url: 'http://localhost:8080/findCollections', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/findCollections', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'

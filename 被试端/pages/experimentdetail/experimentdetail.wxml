@@ -122,8 +122,9 @@
 				<text>分享</text>
 			</button>
 		</view>
-		<view class="share" bindtap="collection">
-			<image src="/images/collection.png"></image>
+		<view class="share" bindtap="docollect">
+			<image wx:if="{{collected}}" src="/images/collectioned.png"></image>
+			<image wx:else src="/images/collection.png"></image>
 			<text>收藏</text>
 		</view>
 		<view class="share">

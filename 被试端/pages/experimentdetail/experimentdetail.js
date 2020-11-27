@@ -1,5 +1,6 @@
 // pages/experimentdetail/experimentdetail.js
 const formatTime = require("../../utils/util").formatTime
+const app = getApp()
 
 Page({
 
@@ -7,8 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    currentdate: -1,
-    currentindex: -1,
+    collected:false,//是否已经收藏
+    currentdate: -1,//选择的日期
+    currentindex: -1,//选择的时段
     show_getuserinfo: false, //是否显示授权面板
     value: 0, //对主试的评分
     //报名按钮的文本
@@ -66,7 +68,7 @@ Page({
         var that = this;
         //判断被试是否已经报名过了
         wx.request({
-          url: 'http://localhost:8080/ifSigned', //仅为示例，并非真实的接口地址
+          url: app.globalData.serverUrl+'/ifSigned', //仅为示例，并非真实的接口地址
           method: 'POST',
           header: {
             'content-type': 'application/x-www-form-urlencoded'
@@ -86,7 +88,7 @@ Page({
             } else {
               //进行报名
               wx.request({
-                url: 'http://localhost:8080/sign', //仅为示例，并非真实的接口地址
+                url: app.globalData.serverUrl+'/sign', //仅为示例，并非真实的接口地址
                 method: 'POST',
                 header: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -162,9 +164,94 @@ Page({
       value: event.detail,
     });
   },
+  //点击防抖函数
+  isDebounce(timeout = 2000) {
+    let that = this
+    if (this.data.debounce) {
+      console.log("触发防抖")
+      return true
+    }
+    this.data.debounce = true
+    setTimeout(() => {
+      that.data.debounce = false
+    }, timeout)
+    return false
+  },
   // 收藏实验
-  collection: function () {
-
+  docollect: function () {
+    if (this.isDebounce()) return
+    var id=this.data.experiment.id
+    var that=this
+    //已经收藏了则取消收藏
+    if(this.data.collected)
+    {
+      wx.request({
+        url: app.globalData.serverUrl+'/cancelCollectExp', //仅为示例，并非真实的接口地址
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          experimentId: id,
+          userId: wx.getStorageSync('id')
+        },
+        success(res) {
+          console.log(res.data)
+          if (res.data.code == 1) {
+            //取消收藏
+            wx.showToast({
+              title: '取消收藏成功！',
+              icon: 'none',
+              duration: 1000
+            })
+            that.setData({
+              collected:false
+            })
+          }
+          else{
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none',
+              duration: 1000
+            })
+          }
+        }
+      })
+    }
+    else{
+      wx.request({
+        url: app.globalData.serverUrl+'/collectExp', //仅为示例，并非真实的接口地址
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          experimentId: id,
+          userId: wx.getStorageSync('id')
+        },
+        success(res) {
+          console.log(res.data)
+          if (res.data.code == 1) {
+            //取消收藏
+            wx.showToast({
+              title: '收藏成功！',
+              icon: 'none',
+              duration: 1000
+            })
+            that.setData({
+              collected:true
+            })
+          }
+          else{
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none',
+              duration: 1000
+            })
+          }
+        }
+    })
+  }
   },
 
   // 拨打电话号码
@@ -185,13 +272,38 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     //获取实验详情信息
     console.log('实验id' + options.test_id)
     console.log('主试id' + options.tester_id)
-    var that = this
+    //判断实验是否已经被收藏了
+    wx.request({
+      url: app.globalData.serverUrl+'/ifCollected', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        experimentId: options.test_id,
+        userId:wx.getStorageSync('id')
+      },
+      success(res) {
+        if (res.data.message == '已收藏') {
+          that.setData({
+            collected:true
+          })
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
     //获取主试个人信息
     wx.request({
-      url: 'http://localhost:8080/getUser', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/getUser', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -215,7 +327,7 @@ Page({
     })
     //获取指定id的实验
     wx.request({
-      url: 'http://localhost:8080/selectByExpId', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/selectByExpId', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'

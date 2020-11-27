@@ -1,4 +1,6 @@
 // pages/mine/mine.js
+const app = getApp()
+
 Page({
 
   /**
@@ -119,7 +121,7 @@ navto(url)
   regist() {
     var that = this //调用注册接口
     wx.request({
-      url: 'http://localhost:8080/register', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/register', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -163,7 +165,7 @@ navto(url)
         this.data.id=id;
         //请求获取用户信息
         wx.request({
-          url: 'http://localhost:8080/getUser', //仅为示例，并非真实的接口地址
+          url: app.globalData.serverUrl+'/getUser', //仅为示例，并非真实的接口地址
           method: 'POST',
           header: {
             'content-type': 'application/x-www-form-urlencoded'
