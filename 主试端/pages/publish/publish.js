@@ -87,6 +87,8 @@ Page({
 
   //上传报名表
   uploadform(){
+    console.log(JSON.stringify(this.data.formdata))
+    console.log(JSON.parse(JSON.stringify(this.data.formdata)))
     wx.showToast({
       title: '上传成功！',
     })

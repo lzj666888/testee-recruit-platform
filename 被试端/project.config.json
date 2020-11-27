@@ -20,11 +20,18 @@
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
+<<<<<<< HEAD
+=======
+		"compileHotReLoad": false,
+		"useMultiFrameRuntime": false,
+		"useApiHook": true,
+>>>>>>> ed3b3438ac8fdeab8c07a04821f2cfb0c30ae24c
 		"babelSetting": {
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
 		},
+<<<<<<< HEAD
 		"bundle": false,
 		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false,
@@ -33,6 +40,13 @@
 		"useApiHook": true,
 		"enableEngineNative": false,
 		"useIsolateContext": true,
+=======
+		"enableEngineNative": false,
+		"bundle": false,
+		"useIsolateContext": true,
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false,
+>>>>>>> ed3b3438ac8fdeab8c07a04821f2cfb0c30ae24c
 		"userConfirmedBundleSwitch": false,
 		"packNpmManually": false,
 		"packNpmRelationList": [],

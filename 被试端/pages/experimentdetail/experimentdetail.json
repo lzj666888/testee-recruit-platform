@@ -1,7 +1,8 @@
 {
   "usingComponents": {
     "van-image": "/dist/image/index",
-    "van-rate": "/dist/rate/index"
+    "van-rate": "/dist/rate/index",
+    "getauth":"../../components/getauth/getauth"
   },
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "详情"

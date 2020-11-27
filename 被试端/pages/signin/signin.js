@@ -1,4 +1,5 @@
 // pages/signIn2/signIn2.js
+const app=getApp()
 Page({
 
   /**
@@ -65,22 +66,36 @@ popup(){
     // //当前积分
     // newSignNum++;//签到天数数目加
     // var curFen = that.data.newSignIntegral + this.data.newdaibi;
-    var curFen
     var today
     that.signAddFen()
     wx.request({
-      url: 'http://localhost:8080/checkIn', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/checkIn', //仅为示例，并非真实的接口地址
       method:'POST',
       header:{
         'content-type':'application/x-www-form-urlencoded'
       },
       data:{
-        userId:1,
+        userId:wx.getStorageSync('id'),
         timestamp: that.data.timestamp
       },
       success (res) {
         console.log(res.data)
-        
+        wx.request({
+          url: app.globalData.serverUrl+'/coinsIncrease', //仅为示例，并非真实的接口地址
+          method:'POST',
+          header:{
+            'content-type':'application/x-www-form-urlencoded'
+          },
+          data:{
+            userId:wx.getStorageSync('id'),
+            increase: that.data.newdaibi
+          },
+          success(res){
+            that.setData({
+              newSignIntegral: res.data.data,
+            })
+          }
+        })
         that.setData({
           newSignNum: res.data.data
         })
@@ -90,11 +105,9 @@ popup(){
         //today为0时表示为周日
         today = today - 1 >= 0 ? today - 1 : 6;
         newSignArr[today].isSigned = true;//签到状态改为true
-        curFen = that.data.newSignIntegral + that.data.newdaibi;
         that.setData({
           newSignBtnState: true,
           show:true,
-          newSignIntegral: curFen,
           newSignedArr: newSignArr,
         })
       },
@@ -141,7 +154,30 @@ popup(){
       })
     }
   },
-
+  ifSameDay(timestamp1,timestamp2){
+    var n1 = timestamp1 * 1000;  
+    var n2 = timestamp2 *1000;
+    var date1 = new Date(n1);  
+    var date2 = new Date(n2);  
+    //年  
+    var Y1 = date1.getFullYear();  
+    var Y2 = date2.getFullYear();  
+    //月  
+    var M1 = date1.getMonth() ;  
+    var M2 = date2.getMonth() ; 
+    //日  
+    var D1 = date1.getDate() ;  
+    var D2 = date2.getDate() ;  
+    console.log(D1)
+    console.log(D2)
+    console.log(M1)
+    console.log(M2)
+    console.log(Y1)
+    console.log(Y2)
+    if(Y1==Y2&&M1==M2&&D1==D2)
+      return true;
+   return false;
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -161,33 +197,45 @@ popup(){
     that.setData({
       timestamp: timestamp
     })
-    
+   
   },
+ 
   getMyToday(){
     var that = this
     wx.request({
-      url: 'http://localhost:8080/getCheckInDay', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/getCheckInDay', //仅为示例，并非真实的接口地址
       method:'POST',
       header:{
         'content-type':'application/x-www-form-urlencoded'
       },
       data:{
-        userId:1
+        userId:wx.getStorageSync('id')
       },
       success (res) {
         console.log(res.data)
-
-        that.setData({
-          myToday: res.data.data
-        })
-        var arr = that.data.newSignedArr
-        for (var i = 0, len = res.data.data; i < len; i++) {
-          arr[i].isSigned = true;//赋结新值
-      }
-      that.setData({
-        newSignedArr: arr
-      })
-       
+        if(res.data.code==0)
+        {
+          that.setData({
+            myToday: 0
+          })
+        }else
+        {
+            if(that.ifSameDay(that.data.timestamp,res.data.data.timestamp)){
+              that.setData({
+                 newSignBtnState:true
+              })
+            }
+              that.setData({
+                myToday: res.data.data.days
+              })
+              var arr = that.data.newSignedArr
+              for (var i = 0, len = res.data.data.days; i < len; i++) {
+                arr[i].isSigned = true;//赋结新值
+            }
+            that.setData({
+              newSignedArr: arr
+            })
+         }
       },
       fail(res){
         wx.showToast({
