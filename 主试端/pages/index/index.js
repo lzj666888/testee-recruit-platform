@@ -1,10 +1,14 @@
 // pages/experimentTrip/experimentTrip.js
+const app=getApp()
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    show_getuserinfo: false,
+    show_regist: false,
     currentIndex:-1,//选中要删除或者编辑的实验
     touchactive:false,
     x: 318, //发布按钮的移动
@@ -108,6 +112,24 @@ Page({
       }
     ]
   },
+  //注册
+  registed(){
+    console.log('注册')
+  },
+    //授权
+    GetUserInfo(e) {
+      console.log(e.detail)
+      if (JSON.stringify(e.detail) != '{}') {
+        app.globalData.isauth = true
+        wx.showToast({
+          title: '授权成功！',
+          icon:'none'
+        })
+        this.setData({
+          show_getuserinfo:false
+        })
+      }
+    },
   //查看报名详情
   signup_detail(e){
     var index = e.currentTarget.dataset.index; //获取删除实验index
@@ -310,7 +332,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that=this
+    this.getOpenId()
+    //检测用户是否已经授权
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wx.getUserInfo({
+            success: function (res) {
+              console.log('用户信息：' + res.userInfo)
+              app.globalData.userInfo = res.userInfo
+            }
+          })
+          app.globalData.isauth = true //已经授权了
+        }
+        else{
+          that.setData({
+            show_getuserinfo:true
+          })
+        }
+      }
+    })
+    //检测用户有没有注册
   },
 
   /**
@@ -324,6 +368,44 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    //判断是否已经授权和注册了
+      if(!app.globalData.isregist){
+        this.setData({
+          show_regist:true
+        })
+      }
+  },
+  
+  //获取  微信小程序 中 用户的唯一标识符
+  getOpenId() {
+    var code = '';
+    wx.login({
+      success(res) {
+        console.log('参数：', res)
+        code = res.code,
+          wx.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session',
+            method: 'GET',
+            data: {
+              appid: app.globalData.APP_ID,
+              secret: app.globalData.APP_SECRET,
+              grant_type: 'authorization_code',
+              js_code: code
+            },
+            success(res) {
+              console.log('success:', res)
+              app.globalData.openId = res.data.openid
+              console.log('app global openid:', app.globalData.openId)
+            },
+            fail(res) {
+              console.log('fail:', res)
+            }
+          })
+      },
+      fail(res) {
+        console.log(res)
+      }
+    })
 
   },
 
