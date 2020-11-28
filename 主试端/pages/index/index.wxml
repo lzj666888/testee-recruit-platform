@@ -60,3 +60,5 @@
 </movable-area>
 
 <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" bind:cancel='onCancel' cancel-text="取消" />
+
+<regist bindgetuser='GetUserInfo' bindregisted='registed' show_getuserinfo="{{show_getuserinfo}}" show_regist="{{show_regist}}"></regist>
