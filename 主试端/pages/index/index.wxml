@@ -43,7 +43,7 @@
 		<view class="b-right">
 			<view class="right_text">
 				<text class="enrollment">报名人数：{{item.enrollment}}</text>
-				<text class="page_view">浏览人数：{{item.page_view}}</text>
+				<text class="page_view">浏览人数：{{item.pageView}}</text>
 				<button class="btn" data-index="{{index}}" catchtap="signup_detail">查看报名详情</button>
 			</view>
 		</view>

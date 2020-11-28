@@ -20,93 +20,7 @@ Page({
     tabbars: [
       '全部', '待发布', '招募中', '已结束'
     ],
-    experiments: [{
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 0, //0为招募中，1为已结束，-1为待发布
-        finish: 0, //0为为完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      },
-      {
-        test_id: 2,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 1, //0为待审核，1为已通过，-1为未通过
-        finish: 1, //0为为完成，1为完成,
-        date: '2020-11-12', //日期
-        enrollment_time: '2020-11-02', //报名时间
-        timeperiod: '13:10-14:20' //时段
-      }, {
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: -1, //0为待审核，1为已通过，-1为未通过
-        finish: 0, //0为未完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      }, {
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 1, //0为待审核，1为已通过，-1为未通过
-        finish: 0, //0为未完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      }
-    ]
+    experiments: []
   },
   //查看报名详情
   signup_detail(e){
@@ -306,11 +220,40 @@ Page({
         break;
     }
   },
+
+  //获取实验
+  getExperiments(e){
+    var that = this
+    wx.request({
+      url: 'http://localhost:8080/getTesterExp', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        testerId: 2,
+      },
+      success(res) {
+        console.log(res.data)
+        that.setData({
+          experiments:res.data.data
+        })
+        
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this
+    that.getExperiments()
   },
 
   /**
