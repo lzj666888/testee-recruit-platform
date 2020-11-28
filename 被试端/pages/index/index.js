@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    keyWord:'',   //关键词
     type:'',          //实验类型
     descType: '',   //降序字段 performance_score主试评分 duration时长 reward薪酬
     pageNum:0,          //第几页
@@ -96,6 +97,16 @@ Page({
       url: '/pages/'+page+'/'+page,
     })
   },
+//上拉加载更多
+  loadMore:function(e){
+    var data = { keyWord: this.data.keyWord, pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+    this.selectExperimentsByExample(data, 0);
+  },
+  //下拉刷新
+  refresh:function(e){
+    
+  },
+
   //改变筛选框
   typeChoose: function (e) {
     this.setData({
@@ -114,6 +125,15 @@ Page({
     this.selectExperimentsByExample(data, 0)
   },
 
+  //删除关键词
+  onChange:function(e){
+    console.log(e)
+    this.setData({
+      keyWord:e.detail
+    })
+    console.log('cancel keyWord:',this.data.keyWord)
+  },
+
   //根据关键词查询实验
   selectExperimentsByKeWord:function(e){
     console.log(e)
@@ -122,7 +142,7 @@ Page({
       type:'',
       descType:''
     })
-    var data = {keyWord:e.detail,pageNum:this.data.pageNum,pageSize:this.data.pageSize};
+    var data = {keyWord:this.data.keyWord,pageNum:this.data.pageNum,pageSize:this.data.pageSize};
     this.selectExperimentsByExample(data,0);
   },
 
