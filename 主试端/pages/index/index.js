@@ -274,10 +274,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-<<<<<<< HEAD
     var that = this
     that.getExperiments()
-=======
     var that=this
     this.getOpenId()
     //检测用户是否已经授权
@@ -301,7 +299,6 @@ Page({
       }
     })
     //检测用户有没有注册
->>>>>>> 2b271e44d52c8b9b9782cb491f502fa215a8a165
   },
 
   /**

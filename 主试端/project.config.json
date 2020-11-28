@@ -1,5 +1,5 @@
 {
-<<<<<<< HEAD
+
 	"description": "项目配置文件",
 	"packOptions": {
 		"ignore": []
@@ -97,8 +97,7 @@
 				}
 			]
 		}
-	}
-=======
+	},
   "description": "项目配置文件",
   "packOptions": {
     "ignore": []
@@ -197,5 +196,5 @@
       ]
     }
   }
->>>>>>> 2b271e44d52c8b9b9782cb491f502fa215a8a165
+
 }
