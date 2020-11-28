@@ -1,0 +1,38 @@
+<!--components/getauth/getauth.wxml-->
+<!-- 授权窗口 -->
+<van-popup show="{{ show_getuserinfo|| show_regist }}" bind:close="onClose" closeable round
+  custom-style='width:600rpx;height:580rpx;'>
+  <!-- 是否展示授权面板 -->
+  <view wx:if="{{show_getuserinfo}}">
+    <view class="userinfo_title">
+      用户授权
+    </view>
+    <view class="userinfo_content">
+      用户授权后即可选择相应身份(研究生/本科生)进行注册，注册后可发布实验招募。
+    </view>
+    <!-- 需要使用 button 来授权登录 -->
+    <button class="auth_btn" wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+    <view wx:else>请升级微信版本</view>
+  </view>
+  <!-- 是否展示注册面板 -->
+  <view wx:if="{{show_getuserinfo==false && show_regist}}">
+    <view class="userinfo_title">
+      用户注册
+    </view>
+    <view class="userinfo_content">
+      请选择对应身份进行注册！研究生注册需输入相应身份码！
+    </view>
+    <view class="select">
+      <van-radio-group value="{{ radio }}" bind:change="onChange">
+        <van-radio name="研究生">研究生</van-radio>
+        <van-radio name="本科生">本科生</van-radio>
+      </van-radio-group>
+    </view>
+    <view class="code" style="visibility:{{radio=='研究生'?'visible':'hidden'}};">
+      <text>身份码：</text>
+      <input type="number" placeholder="请输入6位身份码" bindinput="getcode"></input>
+    </view>
+    <button bindtap="regist" class="regist_btn">注册</button>
+  </view>
+
+</van-popup>
