@@ -80,11 +80,9 @@ Page({
     //点击删除实验
     if(event.detail.name=='删除实验')
     {
-<<<<<<< HEAD
-      
-=======
+
       this.deleteExperiment();
->>>>>>> a74ce5e85166c95c7c8860594a8f9ff34a789477
+
     }
     //点击编辑实验
     else{
