@@ -1,7 +1,8 @@
+
 <van-notice-bar left-icon="volume-o" text="{{notice}}" color='white' background-color='#3283dd' mode="closeable" bindonClose='closenotice' />
 <view class="top">
 	<text class="tittle">广大心理被试招募平台</text>
-	<van-search width="100rpx" shape="round" background="#3283dd" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="selectExperimentsByKeWord" bind:cancel="onCancel" />
+	<van-search width="100rpx" shape="round" background="#3283dd" class="search" placeholder="请输入要搜索的实验" input-align="center" value="{{keyWord}}" bind:search="selectExperimentsByKeWord" bind:change="onChange" />
 </view>
 <!-- 功能区 -->
 <view class="function">

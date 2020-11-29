@@ -6,10 +6,12 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isAllData:false,  //是否已经获得全部数据
+    keyWord:'',   //关键词
     type:'',          //实验类型
     descType: '',   //降序字段 performance_score主试评分 duration时长 reward薪酬
-    pageNum:0,          //第几页
-    pageSize:10,       //每一页的数据数量
+    pageNum:1,          //第几页
+    pageSize:2,       //每一页的数据数量
     //实验
     experiments: [],
     //类型筛选
@@ -80,6 +82,22 @@ Page({
       }
     ]
   },
+
+    /**
+     * 页面相关事件处理函数--监听用户下拉动作
+     */
+    onPullDownRefresh:  function  ()  {
+        console.log('刷新')
+      //刷新 搜索所有实验 将数据都清空
+      this.setData({
+        descType:'',
+        type:'',
+        keyWord:''
+      })
+      var data = { pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+      this.selectExperimentsByExample(data, 1)
+    },
+
     //跳转到实验详情页面
     toexperiment: function (e) {
       var test_id=e.currentTarget.dataset.test_id;//获取实验id
@@ -96,22 +114,50 @@ Page({
       url: '/pages/'+page+'/'+page,
     })
   },
+//上拉加载更多
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom:function(e){
+    console.log('数据还没有请求完')
+    if(!this.data.isAllData){
+      this.setData({
+        pageNum: this.data.pageNum + 1
+      })
+      var data = { type: this.data.type, descType: this.data.descType, keyWord: this.data.keyWord, pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+      this.selectExperimentsByExample(data, 1);
+    }else
+      console.log('数据全部返回，不在请求!')
+    
+  },
+
   //改变筛选框
   typeChoose: function (e) {
     this.setData({
-      type:e.detail
+      type:e.detail,
+      pageNum:1
     })
     console.log('type',this.data.type)
-    var data = { type: this.data.type, descType: this.data.descType, pageNum: this.data.pageNum, pageSize: this.data.pageSize };
+    var data = { keyWord: this.data.keyWord,type: this.data.type, descType: this.data.descType, pageNum: this.data.pageNum, pageSize: this.data.pageSize };
     this.selectExperimentsByExample(data, 0)
   },
   descTypeChoose: function (e) {
     this.setData({
-      descType: e.detail
+      descType: e.detail,
+      pageNum: 1
     })
     console.log('descType',this.data.descType)
     var data = { type:this.data.type,descType:this.data.descType,pageNum: this.data.pageNum, pageSize: this.data.pageSize };
     this.selectExperimentsByExample(data, 0)
+  },
+
+  //删除关键词
+  onChange:function(e){
+    console.log(e)
+    this.setData({
+      keyWord:e.detail
+    })
+    console.log('cancel keyWord:',this.data.keyWord)
   },
 
   //根据关键词查询实验
@@ -120,9 +166,11 @@ Page({
     //将筛选条件变为默认
     this.setData({
       type:'',
-      descType:''
+      descType:'',
+      pageNum: 1
     })
-    var data = {keyWord:e.detail,pageNum:this.data.pageNum,pageSize:this.data.pageSize};
+    var data = {keyWord:this.data.keyWord,pageNum:this.data.pageNum,pageSize:this.data.pageSize};
+    console.log(data)
     this.selectExperimentsByExample(data,0);
   },
 
@@ -135,6 +183,15 @@ selectExperimentsByExample(dat,code){
     data:dat,
     success:res=>{
       console.log(res);
+      //判断返回的数据是否为空  为空说明已返回所有数据 下拉不在请求
+      if(res.data.data != null && res.data.data.length > 0)
+        this.setData({
+          isAllData:false
+        })
+      else
+        this.setData({
+          isAllData: true
+        })
       that.handlerDataType(code,res.data.data);
     },
     fail:res=>{
