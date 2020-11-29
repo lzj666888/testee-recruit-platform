@@ -97,7 +97,7 @@ Page({
       getApp().globalData.isauth = true
       var obj = e.detail
       //注册然后获取信息
-      regist().then(res => {
+      regist(that.selectComponent('#auth').data.radio).then(res => {
         console.log(res)
         that.getuser()
       })
@@ -158,7 +158,7 @@ Page({
       } else {
         //调用注册接口重新获取id
         console.log('用户缓存id删除需要重新调用注册来获取')
-        regist()
+        regist(that.selectComponent('#auth').data.radio)
       }
     } catch (e) {
       console.log(e)

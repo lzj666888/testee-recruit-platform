@@ -75,9 +75,9 @@ Page({
   onSelect(event) {
     console.log(event.detail); //输出操作的对象{name:'删除'}
     //点击删除实验
-    if(event.detail.name=='删除')
+    if(event.detail.name=='删除实验')
     {
-
+      
     }
     //点击编辑实验
     else{

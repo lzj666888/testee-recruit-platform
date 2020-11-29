@@ -8,8 +8,8 @@ Page({
   data: {
     type:'',          //实验类型
     descType: '',   //降序字段 performance_score主试评分 duration时长 reward薪酬
-    pageNum:0,          //第几页
-    pageSize:10,       //每一页的数据数量
+    pageNum:1,          //第几页
+    pageSize:20,       //每一页的数据数量
     //实验
     experiments: [],
     //类型筛选

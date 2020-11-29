@@ -76,4 +76,4 @@
 	</view>
 </view>
 <!-- 提示授权面板 -->
-<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>
+<getauth id="auth" bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

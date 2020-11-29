@@ -1,6 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "van-popup": "../../dist/popup/index"
+    "van-popup": "../../dist/popup/index",
+    "van-radio": "../../dist/radio/index",
+    "van-radio-group": "../../dist/radio-group/index"
   }
 }

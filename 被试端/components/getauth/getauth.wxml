@@ -1,17 +1,20 @@
 <!--components/getauth/getauth.wxml-->
 <!-- 授权窗口 -->
-<van-popup show="{{ show_getuserinfo }}" bind:close="onClose"
-closeable
-round
-custom-style='width:600rpx;height:580rpx;'
->
-<view class="userinfo_title">
-	用户授权
-</view>
-<view class="userinfo_content">
-	用户授权后即可完成广大心理被试招募平台注册！完善相关信息后方可报名实验被试。
-</view>
-<!-- 需要使用 button 来授权登录 -->
-<button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
-<view wx:else>请升级微信版本</view>
+<van-popup show="{{ show_getuserinfo }}" bind:close="onClose" closeable round
+	custom-style='width:600rpx;height:580rpx;'>
+	<view class="userinfo_title">
+		用户授权
+	</view>
+	<view class="userinfo_content">
+		用户授权后即可完成广大心理被试招募平台注册！完善相关信息后方可报名实验被试。
+	</view>
+	<view class="select">
+		<van-radio-group value="{{ radio }}" bind:change="onChange">
+			<van-radio name="本科生">本科生</van-radio>
+			<van-radio name="研究生">研究生</van-radio>
+		</van-radio-group>
+	</view>
+	<!-- 需要使用 button 来授权登录 -->
+	<button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+	<view wx:else>请升级微信版本</view>
 </van-popup>

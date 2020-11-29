@@ -53,8 +53,9 @@ Page({
     console.log(e.detail)
     if (JSON.stringify(e.detail) != '{}') {
       getApp().globalData.isauth = true
+      getApp().globalData.userInfo = e.detail
       //授权直接注册
-      regist()
+      regist(this.selectComponent('#auth').data.radio)
       wx.showToast({
         title: '授权成功！',
         icon: 'none'
@@ -109,7 +110,7 @@ Page({
       success(res) {
         console.log(res.data)
         wx.request({
-          url: app.globalData.serverUrl + '/coinsIncrease', //仅为示例，并非真实的接口地址
+          url: app.globalData.serverUrl + '/userCoinsIncrease', //仅为示例，并非真实的接口地址
           method: 'POST',
           header: {
             'content-type': 'application/x-www-form-urlencoded'

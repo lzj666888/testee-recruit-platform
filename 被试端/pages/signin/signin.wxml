@@ -66,4 +66,4 @@
 </view>
 <van-overlay show="{{ show }}"/>
 <!-- 提示授权 -->
-<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>
+<getauth id="auth" bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

@@ -2,7 +2,7 @@
 <van-sticky>
 <view class="tab">
 	<!-- <van-search width="100rpx" shape="round" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="onSearch" bind:cancel="onCancel" /> -->
-	<van-tabs active="{{tab_index}}" type='card' color='#3283dd' bind:change='changetabbar'>
+	<van-tabs value="{{tab_index}}" active="{{tab_index}}" type='card' color='#3283dd' bind:change='changetabbar'>
 		<van-tab wx:for='{{tabbars}}' title="{{item}}" wx:key='{{item}}'>
 		</van-tab>
 	</van-tabs>
@@ -10,10 +10,10 @@
 </van-sticky>
 <view class="experiment" bindtap="toexperiment" data-index="{{index}}" wx:for='{{experiments}}' wx:key="{{item}}">
 	<view class="top">
-		<text class="state" style="color:#3283dd" wx:if='{{item.state==0}}'>待审核</text>
-		<text class="state" style="color:red" wx:if='{{item.state==-1}}'>未通过</text>
-		<text class="state" style="color:green" wx:if='{{item.state==1}}'>已通过</text>
-		<text class="title">{{item.name}}</text>
+		<text class="state" style="color:#3283dd" wx:if='{{item.checkStatus=="待审核"}}'>待审核</text>
+		<text class="state" style="color:red" wx:if='{{item.checkStatus=="未通过"}}'>未通过</text>
+		<text class="state" style="color:green" wx:if='{{item.checkStatus=="已通过"}}'>已通过</text>
+		<text class="title">{{item.experiment.name}}</text>
 		<image src="/images/options.png" catchtap="delete" data-index="{{index}}">
 		</image>
 	</view>
@@ -21,33 +21,34 @@
 		<view class="b-left">
 			<view class="time">
 				<image src="/images/time.png"></image>
-				<text>{{item.time}}</text>
+				<text>{{item.experiment.time}}分钟</text>
 			</view>
 			<view class="time">
 				<image src="/images/money.png"></image>
-				<text>{{item.reward}}元 or {{item.duration}}h</text>
+				<text>{{item.experiment.reward}}元 or {{item.experiment.duration}}h</text>
 			</view>
 			<view class="time">
 				<image src="/images/position.png"></image>
-				<text>{{item.place}}</text>
+				<text>{{item.experiment.place}}</text>
 			</view>
 			<view class="timeperiod">
 				<text class="period_title">实验时段：</text>
-				<text class="period">{{item.date}} {{item.timeperiod}}</text>
+				<text class="period">{{item.timePeriod}}</text>
 			</view>
 		</view>
 		<view class="b-right">
-			<text class="lable">{{item.type}}</text>
-			<image wx:if='{{item.finish==1}}' src="/images/finished.png"></image>
-			<image wx:if='{{item.finish==-1}}' src="/images/unfinished.png"></image>
+			<text class="lable">{{item.experiment.type}}</text>
+			<image wx:if='{{item.userSchedule=="已完成"}}' src="/images/finished.png"></image>
+			<image wx:if='{{item.userSchedule=="未完成"}}' src="/images/unfinished.png"></image>
 			<view class="right_text">
-				<text class="enrollment">报名人数：{{item.enrollment}}</text>
-				<text class="page_view">浏览人数：{{item.page_view}}</text>
-				<text class="enrollment_time">报名时间：{{item.enrollment_time}}</text>
+				<text class="enrollment">报名人数：{{item.experiment.enrollment}}</text>
+				<text class="page_view">浏览人数：{{item.experiment.pageView}}</text>
+				<text class="enrollment_time">报名时间：{{item.signTimestamp}}</text>
 			</view>
 		</view>
 	</view>
 </view>
 <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" bind:cancel='onCancel' cancel-text="取消" />
+<view hidden="{{!showend}}" style="width:50%;margin-left:25%;color:#8a8a8a;text-align:center;">已加载完全部！</view>
 <!-- 提示授权 -->
-<getauth bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>
+<getauth id="auth" bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

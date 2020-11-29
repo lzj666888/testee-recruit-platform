@@ -9,9 +9,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    collected:false,//是否已经收藏
-    currentdate: -1,//选择的日期
-    currentindex: -1,//选择的时段
+    rate_disable:false,
+    canselectdate: true, //是否可以选择报名表
+    collected: false, //是否已经收藏
+    currentdate: -1, //选择的日期
+    currentindex: -1, //选择的时段
     show_getuserinfo: false, //是否显示授权面板
     value: 0, //对主试的评分
     //报名按钮的文本
@@ -34,10 +36,11 @@ Page({
     console.log(e.detail)
     if (JSON.stringify(e.detail) != '{}') {
       getApp().globalData.isauth = true
-      regist()
+      getApp().globalData.userInfo = e.detail
+      regist(this.selectComponent('#auth').data.radio)
       wx.showToast({
         title: '授权成功！',
-        icon:'none'
+        icon: 'none'
       })
       this.setData({
         show_getuserinfo: false
@@ -63,18 +66,31 @@ Page({
         })
         return;
       } else {
-        if(this.data.experiment.status!='招募中')
-        {
+        if (this.data.experiment.status != '招募中') {
           wx.showToast({
             title: '实验已结束，下次早点报名哦~',
-            icon:'none'
+            icon: 'none'
           })
           return;
         }
+        //判断被试个人信息是否已经完整
+        try {
+          var info = wx.getStorageSync('userinfo')
+          console.log(info)
+          if (info.username && info.phone && info.major) {
+            console.log(info)
+          } else {
+            wx.showToast({
+              title: '请到个人中心完善信息！',
+              icon: 'none'
+            })
+            return;
+          }
+        } catch (e) {}
         var that = this;
         //判断被试是否已经报名过了
         wx.request({
-          url: app.globalData.serverUrl+'/ifSigned', //仅为示例，并非真实的接口地址
+          url: app.globalData.serverUrl + '/ifSigned', //仅为示例，并非真实的接口地址
           method: 'POST',
           header: {
             'content-type': 'application/x-www-form-urlencoded'
@@ -94,7 +110,7 @@ Page({
             } else {
               //进行报名
               wx.request({
-                url: app.globalData.serverUrl+'/sign', //仅为示例，并非真实的接口地址
+                url: app.globalData.serverUrl + '/sign', //仅为示例，并非真实的接口地址
                 method: 'POST',
                 header: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -111,7 +127,7 @@ Page({
                   wx.showModal({
                     title: '提交报名成功',
                     content: '等待主试通过报名！可前往实验页面查看审核状态。',
-                    success (res) {
+                    success(res) {
                       if (res.confirm) {
                         console.log('用户点击确定')
                       } else if (res.cancel) {
@@ -141,6 +157,10 @@ Page({
   },
   //选择日期进行报名
   selected(e) {
+    if(!this.data.canselectdate)
+    {
+      return;
+    }
     var date = e.currentTarget.dataset.date;
     var index = e.currentTarget.dataset.index;
     var _formdata = this.data.formdata;
@@ -170,6 +190,99 @@ Page({
       value: event.detail,
     });
   },
+  //确认评分
+  markexp() {
+    //进行评分
+    if (!this.data.value) {
+      wx.showToast({
+        title: '请选择评分！',
+        icon: 'none'
+      })
+      return;
+    }
+    var that = this
+    //判断是否已经评分过了
+    wx.request({
+      url: app.globalData.serverUrl + '/ifSigned', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        experimentId: that.data.experiment.id,
+        userId: wx.getStorageSync('id')
+      },
+      success(res) {
+        console.log(res.data)
+        if (JSON.stringify(res.data.data) != "[]") {
+          if (res.data.data[0].userSchedule != "待完成") {
+            wx.showToast({
+              title: '您已经评价过了~',
+              icon: 'none'
+            })
+          }
+          else{
+            wx.request({
+              url: app.globalData.serverUrl + '/mark', //仅为示例，并非真实的接口地址
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded'
+              },
+              data: {
+                experimentId: that.data.experiment.id,
+                userId: wx.getStorageSync('id'),
+                type: "user",
+                testerId: that.data.experiment.testerId,
+                score: that.data.value * 20,
+                timestamp: parseInt(new Date().getTime() / 1000),
+              },
+              success(res) {
+                console.log(res.data)
+                if(res.data.code==1){
+                  wx.showToast({
+                    title: '评分成功',
+                  })
+                  //调用改变状态接口
+                  wx.request({
+                    url: app.globalData.serverUrl + '/userCheck', //仅为示例，并非真实的接口地址
+                    method: 'POST',
+                    header: {
+                      'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                      id: that.data.signid,
+                      userSchedule: '已完成'
+                    },
+                    success(res) {
+                      
+                    },
+                    fail(res) {
+                      wx.showToast({
+                        title: '网络出现异常了~',
+                        icon: 'none'
+                      })
+                    }
+                  })
+                }
+              },
+              fail(res) {
+                wx.showToast({
+                  title: '网络出现异常了~',
+                  icon: 'none'
+                })
+              }
+            })
+          }
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+  },
   //点击防抖函数
   isDebounce(timeout = 2000) {
     let that = this
@@ -186,13 +299,12 @@ Page({
   // 收藏实验
   docollect: function () {
     if (this.isDebounce()) return
-    var id=this.data.experiment.id
-    var that=this
+    var id = this.data.experiment.id
+    var that = this
     //已经收藏了则取消收藏
-    if(this.data.collected)
-    {
+    if (this.data.collected) {
       wx.request({
-        url: app.globalData.serverUrl+'/cancelCollectExp', //仅为示例，并非真实的接口地址
+        url: app.globalData.serverUrl + '/cancelCollectExp', //仅为示例，并非真实的接口地址
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
@@ -211,10 +323,9 @@ Page({
               duration: 1000
             })
             that.setData({
-              collected:false
+              collected: false
             })
-          }
-          else{
+          } else {
             wx.showToast({
               title: res.data.message,
               icon: 'none',
@@ -223,10 +334,9 @@ Page({
           }
         }
       })
-    }
-    else{
+    } else {
       wx.request({
-        url: app.globalData.serverUrl+'/collectExp', //仅为示例，并非真实的接口地址
+        url: app.globalData.serverUrl + '/collectExp', //仅为示例，并非真实的接口地址
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
@@ -245,10 +355,9 @@ Page({
               duration: 1000
             })
             that.setData({
-              collected:true
+              collected: true
             })
-          }
-          else{
+          } else {
             wx.showToast({
               title: res.data.message,
               icon: 'none',
@@ -256,10 +365,9 @@ Page({
             })
           }
         }
-    })
-  }
+      })
+    }
   },
-
   // 拨打电话号码
   call: function () {
     var that = this;
@@ -284,19 +392,19 @@ Page({
     console.log('主试id' + options.tester_id)
     //判断实验是否已经被收藏了
     wx.request({
-      url: app.globalData.serverUrl+'/ifCollected', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/ifCollected', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
         experimentId: options.test_id,
-        userId:wx.getStorageSync('id')
+        userId: wx.getStorageSync('id')
       },
       success(res) {
         if (res.data.message == '已收藏') {
           that.setData({
-            collected:true
+            collected: true
           })
         }
       },
@@ -309,7 +417,7 @@ Page({
     })
     //获取主试个人信息
     wx.request({
-      url: app.globalData.serverUrl+'/getUser', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/getUser', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -333,7 +441,7 @@ Page({
     })
     //获取指定id的实验
     wx.request({
-      url: app.globalData.serverUrl+'/selectByExpId', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/selectByExpId', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -372,74 +480,49 @@ Page({
       }
     })
     //如果是在报名实验进入详情页执行下面
-    try {
-      var experiment = JSON.parse(options.experiment);
-    } catch (err) {
-      console.log(err)
-    } finally {
-      //被试个人页面实验跳转才会执行
-      if (experiment != undefined) {
-        //获取实验状态,完成度
+    if (options.state && options.finish) {
+      this.data.signid=options.signid
+      //不可选择报名表
+      this.setData({
+        canselectdate: false
+      })
+      //获取实验状态,完成度
+      this.setData({
+        state: options.state,
+        finish: options.finish,
+        btn_disable: true
+      })
+      if (this.data.state == '待审核') //待审核
+      {
         this.setData({
-          state: JSON.parse(options.experiment).state,
-          finish: JSON.parse(options.experiment).finish,
-          btn_disable: true
+          btn_text: '等待审核'
         })
-        if (this.data.state == 0) //待审核
-        {
-          this.setData({
-            btn_text: '等待审核'
-          })
-        } else if (this.data.state == 1) {
-          this.setData({
-            btn_text: '已成功报名'
-          })
-        } else {
-          this.setData({
-            btn_text: '报名失败'
-          })
-        }
+      } else if (this.data.state == '已通过') {
+        this.setData({
+          btn_text: '已成功报名'
+        })
+      } else {
+        this.setData({
+          btn_text: '报名失败'
+        })
+      }
+      //已完成，禁用+获取分数
+      if(options.finish=='已完成')
+      {
+        //获取评分记录
+        this.setData({
+          rate_disable:true
+        })
       }
     }
 
-
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
 
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
   /**
    * 页面上拉触底事件的处理函数
    */
