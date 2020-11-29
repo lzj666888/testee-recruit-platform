@@ -8,30 +8,30 @@
 		</van-tabs>
 	</view>
 </van-sticky>
-<view class="signup_item" wx:for='{{signup_peoples}}' wx:key='{{item.tested_id}}' bindtap="todetail" data-index="{{index}}">
+<view class="signup_item" wx:for='{{signup_peoples}}' wx:key='{{item.user.id}}' bindtap="todetail" data-index="{{index}}">
 	<view  class="faceUrl">
-		<image src="{{item.imagesrc}}"></image>
-	<view class="finished" wx:if="{{item.finish==1}}" >
+		<image src="{{item.user.faceUrl}}"></image>
+	<view class="finished" wx:if='{{item.user.testerSchedule=="已完成"}}' >
 			<text>已完成</text>
 			<image src="/images/finished.png"></image>
 		</view>
-		<view class="unfinished" wx:if="{{item.finish==-1}}">
+		<view class="unfinished" wx:if='{{item.user.testerSchedule=="未完成"}}'>
 			<text>未完成</text>
 			<image src="/images/unfinished.png"></image>
 		</view>
 	</view>
 	<view class="per_info">
 		<view class="info_top">
-			<text>{{item.name}}</text>
-			<image wx:if='{{item.sex=="男"}}' src="/images/male.png"></image>
+			<text>{{item.user.username}}</text>
+			<image wx:if='{{item.user.sex=="男"}}' src="/images/male.png"></image>
 			<image wx:else src="/images/female.png"></image>
 		</view>
-		<view class="info_bottom">{{item.collage}}</view>
+		<view class="info_bottom">{{item.user.college}}</view>
 	</view>
 	<view class="sign_info">
-		<text class="state" style="color:#3283dd" wx:if='{{item.state==0}}'>待通过</text>
-		<text class="state" style="color:red" wx:if='{{item.state==-1}}'>未通过</text>
-		<text class="state" style="color:green" wx:if='{{item.state==1}}'>已通过</text>
+		<text class="state" style="color:#3283dd" wx:if='{{item.checkStatus=="待通过"}}'>待通过</text>
+		<text class="state" style="color:red" wx:if='{{item.checkStatus=="未通过"}}'>未通过</text>
+		<text class="state" style="color:green" wx:if='{{item.checkStatus=="已通过"}}'>已通过</text>
 		<text class="sign_time">报名时间：{{item.enrollment_time}}</text>
 	</view>
 </view>

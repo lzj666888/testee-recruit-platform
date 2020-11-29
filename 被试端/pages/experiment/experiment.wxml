@@ -49,6 +49,6 @@
 	</view>
 </view>
 <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" bind:cancel='onCancel' cancel-text="取消" />
-<view hidden="{{!showend}}" style="width:50%;margin-left:25%;color:#8a8a8a;text-align:center;">已加载完全部！</view>
+<view hidden="{{!showend}}" style="margin-top:30rpx;width:50%;margin-left:25%;color:#8a8a8a;text-align:center;">已加载完！</view>
 <!-- 提示授权 -->
 <getauth id="auth" bindgetuser='GetUserInfo' show_getuserinfo="{{show_getuserinfo}}"></getauth>

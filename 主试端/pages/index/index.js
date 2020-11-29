@@ -10,6 +10,7 @@ Page({
     show_getuserinfo: false,
     show_regist: false,
     currentIndex:-1,//选中要删除或者编辑的实验
+    
     touchactive:false,
     x: 318, //发布按钮的移动
     y: 350,
@@ -46,10 +47,11 @@ Page({
     },
   //查看报名详情
   signup_detail(e){
+    var that = this
     var index = e.currentTarget.dataset.index; //获取删除实验index
     console.log(index)
     wx.navigateTo({
-      url: '/pages/signup/signup',
+      url: '/pages/signup/signup?experimentId='+that.data.experiments[index].id,
     })
   },
   touchactive(){
@@ -73,11 +75,16 @@ Page({
   },
   //选择删除
   onSelect(event) {
-    console.log(event.detail); //输出操作的对象{name:'删除'}
+   
+    console.log(event.detail); //输出操作的对象{name:'删除实验'}
     //点击删除实验
     if(event.detail.name=='删除实验')
     {
+<<<<<<< HEAD
       
+=======
+      this.deleteExperiment();
+>>>>>>> a74ce5e85166c95c7c8860594a8f9ff34a789477
     }
     //点击编辑实验
     else{
@@ -103,6 +110,43 @@ Page({
     })
   },
   //删除实验
+  deleteExperiment:function(e){
+    var that = this
+    wx.request({
+      url: app.globalData.serverUrl+'/deleteExp', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        id: that.data.experiments[that.data.currentIndex].id,
+      },
+      success(res) {
+        console.log(res.data)
+        if(res.data.code==1)
+        {
+          console.log("删除实验成功")
+          var index = that.data.currentIndex
+          var arr = that.data.experiments
+          arr.splice(index,1)
+          that.setData({
+            experiments:arr
+          })
+        }
+        else{
+          console.log("删除实验失败")
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+  },
+
+  //只是获取下标？
   delete: function (e) {
     var index = e.currentTarget.dataset.index; //获取删除实验index
     this.data.currentIndex=index
@@ -114,146 +158,40 @@ Page({
 
   //改变tabbar
   changetabbar: function (e) {
+    var that = this
     var tabindex = e.detail.index; //获取当前tabbar的下标索引
     console.log(tabindex)
+    var status
+    if(tabindex==1)
+    {
+      status = '待发布'
+    }else if(tabindex==2)
+    {
+      status = '招募中'
+    }else if(tabindex==3)
+    {
+      status = '已结束'
+    }
+    
     wx.showLoading({
       title: ''
     })
     setTimeout(function () {
       wx.hideLoading()
     }, 500)
-    switch (tabindex) {
-      case 0:
-        this.setData({
-          experiments: [{
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 0, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为为完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            },
-            {
-              test_id: 2,
-              tester_id: {
-                image: '/images/p2.jpg',
-                name: '安然'
-              },
-              type: '线上实验',
-              name: '近红外绿实验',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 1, //0为待审核，1为已通过，-1为未通过
-              finish: 1, //0为为完成，1为完成,
-              date: '2020-11-12', //日期
-              enrollment_time: '2020-11-02', //报名时间
-              timeperiod: '13:10-14:20' //时段
-            }, {
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: -1, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为未完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            }, {
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 1, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为未完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            }
-          ]
-        })
-        break;
-      default:
-        this.setData({
-          experiments: [{
-            test_id: 1,
-            tester_id: {
-              image: '/images/p1.jpg',
-              name: '李同'
-            },
-            type: '线下实验',
-            name: '简单按键实验，问卷填写',
-            duration: 1,
-            reward: 10,
-            time: '30-35分钟',
-            place: '文清123',
-            send_time: '2020-09-12',
-            page_view: 123,
-            enrollment: 43,
-            //新加属性
-            state: 0, //0为待审核，1为已通过，-1为未通过
-            finish: 0, //0为为完成，1为完成,
-            date: '2020-11-12', //日期
-            timeperiod: '13:10-14:20', //时段
-            enrollment_time: '2020-11-02' //报名时间
-          }, ]
-        })
-        break;
-    }
+    that.getExperiments(2,status)
   },
 
   //获取实验
-  getExperiments(e){
+  getExperiments(testerId,status){
     var that = this
     wx.request({
-      url: 'http://localhost:8080/getTesterExp', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/testerGetExpByExample', //仅为示例，并非真实的接口地址
       method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+      
       data: {
-        testerId: 2,
+        testerId: testerId,
+        status:status
       },
       success(res) {
         console.log(res.data)
@@ -275,8 +213,10 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    that.getExperiments()
-    var that=this
+    //获取实验
+    that.getExperiments(2,null)
+
+    
     this.getOpenId()
     //检测用户是否已经授权
     wx.getSetting({
