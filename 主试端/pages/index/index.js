@@ -1,6 +1,6 @@
 // pages/experimentTrip/experimentTrip.js
 const app=getApp()
-
+const formatTime = require("../../utils/util").formatTime
 Page({
 
   /**
@@ -191,8 +191,11 @@ Page({
       },
       success(res) {
         console.log(res.data)
+        var data = res.data.data
+        for (var i = 0; i < data.length; i++) 
+            data[i].sendTimestamp = formatTime(data[i].sendTimestamp)
         that.setData({
-          experiments:res.data.data
+          experiments:data
         })
         
       },
