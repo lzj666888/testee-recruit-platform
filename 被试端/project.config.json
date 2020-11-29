@@ -26,7 +26,11 @@
 			"outputPath": ""
 		},
 		"bundle": false,
+<<<<<<< HEAD
 		"useCompilerModule": false,
+=======
+		"useCompilerModule": true,
+>>>>>>> 9b64b6fbe54b3753c5127ec59c9bbc0d3ee62d40
 		"userConfirmedUseCompilerModuleSwitch": false,
 		"compileHotReLoad": false,
 		"useMultiFrameRuntime": false,

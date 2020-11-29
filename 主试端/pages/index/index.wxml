@@ -13,9 +13,9 @@
 </van-sticky>
 <view class="experiment" bindtap="toexperiment" data-index="{{index}}" wx:for='{{experiments}}' wx:key="{{item}}">
 	<view class="exp_top">
-		<text class="state" style="color:#3283dd" wx:if='{{item.state==0}}'>招募中</text>
-		<text class="state" style="color:red" wx:if='{{item.state==-1}}'>待发布</text>
-		<text class="state" style="color:#8a8a8a" wx:if='{{item.state==1}}'>已结束</text>
+		<text class="state" style="color:#3283dd" wx:if='{{item.status=="招募中"}}'>招募中</text>
+		<text class="state" style="color:red" wx:if='{{item.status=="待发布"}}'>待发布</text>
+		<text class="state" style="color:#8a8a8a" wx:if='{{item.status=="已结束"}}'>已结束</text>
 		<text class="title">{{item.name}}</text>
 		<image src="/images/options.png" catchtap="delete" data-index="{{index}}">
 		</image>
@@ -43,7 +43,7 @@
 		<view class="b-right">
 			<view class="right_text">
 				<text class="enrollment">报名人数：{{item.enrollment}}</text>
-				<text class="page_view">浏览人数：{{item.page_view}}</text>
+				<text class="page_view">浏览人数：{{item.pageView}}</text>
 				<button class="btn" data-index="{{index}}" catchtap="signup_detail">查看报名详情</button>
 			</view>
 		</view>
