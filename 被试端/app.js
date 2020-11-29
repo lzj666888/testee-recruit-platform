@@ -1,4 +1,5 @@
 //app.js
+require("./utils/wx.js")//引用全局js文件
 
 App({
   onLaunch: function () {

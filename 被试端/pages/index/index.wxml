@@ -41,3 +41,4 @@
 		<text>浏览人数：{{item.pageView}}</text>
 	</view>
 </view>
+<view hidden="{{!showend}}" style="margin-top:30rpx;width:50%;margin-left:25%;color:#8a8a8a;text-align:center;">已加载完！</view>

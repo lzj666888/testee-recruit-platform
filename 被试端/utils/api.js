@@ -1,16 +1,16 @@
   const app = getApp()
   //注册函数
- function regist() {
+ function regist(identity) {
    return new Promise(function(resolve,reject){
     wx.request({
-      url: app.globalData.serverUrl + '/register', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/registerUser', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
         openId: getApp().globalData.openId,
-        identity: '被试'
+        identity: identity
       },
       success(res) {
         console.log(res.data)

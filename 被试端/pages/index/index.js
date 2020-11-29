@@ -6,12 +6,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showend:false,
     isAllData:false,  //是否已经获得全部数据
     keyWord:'',   //关键词
     type:'',          //实验类型
     descType: '',   //降序字段 performance_score主试评分 duration时长 reward薪酬
     pageNum:1,          //第几页
-    pageSize:2,       //每一页的数据数量
+    pageSize:20,       //每一页的数据数量
     //实验
     experiments: [],
     //类型筛选
@@ -95,7 +96,7 @@ Page({
         keyWord:''
       })
       var data = { pageNum: this.data.pageNum, pageSize: this.data.pageSize };
-      this.selectExperimentsByExample(data, 1)
+      this.selectExperimentsByExample(data, 0)
     },
 
     //跳转到实验详情页面
@@ -128,6 +129,10 @@ Page({
       this.selectExperimentsByExample(data, 1);
     }else
       console.log('数据全部返回，不在请求!')
+      this.setData({
+        showend:true
+      })
+
     
   },
 

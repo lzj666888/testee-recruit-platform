@@ -15,7 +15,7 @@ Component({
    */
   data: {
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-
+    radio:'本科生'
   },
   lifetimes: {
     attached: function() {
@@ -26,6 +26,12 @@ Component({
    * 组件的方法列表
    */
   methods: {
+      //切换身份选择
+      onChange(event) {
+        this.setData({
+          radio: event.detail,
+        });
+      },
     bindGetUserInfo(e) {
       console.log(e.detail.userInfo)
       var obj=e.detail.userInfo

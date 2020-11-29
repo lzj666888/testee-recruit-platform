@@ -1,6 +1,7 @@
 // pages/experimentTrip/experimentTrip.js
 const app = getApp()
 const regist = require("../../utils/api").regist
+const formatTime = require("../../utils/util").formatTime
 
 Page({
 
@@ -8,133 +9,30 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showend:false,//显示暂无更多
+    pageNum: 1,
+    pageSize: 20,
     show_getuserinfo: false, //是否显示授权面板
-    show: false,
+    show: false,//删除面板
     actions: [{
       name: '删除'
     }],
     tab_index: 0,
     tabbars: [
-      '全部', '待通过', '已通过', '未通过'
+      '全部', '待审核', '已通过', '未通过'
     ],
-    experiments: [{
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 0, //0为待审核，1为已通过，-1为未通过
-        finish: 0, //0为为完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      },
-      {
-        test_id: 2,
-        tester_id: {
-          image: '/images/p2.jpg',
-          name: '安然'
-        },
-        type: '线上实验',
-        name: '近红外绿实验',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 1, //0为待审核，1为已通过，-1为未通过
-        finish: 1, //0为为完成，1为完成,
-        date: '2020-11-12', //日期
-        enrollment_time: '2020-11-02', //报名时间
-        timeperiod: '13:10-14:20' //时段
-      }, {
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: -1, //0为待审核，1为已通过，-1为未通过
-        finish: 0, //0为未完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      }, {
-        test_id: 1,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线下实验',
-        name: '简单按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 1, //0为待审核，1为已通过，-1为未通过
-        finish: 0, //0为未完成，1为完成,
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      }, {
-        test_id: 5,
-        tester_id: {
-          image: '/images/p1.jpg',
-          name: '李同'
-        },
-        type: '线上实验',
-        name: '按键实验，问卷填写',
-        duration: 1,
-        reward: 10,
-        time: '30-35分钟',
-        place: '文清123',
-        send_time: '2020-09-12',
-        page_view: 123,
-        enrollment: 43,
-        //新加属性
-        state: 1, //0为待审核，1为已通过，-1为未通过
-        finish: -1, //0为待完成，1为完成,-1为未完成
-        date: '2020-11-12', //日期
-        timeperiod: '13:10-14:20', //时段
-        enrollment_time: '2020-11-02' //报名时间
-      }
-    ]
+    experiments: []
   },
   //授权
   GetUserInfo(e) {
     console.log(e.detail)
     if (JSON.stringify(e.detail) != '{}') {
       getApp().globalData.isauth = true
-      regist()
+      getApp().globalData.userInfo = e.detail
+      regist(this.selectComponent('#auth').data.radio)
       wx.showToast({
         title: '授权成功！',
-        icon:'none'
+        icon: 'none'
       })
       this.setData({
         show_getuserinfo: false
@@ -173,131 +71,29 @@ Page({
   changetabbar: function (e) {
     var tabindex = e.detail.index; //获取当前tabbar的下标索引
     console.log(tabindex)
-    wx.showLoading({
-      title: ''
-    })
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 500)
+    wx.$showloading();
+    this.data.pageNum=1
+    var data={
+      pageNum: this.data.pageNum,
+      pageSize: this.data.pageSize,
+      userId: wx.getStorageSync('id'),
+    }
     switch (tabindex) {
       case 0:
-        this.setData({
-          experiments: [{
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 0, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为为完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            },
-            {
-              test_id: 2,
-              tester_id: {
-                image: '/images/p2.jpg',
-                name: '安然'
-              },
-              type: '线上实验',
-              name: '近红外绿实验',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 1, //0为待审核，1为已通过，-1为未通过
-              finish: 1, //0为为完成，1为完成,
-              date: '2020-11-12', //日期
-              enrollment_time: '2020-11-02', //报名时间
-              timeperiod: '13:10-14:20' //时段
-            }, {
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: -1, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为未完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            }, {
-              test_id: 1,
-              tester_id: {
-                image: '/images/p1.jpg',
-                name: '李同'
-              },
-              type: '线下实验',
-              name: '简单按键实验，问卷填写',
-              duration: 1,
-              reward: 10,
-              time: '30-35分钟',
-              place: '文清123',
-              send_time: '2020-09-12',
-              page_view: 123,
-              enrollment: 43,
-              //新加属性
-              state: 1, //0为待审核，1为已通过，-1为未通过
-              finish: 0, //0为未完成，1为完成,
-              date: '2020-11-12', //日期
-              timeperiod: '13:10-14:20', //时段
-              enrollment_time: '2020-11-02' //报名时间
-            }
-          ]
-        })
+        data.checkStatus= ""
         break;
-      default:
-        this.setData({
-          experiments: [{
-            test_id: 1,
-            tester_id: {
-              image: '/images/p1.jpg',
-              name: '李同'
-            },
-            type: '线下实验',
-            name: '简单按键实验，问卷填写',
-            duration: 1,
-            reward: 10,
-            time: '30-35分钟',
-            place: '文清123',
-            send_time: '2020-09-12',
-            page_view: 123,
-            enrollment: 43,
-            //新加属性
-            state: 0, //0为待审核，1为已通过，-1为未通过
-            finish: 0, //0为为完成，1为完成,
-            date: '2020-11-12', //日期
-            timeperiod: '13:10-14:20', //时段
-            enrollment_time: '2020-11-02' //报名时间
-          }, ]
-        })
+      case 1:
+        data.checkStatus= "待审核"
+        break;
+      case 2:
+        data.checkStatus="已通过"
+        break;
+      case 3:
+        data.checkStatus="未通过"
         break;
     }
+    console.log(data)
+    this.selectExperimentsByExample(data, 0)
   },
   //点击实验跳转
   toexperiment: function (e) {
@@ -305,13 +101,64 @@ Page({
     var experiment = this.data.experiments[index]; //点击的实验
     console.log(experiment)
     wx.navigateTo({
-      url: '/pages/experimentdetail/experimentdetail?experiment=' + JSON.stringify(experiment)+'&test_id='+1+'&tester_id='+2,
+      url: '/pages/experimentdetail/experimentdetail?test_id=' + experiment.experimentId + '&tester_id=' + experiment.experiment.testerId + '&state=' + experiment.checkStatus+'&finish='+experiment.userSchedule+'&signid='+experiment.id,
     })
+  },
+  //根据关键词查询实验并筛选
+  selectExperimentsByExample(dat, code) {
+    var that = this;
+    wx.request({
+      url: app.globalData.serverUrl + '/userGetExpByExample',
+      method: 'POST',
+      data: dat,
+      success: res => {
+        console.log(res);
+        that.handlerDataType(code, res.data.data);
+        if(res.data.data.length<this.data.pageSize)
+        {
+          that.setData({
+            showend:true
+          })
+        }
+      },
+      fail: res => {
+        console.log(res)
+      }
+    })
+  },
+  //操作实验数据的方式 1追加 0清空设置
+  handlerDataType(code, data) {
+    var dataArr = this.data.experiments;
+    for (var i = 0; i < data.length; i++)
+      data[i].signTimestamp = formatTime(data[i].signTimestamp) //报名时间
+    if (code == 1) {
+      // dataArr=dataArr.concat(data)
+      for(var i=0;i<data.length;i++)
+      {
+        dataArr.push(data[i])
+      }
+    } else if (code == 0)
+      dataArr = data;
+    this.setData({
+      experiments: dataArr
+    })
+  },
+  //初始化数据
+  init(){
+    this.data.pageNum=1
+    var data = {
+      pageNum: this.data.pageNum,
+      pageSize: this.data.pageSize,
+      userId: wx.getStorageSync('id'),
+      checkStatus: "",
+    };
+    this.selectExperimentsByExample(data, 0)
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.$showloading()
     if (!getApp().globalData.isauth) {
       wx.showToast({
         title: '请先授权',
@@ -323,14 +170,7 @@ Page({
       return;
     }
     //获取用户所有报名记录
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+    this.init();
   },
 
   /**
@@ -340,37 +180,32 @@ Page({
     //如果没授权就再提醒
     if (!getApp().globalData.isauth) {
       this.setData({
-        show_getuserinfo:true
+        show_getuserinfo: true
       })
     }
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.setData({
+      tab_index:0
+    })
+    this.init();
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.data.pageNum++;
+    var data = {
+      pageNum: this.data.pageNum,
+      pageSize: this.data.pageSize,
+      userId: wx.getStorageSync('id'),
+      checkStatus: "",
+    };
+    this.selectExperimentsByExample(data, 1)
   },
 
   /**
