@@ -47,10 +47,11 @@ Page({
     },
   //查看报名详情
   signup_detail(e){
+    var that = this
     var index = e.currentTarget.dataset.index; //获取删除实验index
     console.log(index)
     wx.navigateTo({
-      url: '/pages/signup/signup',
+      url: '/pages/signup/signup?experimentId='+that.data.experiments[index].id,
     })
   },
   touchactive(){
@@ -208,8 +209,10 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+    //获取实验
     that.getExperiments(2,null)
-    var that=this
+
+    
     this.getOpenId()
     //检测用户是否已经授权
     wx.getSetting({

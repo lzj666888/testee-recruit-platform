@@ -1,69 +1,15 @@
 // pages/signup/signup.js
+const app =getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    signup_peoples:[
-      {
-        tested_id:1,
-        name:'李分',
-        sex:'男',
-        collage:'计算机学院',
-        imagesrc:'/images/p1.jpg',
-        state:0,//0待通过，1已通过，-1未通过
-        finish:0,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30'
-      },
-      {
-        tested_id:2,
-        name:'李分',
-        sex:'女',
-        collage:'心理学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:1,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30'
-      },
-      {
-        tested_id:3,
-        name:'陈分',
-        sex:'男',
-        collage:'计算机学院',
-        imagesrc:'/images/p1.jpg',
-        state:-1,//0待通过，1已通过，-1未通过
-        finish:0,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30'
-      },
-      {
-        tested_id:4,
-        name:'李分得',
-        sex:'女',
-        collage:'数学学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:0,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30'
-      },
-      {
-        tested_id:5,
-        name:'李分得',
-        sex:'女',
-        collage:'数学学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:-1,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      }
-    ],
+    experimentId:0,
+    signup_peoples:[],
+    pageNum:1,          //第几页
+    pageSize:2,       //每一页的数据数量
     tab_index: 0,
     tabbars: [
       '全部', '待通过', '已通过', '未通过'
@@ -76,24 +22,94 @@ Page({
       url: './detail?tested_id='+this.data.signup_peoples[index].tested_id
     })
   },
+  //删除关键词
+  onCancel:function(e){
+    console.log(e)
+    this.setData({
+      keyWord:e.detail
+    })
+    console.log('cancel keyWord:',this.data.keyWord)
+  },
+  onSearch(e){
+    var that = this
+    console.log(e.detail)
+    var data =
+     {pageNum: that.data.pageNum, 
+      experimentId:that.data.experimentId,
+      keyWord:e.detail,
+      pageSize: that.data.pageSize };
+    that.getUsers(data)
+  },
 //改变tabbar
 changetabbar(e){
+  var that = this
+  var checkStatus
   var tabindex = e.detail.index; //获取当前tabbar的下标索引
   console.log(tabindex)
+  if(tabindex==1)
+  {
+    checkStatus = '待通过'
+  }else if(tabindex==2)
+  {
+    checkStatus = '已通过'
+  }else if(tabindex==3)
+  {
+    checkStatus = '未通过'
+  }
   wx.showLoading({
     title: ''
   })
   setTimeout(function () {
     wx.hideLoading()
   }, 500)
+  var data =
+     {pageNum: that.data.pageNum, 
+      experimentId:that.data.experimentId,
+      checkStatus:checkStatus,
+      pageSize: that.data.pageSize };
+  that.getUsers(data)
 },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this
+    console.log(options)
+    that.setData({
+      experimentId:options.experimentId
+    })
+    var data =
+     {pageNum: that.data.pageNum, 
+      experimentId:that.data.experimentId,
+      pageSize: that.data.pageSize };
+    that.getUsers(data)
   },
-
+  getUsers(data)
+  {
+    var that = this
+    wx.request({
+      url: app.globalData.serverUrl+'/testerGetUserByExample', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      
+      data: data,
+      success(res) {
+        console.log(res.data)
+        var dataArr =[]
+        for(var i=0; i<res.data.data.length; i++)
+          dataArr.push(res.data.data[i]);
+        that.setData({
+          signup_peoples:dataArr
+        })
+        
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
