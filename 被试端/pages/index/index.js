@@ -89,6 +89,7 @@ Page({
      */
     onPullDownRefresh:  function  ()  {
         console.log('刷新')
+        this.data.pageNum=1
       //刷新 搜索所有实验 将数据都清空
       this.setData({
         descType:'',
@@ -201,6 +202,7 @@ selectExperimentsByExample(dat,code){
     },
     fail:res=>{
       console.log(res)
+      wx.$showtoast('服务器异常！')
     }
   })
 },
@@ -218,6 +220,13 @@ handlerDataType(code,data){
     }
     else if(code == 0)
       dataArr = data;
+      if(data.length===0)
+      {
+        this.setData({showend:true})
+      }
+      else{
+        this.setData({showend:false})
+      }
     this.setData({
       experiments:dataArr
     })
@@ -229,7 +238,7 @@ handlerDataType(code,data){
   onLoad: function (options) {
     //搜索所有实验
     var data = {pageNum: this.data.pageNum, pageSize: this.data.pageSize };
-    this.selectExperimentsByExample(data,1)
+    this.selectExperimentsByExample(data,0)
     //分享页面先跳转到主页再到指定页面
     if(options.url){
       let url = decodeURIComponent(options.url);

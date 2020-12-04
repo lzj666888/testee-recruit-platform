@@ -101,12 +101,16 @@
 	</view>
 	<!-- 评分模块，已通过的时候才会显示出来 -->
 	<view class="rate" wx:if='{{state=="已通过"}}'>
-		<van-rate wx:if="{{finish!='未完成'}}" disabled="{{rate_disable}}" value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
+		<van-rate style="margin-top:20rpx;" wx:if="{{finish!='未完成'}}" disabled="{{rate_disable}}" value="{{ value }}" size="{{ 25 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
 			bind:change="onChange" />
 		<view wx:if='{{finish=="待完成"}}' class="unfinish">
-			<button class="confirm" bindtap="markexp">确认完成实验，并对主试评分</button>
-			<button class="cancel" bindtap="cancelexp">主试主动取消被试实验</button>
-			<text>确认完成实验并进行评分，待主试确认您完成实验后，您将获得50代币!</text>
+			<button class="confirm" bindtap="markexp">确认完成</button>
+			<!-- <button class="cancel" bindtap="cancelexp">主试主动取消被试实验</button> -->
+			<view class="cancel">
+			<text class="bei_cancel" bindtap="cancel" data-type="bei">被试取消报名</text>
+			<text class="zhu_cancel" bindtap="cancel" data-type="zhu">主试取消实验</text>
+			</view>
+			<text>确认完成实验并进行评分，待主试确认您完成实验后，您将获得10代币!</text>
 		</view>
 		<view wx:if='{{finish=="已完成"}}' class="finish">
 			<text>您已完成实验并进行了评分！</text>

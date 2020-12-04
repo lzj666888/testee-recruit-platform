@@ -1,5 +1,6 @@
 // pages/experimentTrip/experimentTrip.js
 const app=getApp()
+const regist=require("../../utils/regist.js").regist
 
 Page({
 
@@ -10,7 +11,6 @@ Page({
     show_getuserinfo: false,
     show_regist: false,
     currentIndex:-1,//选中要删除或者编辑的实验
-    
     touchactive:false,
     x: 318, //发布按钮的移动
     y: 350,
@@ -29,7 +29,14 @@ Page({
   },
   //注册
   registed(){
-    console.log('注册')
+    var that=this;
+    var identity= this.selectComponent('#regist').data.radio
+    regist(identity).then(res=>{
+      that.setData({
+        show_regist:false
+      })
+      wx.$showtoast('注册成功！')
+    })
   },
     //授权
     GetUserInfo(e) {
@@ -40,6 +47,7 @@ Page({
           title: '授权成功！',
           icon:'none'
         })
+        app.globalData.userInfo = e.detail
         this.setData({
           show_getuserinfo:false
         })
@@ -80,11 +88,7 @@ Page({
     //点击删除实验
     if(event.detail.name=='删除实验')
     {
-<<<<<<< HEAD
-      
-=======
       this.deleteExperiment();
->>>>>>> a74ce5e85166c95c7c8860594a8f9ff34a789477
     }
     //点击编辑实验
     else{
@@ -216,7 +220,6 @@ Page({
     //获取实验
     that.getExperiments(2,null)
 
-    
     this.getOpenId()
     //检测用户是否已经授权
     wx.getSetting({
@@ -239,6 +242,32 @@ Page({
       }
     })
     //检测用户有没有注册
+    try{
+     var testerid= wx.getStorageSync('id')
+     if(testerid){
+       //已经注册过了
+       app.globalData.isregist=true
+     }
+     else{
+        try{
+          var identity=wx.getStorageSync('identity')
+          if(identity){
+            regist(identity).then(res=>{
+              if(res.data.message=='已注册')
+              {
+                wx.setStorageSync('id', res.data.data)//已经注册过了则再存缓存
+              }
+              else{
+                //还没注册
+                that.setData({
+                  show_regist:true
+                })
+              }
+            })
+          }
+        }catch(e){}
+     }
+    }catch(e){}
   },
 
   /**

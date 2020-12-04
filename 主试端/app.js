@@ -1,5 +1,5 @@
 //app.js
-
+require("./utils/wx.js")
 App({
   onLaunch: function () {
 

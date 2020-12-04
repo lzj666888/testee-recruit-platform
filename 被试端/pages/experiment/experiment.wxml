@@ -2,7 +2,7 @@
 <van-sticky>
 <view class="tab">
 	<!-- <van-search width="100rpx" shape="round" class="search" placeholder="请输入要搜索的实验" input-align="center" bind:search="onSearch" bind:cancel="onCancel" /> -->
-	<van-tabs value="{{tab_index}}" active="{{tab_index}}" type='card' color='#3283dd' bind:change='changetabbar'>
+	<van-tabs active="{{tab_index}}" type='card' color='#3283dd' bind:change='changetabbar'>
 		<van-tab wx:for='{{tabbars}}' title="{{item}}" wx:key='{{item}}'>
 		</van-tab>
 	</van-tabs>

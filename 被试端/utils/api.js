@@ -9,7 +9,7 @@
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        openId: getApp().globalData.openId,
+        openId: app.globalData.openId,
         identity: identity
       },
       success(res) {

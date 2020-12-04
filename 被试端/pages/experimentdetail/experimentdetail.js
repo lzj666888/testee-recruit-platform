@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    rate_disable:false,
+    rate_disable:false,//是否可以进行评分
     canselectdate: true, //是否可以选择报名表
     collected: false, //是否已经收藏
     currentdate: -1, //选择的日期
@@ -30,6 +30,37 @@ Page({
     formdata: [], //报名表
     dates2: [], //表头
     Dates: [], //日期们
+  },
+  cancel(e){
+    const type=e.currentTarget.dataset.type
+    if(type=='zhu'){
+      wx.showModal({
+        title: '主试取消实验',
+        content: '主试主动取消实验或者取消您参加实验。点击确认提交，待审核后会进行反馈！',
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.$showtoast('提交成功！','success')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
+    else{
+      wx.showModal({
+        title: '被试取消报名',
+        content: '取消报名后，您的信誉分将会减20，当信誉不足60时将无法报名实验！',
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.$showtoast('取消报名成功！','success')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
   },
   //授权
   GetUserInfo(e) {
@@ -59,6 +90,13 @@ Page({
       })
       return;
     } else {
+      if (this.data.experiment.status != '招募中') {
+        wx.showToast({
+          title: '实验已结束，下次早点报名哦~',
+          icon: 'none'
+        })
+        return;
+      }
       if (this.data.currentdate === -1) {
         wx.showToast({
           title: '请选择时段后报名！',
@@ -66,13 +104,6 @@ Page({
         })
         return;
       } else {
-        if (this.data.experiment.status != '招募中') {
-          wx.showToast({
-            title: '实验已结束，下次早点报名哦~',
-            icon: 'none'
-          })
-          return;
-        }
         //判断被试个人信息是否已经完整
         try {
           var info = wx.getStorageSync('userinfo')
@@ -83,6 +114,9 @@ Page({
             wx.showToast({
               title: '请到个人中心完善信息！',
               icon: 'none'
+            })
+            wx.navigateTo({
+              url: '/pages/edit/edit',
             })
             return;
           }
@@ -231,7 +265,7 @@ Page({
               data: {
                 experimentId: that.data.experiment.id,
                 userId: wx.getStorageSync('id'),
-                type: "user",
+                type: "tester",
                 testerId: that.data.experiment.testerId,
                 score: that.data.value * 20,
                 timestamp: parseInt(new Date().getTime() / 1000),

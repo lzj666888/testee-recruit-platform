@@ -21,7 +21,11 @@ Page({
       performent_score: -1, //表现分
     }
   },
-  //跳转到意见反馈页面123
+  //验证学号
+  validate(){
+    this.navto('validation')
+  },
+  //跳转到意见反馈页面
   toadvice() {
     this.navto('advice')
   },

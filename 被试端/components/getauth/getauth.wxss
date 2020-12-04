@@ -14,12 +14,12 @@
   font-size: 30rpx;
   line-height: 50rpx;
 }
-.select {
+/* .select {
   width: 80%;
   margin: 16rpx auto;
-}
+} */
 .userinfo_content~button{
-  margin-top: 30rpx;
+  margin-top: 110rpx;
   color: white;
   background-color: #3283dd;
   border-radius: 20rpx;

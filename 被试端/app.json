@@ -11,7 +11,8 @@
     "pages/timesearch/timesearch",
     "pages/notices/notices",
     "pages/signin/signin",
-    "pages/remind/remind"
+    "pages/remind/remind",
+    "pages/validation/validation"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -69,9 +69,14 @@
 		<text>意见反馈</text>
 		<image src="/images/right_to.png" class="right_to"></image>
 	</view>
-	<view class="function">
+	<view class="function" bindtap="publish">
 		<image src="/images/release.png"></image>
 		<text>发布实验</text>
+		<image src="/images/right_to.png" class="right_to"></image>
+	</view>
+	<view class="function" bindtap="validate">
+		<image src="/images/validation.png"></image>
+		<text>学号验证</text>
 		<image src="/images/right_to.png" class="right_to"></image>
 	</view>
 </view>

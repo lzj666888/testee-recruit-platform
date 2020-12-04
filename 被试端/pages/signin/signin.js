@@ -226,6 +226,7 @@ Page({
     var that = this
     try {
       var coins = wx.getStorageSync('coins')
+      console.log('缓存的coin是'+coins);
       if (coins) {
         this.setData({
           newSignIntegral: coins

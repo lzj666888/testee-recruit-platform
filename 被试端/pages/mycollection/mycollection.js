@@ -25,7 +25,7 @@ Page({
         },
         data: {
           experimentId: _experiments[index].id,
-          userId: that.data.id
+          userId: wx.getStorageSync('id')
         },
         success(res) {
           console.log(res.data)
@@ -66,7 +66,7 @@ Page({
         },
         data: {
           experimentId: _experiments[index].id,
-          userId: that.data.id
+          userId: wx.getStorageSync('id')
         },
         success(res) {
           console.log(res.data)
@@ -113,8 +113,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.id)
-    this.data.id = options.id
     this.getcollections()
   },
   getcollections(){
@@ -126,7 +124,7 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        userId: this.data.id
+        userId: wx.getStorageSync('id')
       },
       success(res) {
         wx.hideLoading()
