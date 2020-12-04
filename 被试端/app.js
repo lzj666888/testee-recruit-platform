@@ -28,27 +28,23 @@ App({
     wx.login({
       success(res) {
         console.log('参数：', res)
-        code = res.code,
-          wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session',
-            method: 'GET',
-            data: {
-              appid: that.globalData.APP_ID,
-              secret: that.globalData.APP_SECRET,
-              grant_type: 'authorization_code',
-              js_code: code
-            },
-            success(res) {
-              console.log('success:', res)
-              that.globalData.openId = res.data.openid
-              console.log('app global openid:', that.globalData.openId)
-            },
-            fail(res) {
-              console.log('fail:', res)
-
-            }
-          })
-
+        console.log('wx.login code:', res.code)
+        code = res.code;
+        wx.request({
+          url: that.globalData.serverUrl + '/wx/getOpenId',
+          method: 'GET',
+          data: {
+            code: code
+          },
+          success(res) {
+            console.log('success:', res)
+            that.globalData.openId = res.data.data;
+            console.log('app global openid:', that.globalData.openId)
+          },
+          fail(res) {
+            console.log('fail:', res)
+          }
+        })
       },
       fail(res){
         console.log(res)
