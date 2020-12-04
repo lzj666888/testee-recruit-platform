@@ -50,7 +50,7 @@ Page({
     else{
       wx.showModal({
         title: '被试取消报名',
-        content: '取消报名后，您的信誉分将会减20，当信誉不足60时将无法报名实验！',
+        content: '取消报名后，将无法再次报名该实验。信誉分将会减20，当信誉不足60时将无法报名实验！',
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')

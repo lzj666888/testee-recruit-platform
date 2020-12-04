@@ -30,13 +30,14 @@ App({
         console.log('参数：', res)
         code = res.code,
           wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session',
+            url: that.globalData.serverUrl+'/wx/getOpenId',
             method: 'GET',
             data: {
-              appid: that.globalData.APP_ID,
-              secret: that.globalData.APP_SECRET,
-              grant_type: 'authorization_code',
-              js_code: code
+              // appid: that.globalData.APP_ID,
+              // secret: that.globalData.APP_SECRET,
+              // grant_type: 'authorization_code',
+              // js_code: code
+              Code:code
             },
             success(res) {
               console.log('success:', res)

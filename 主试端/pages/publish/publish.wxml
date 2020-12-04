@@ -23,9 +23,9 @@
 		<view class="mylabels">
 			<text class="mylabel_title">标签</text>
 			<view class="mylabel">
-				<view class="label" wx:for='{{my_labels}}' wx:key='{{item}}'>
-					<text>{{item}}</text>
-					<image src="/images/delete.png" bindtap="delete" data-index="{{index}}"></image>
+				<view class="label" wx:for='{{my_labels}}' wx:key='{{item}}'  bindtap="delete" data-index="{{index}}">
+					{{item}}
+					<!-- <image src="/images/delete.png" bindtap="delete" data-index="{{index}}"></image> -->
 				</view>
 			</view>
 		</view>

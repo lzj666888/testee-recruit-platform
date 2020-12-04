@@ -74,8 +74,11 @@ margin-top: 10rpx;
   border-radius: 8rpx;
   border: 1rpx solid;
   margin: 18rpx 14rpx;
+  text-align: center;
+  line-height: 42rpx;
+  width: 170rpx;
 }
-
+/* 
 .label image {
   z-index: 2;
   width: 30rpx;
@@ -87,7 +90,7 @@ margin-top: 10rpx;
 
 .label text {
   padding-left: 18rpx;
-}
+} */
 
 .addmore {
   width: 50rpx;

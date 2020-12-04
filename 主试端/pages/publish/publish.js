@@ -34,7 +34,7 @@ Page({
       maxHeight: 70,
       minHeight: 70
     },
-    my_labels: ['简单按键21剑', '简单2按12', '二问卷填写1', '脑电实而验树', '脑电实而验树'],
+    my_labels: [],
     index: null,
     picker: ['线上实验', '线下实验', '问卷调查'],
   },
@@ -359,6 +359,9 @@ Page({
     _my_labels.splice(index, 1);
     this.setData({
       my_labels: _my_labels
+    })
+    wx.showToast({
+      title: '删除成功！',
     })
   },
   //耗时
