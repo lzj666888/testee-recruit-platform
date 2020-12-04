@@ -2,6 +2,7 @@
 const app=getApp()
 const regist=require("../../utils/regist.js").regist
 
+const formatTime = require("../../utils/util").formatTime
 Page({
 
   /**
@@ -88,7 +89,9 @@ Page({
     //点击删除实验
     if(event.detail.name=='删除实验')
     {
+
       this.deleteExperiment();
+
     }
     //点击编辑实验
     else{
@@ -199,8 +202,11 @@ Page({
       },
       success(res) {
         console.log(res.data)
+        var data = res.data.data
+        for (var i = 0; i < data.length; i++) 
+            data[i].sendTimestamp = formatTime(data[i].sendTimestamp)
         that.setData({
-          experiments:res.data.data
+          experiments:data
         })
         
       },
