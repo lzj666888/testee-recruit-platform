@@ -34,7 +34,9 @@ App({
           url: that.globalData.serverUrl + '/wx/getOpenId',
           method: 'GET',
           data: {
-            code: code
+            code: code,
+            appId:that.globalData.APP_ID,
+            secret:that.globalData.APP_SECRET
           },
           success(res) {
             console.log('success:', res)
