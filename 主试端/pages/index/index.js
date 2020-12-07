@@ -158,7 +158,6 @@ Page({
       }
     })
   },
-
   //只是获取下标？
   delete: function (e) {
     var index = e.currentTarget.dataset.index; //获取删除实验index
@@ -231,15 +230,11 @@ Page({
       }
     })
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    var that = this
-    //获取实验
-    that.getExperiments(wx.getStorageSync('id'), null)
-    this.getOpenId()
-    //检测用户是否已经授权
+  //检测授权
+  async checkauth(){
+    var that=this
+    return new Promise((resolve,reject)=>{
+      //检测用户是否已经授权
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.userInfo']) {
@@ -256,8 +251,19 @@ Page({
             show_getuserinfo: true
           })
         }
+        resolve(app.globalData.isauth)
       }
     })
+    })
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    var that = this
+    //获取实验
+    that.getExperiments(wx.getStorageSync('id'), null)
+    this.getOpenId()
     //检测用户有没有注册
     try {
       var testerid = wx.getStorageSync('id')
@@ -295,16 +301,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    //判断是否已经授权和注册了
-    if (!app.globalData.isauth) {
-      this.setData({
-        show_getuserinfo: true
+      this.checkauth().then(res=>{
+        //判断是否已经授权和注册了
+      if (!app.globalData.isauth) {
+        this.setData({
+          show_getuserinfo: true
+        })
+      } else if (!app.globalData.isregist) {
+        this.setData({
+          show_regist: true
+        })
+      }
       })
-    } else if (!app.globalData.isregist) {
-      this.setData({
-        show_regist: true
-      })
-    }
   },
 
   //获取  微信小程序 中 用户的唯一标识符
