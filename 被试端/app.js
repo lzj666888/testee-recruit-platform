@@ -35,8 +35,8 @@ App({
           method: 'GET',
           data: {
             code: code,
-            appId:'wxff5313f0e69e6e11',
-            secret:'78bff6c654e62def2cff6e11dcfe0601'
+            appId:that.globalData.APP_ID,
+            secret:that.globalData.APP_SECRET
           },
           success(res) {
             console.log('success:', res)
