@@ -1,4 +1,6 @@
 // pages/publish/publish.js
+const appdata=getApp().globalData
+
 Page({
 
   /**
@@ -29,15 +31,17 @@ Page({
     test_time: null, //实验时
     name: null,
     place: null,
-    time: null, //耗时
+    time: null, //时长
+    duration:null,//耗时
     textarea_height: {
       maxHeight: 70,
       minHeight: 70
     },
     my_labels: [],
-    index: null,
+    index: null,//选择的实验类型
     picker: ['线上实验', '线下实验', '问卷调查'],
   },
+  //解决第三方的textarea层级问题
   getneed:function(e){
     this.setData({
       need:e.detail.value
@@ -84,11 +88,65 @@ Page({
   },
 
 
-
+  //发布实验
+  confirm(e) {
+    //要完善信息才能发布实验
+    var that =this
+    if(this.data.name&&this.data.place&&this.data.time&&this.data.duration&&this.data.money&&this.data.index&&this.data.need&&this.data.content&&this.data.string_formdata&&this.data.periods.length!=0&&this.data.dates.length!=0)
+    {
+      //发布实验
+      wx.request({
+      url: appdata.serverUrl+'/insertExperiment', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        testerId: wx.getStorageSync('id'),
+        type:that.data.picker[that.data.index],
+        name:that.data.name,
+        content:that.data.content,
+        duration:that.data.duration,
+        reward:that.data.money,
+        place:that.data.place,
+        requirement:that.data.need,
+        time:that.data.time,
+        sendTimestamp:parseInt(new Date().getTime() / 1000),
+        pageView:0,
+        enrollment:0,
+        totalLikes:0,
+        tag:that.data.my_labels.join(','),
+        status:'招募中',
+        faceUrl:appdata.userInfo.avatarUrl,
+        username:'暂定',
+        timePeriods:JSON.stringify(that.data.formdata)
+      },
+      success(res) {
+        console.log(res.data)
+        if(res.data.code==1)
+        {
+          wx.$showtoast('发布成功！','success')
+        }
+        else{
+          wx.$showtoast('发布失败，请检查网络！')
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
+    })
+    }
+    else{
+      wx.$showtoast('请完善相关信息')
+    }
+  },
   //上传报名表
   uploadform(){
+    this.data.string_formdata=JSON.stringify(this.data.formdata)
     console.log(JSON.stringify(this.data.formdata))
-    console.log(JSON.parse(JSON.stringify(this.data.formdata)))
     wx.showToast({
       title: '上传成功！',
     })
@@ -336,10 +394,6 @@ Page({
   getlabel(e) {
     this.data.addlabel = e.detail
   },
-  //发布实验
-  confirm(e) {
-    console.log(this.data.money)
-  },
   //添加标签
   addmore() {
     this.setData({
@@ -370,7 +424,7 @@ Page({
   },
   //实验时
   gettest_time(e) {
-    this.data.test_time = e.detail.value
+    this.data.duration = e.detail.value
   },
   //报酬
   getmoney(e) {
@@ -399,7 +453,7 @@ Page({
     if(JSON.stringify(options)!='{}')
     {
       var id=options.test_id//获取编辑实验的id
-
+      console.log('编辑实验id为'+id)
     }
   },
   /**

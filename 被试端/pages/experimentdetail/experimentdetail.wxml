@@ -101,7 +101,7 @@
 	</view>
 	<!-- 评分模块，已通过的时候才会显示出来 -->
 	<view class="rate" wx:if='{{state=="已通过"}}'>
-		<van-rate style="margin-top:20rpx;" wx:if="{{finish!='未完成'}}" disabled="{{rate_disable}}" value="{{ value }}" size="{{ 25 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
+		<van-rate style="margin-top:20rpx;" wx:if="{{finish!='未完成'}}" readonly="{{rate_disable}}" value="{{ value }}" size="{{ 25 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
 			bind:change="onChange" />
 		<view wx:if='{{finish=="待完成"}}' class="unfinish">
 			<button class="confirm" bindtap="markexp">确认完成</button>

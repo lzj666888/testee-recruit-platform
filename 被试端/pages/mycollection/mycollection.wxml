@@ -19,7 +19,7 @@
 			<image src="/images/timeing.png"></image>
 			<text>招募中</text>
 		</view>
-		<view class="timeout" wx:if='{{item.status=="已结束"}}'>
+		<view class="timeout" wx:if='{{item.status=="已结束"||item.status=="已删除"}}'>
 			<image src="/images/timeout.png"></image>
 			<text>已结束</text>
 		</view>

@@ -9,7 +9,7 @@ wx.$showloading=function (title='')
   }, 500)
 }
 //显示提示框
-wx.$showtoast=function(title,icon='')
+wx.$showtoast=function(title,icon='none')
 {
   wx.showToast({
     title: title,

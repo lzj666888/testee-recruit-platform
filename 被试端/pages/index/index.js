@@ -211,7 +211,7 @@ selectExperimentsByExample(dat,code){
 handlerDataType(code,data){
   var dataArr = this.data.experiments;
   for (var i = 0; i < data.length; i++) 
-    data[i].sendTimestamp = formatTime(data[i].sendTimestamp)
+    data[i].sendTimestamp = formatTime(data[i].sendTimestamp*1000)
 
   if(code == 1)
     {

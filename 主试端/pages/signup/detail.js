@@ -1,10 +1,15 @@
 // pages/signup/detail.js
+const appdata=getApp().globalData
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    finish:null,
+    time_period:null,
+    state:null,
+    enrollment_time:null,
     tested:{},//报名的被试信息
   },
     //对被试进行评分
@@ -38,97 +43,36 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.tested_id)
-    //获取数据
-    const res=[
-      {
-        tested_id:1,
-        name:'李分',
-        sex:'男',
-        collage:'计算机学院',
-        imagesrc:'/images/p1.jpg',
-        state:0,//0待通过，1已通过，-1未通过
-        finish:0,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      },
-      {
-        tested_id:2,
-        name:'李分',
-        sex:'女',
-        collage:'心理学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:1,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      },
-      {
-        tested_id:3,
-        name:'陈分',
-        sex:'男',
-        collage:'计算机学院',
-        imagesrc:'/images/p1.jpg',
-        state:-1,//0待通过，1已通过，-1未通过
-        finish:0,//-1未完成，0待完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      },
-      {
-        tested_id:4,
-        name:'李分得',
-        sex:'女',
-        collage:'数学学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:0,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      },
-      {
-        tested_id:5,
-        name:'李分得',
-        sex:'女',
-        collage:'数学学院',
-        imagesrc:'/images/p2.jpg',
-        state:1,//0待通过，1已通过，-1未通过
-        finish:-1,//0未完成，1已完成
-        enrollment_time:'2020-11-20 11:30',
-        major:'计算机科学',
-        grade:'18级',
-        wx:'12345jksl',
-        phone:'1348945930',
-        time_period:'2020-11-12 11:20~12:00',
-        performance_score:90,
-        credit_score:99
-      }
-    ]
+    console.log('该用户id是'+options.tested_id)
+    var that=this
     this.setData({
-      tested:res[options.tested_id-1]
+      state:options.state,
+      time_period:options.time_period,
+      enrollment_time:options.enrollment_time,
+      finish:options.finish
+    })
+    //获取被试数据
+    wx.request({
+      url: appdata.serverUrl + '/getUser', //仅为示例，并非真实的接口地址
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        id:options.tested_id
+      },
+      success(res) {
+        console.log(res.data)
+        that.setData({
+          tested:res.data.data
+        })
+      },
+      fail(res) {
+        wx.showToast({
+          title: '网络出现异常了~',
+          icon: 'none'
+        })
+      }
     })
   },
 

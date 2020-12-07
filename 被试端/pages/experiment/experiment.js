@@ -9,11 +9,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    showend:false,//显示暂无更多
+    showend: false, //显示暂无更多
     pageNum: 1,
     pageSize: 20,
     show_getuserinfo: false, //是否显示授权面板
-    show: false,//删除面板
+    show: false, //删除面板
     actions: [{
       name: '删除'
     }],
@@ -39,13 +39,6 @@ Page({
       })
     }
   },
-  //选择删除
-  onSelect(event) {
-    console.log(event.detail);
-    this.setData({
-      show: false
-    })
-  },
   //关闭页面
   onClose() {
     this.setData({
@@ -58,6 +51,50 @@ Page({
       show: false
     })
   },
+  //选择删除
+  onSelect(event) {
+    console.log(event.detail);
+    var that=this
+    //删除
+    if (event.detail.name = '删除') {
+      if(that.data.experiments[that.data.selectIndex].checkStatus!='未通过')
+      {
+        wx.$showtoast('只能删除未通过实验哦~')
+        return;
+      }
+      wx.request({
+        url: 'http://localhost:8080/deleteApplicationById', //仅为示例，并非真实的接口地址
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          id: that.data.experiments[that.data.selectIndex].id
+        },
+        success(res) {
+          console.log(res.data)
+          if(res.data.code==1)
+          {
+            wx.$showtoast('删除成功！','success');
+            var _experiments=that.data.experiments;
+            _experiments.splice(that.data.selectIndex,1)
+            that.setData({
+              experiments:_experiments
+            })
+          }
+        },
+        fail(res) {
+          wx.showToast({
+            title: '网络出现异常了~',
+            icon: 'none'
+          })
+        }
+      })
+    }
+    this.setData({
+      show: false
+    })
+  },
   //删除实验
   delete: function (e) {
     var index = e.currentTarget.dataset.index; //获取删除实验index
@@ -65,6 +102,7 @@ Page({
       show: true
     })
     console.log(index)
+    this.data.selectIndex = index; //选中的index
   },
 
   //改变tabbar
@@ -72,24 +110,24 @@ Page({
     var tabindex = e.detail.index; //获取当前tabbar的下标索引
     console.log(tabindex)
     wx.$showloading();
-    this.data.pageNum=1
-    var data={
+    this.data.pageNum = 1
+    var data = {
       pageNum: this.data.pageNum,
       pageSize: this.data.pageSize,
       userId: wx.getStorageSync('id'),
     }
     switch (tabindex) {
       case 0:
-        data.checkStatus= ""
+        data.checkStatus = ""
         break;
       case 1:
-        data.checkStatus= "待审核"
+        data.checkStatus = "待审核"
         break;
       case 2:
-        data.checkStatus="已通过"
+        data.checkStatus = "已通过"
         break;
       case 3:
-        data.checkStatus="未通过"
+        data.checkStatus = "未通过"
         break;
     }
     console.log(data)
@@ -101,7 +139,7 @@ Page({
     var experiment = this.data.experiments[index]; //点击的实验
     console.log(experiment)
     wx.navigateTo({
-      url: '/pages/experimentdetail/experimentdetail?test_id=' + experiment.experimentId + '&tester_id=' + experiment.experiment.testerId + '&state=' + experiment.checkStatus+'&finish='+experiment.userSchedule+'&signid='+experiment.id,
+      url: '/pages/experimentdetail/experimentdetail?test_id=' + experiment.experimentId + '&tester_id=' + experiment.experiment.testerId + '&state=' + experiment.checkStatus + '&finish=' + experiment.userSchedule + '&signid=' + experiment.id,
     })
   },
   //根据关键词查询实验并筛选
@@ -114,10 +152,9 @@ Page({
       success: res => {
         console.log(res);
         that.handlerDataType(code, res.data.data);
-        if(res.data.data.length<this.data.pageSize)
-        {
+        if (res.data.data.length < this.data.pageSize) {
           that.setData({
-            showend:true
+            showend: true
           })
         }
       },
@@ -130,11 +167,10 @@ Page({
   handlerDataType(code, data) {
     var dataArr = this.data.experiments;
     for (var i = 0; i < data.length; i++)
-      data[i].signTimestamp = formatTime(data[i].signTimestamp) //报名时间
+      data[i].signTimestamp = formatTime(data[i].signTimestamp * 1000) //报名时间
     if (code == 1) {
       // dataArr=dataArr.concat(data)
-      for(var i=0;i<data.length;i++)
-      {
+      for (var i = 0; i < data.length; i++) {
         dataArr.push(data[i])
       }
     } else if (code == 0)
@@ -144,8 +180,8 @@ Page({
     })
   },
   //初始化数据
-  init(){
-    this.data.pageNum=1
+  init() {
+    this.data.pageNum = 1
     var data = {
       pageNum: this.data.pageNum,
       pageSize: this.data.pageSize,
@@ -189,7 +225,7 @@ Page({
    */
   onPullDownRefresh: function () {
     this.setData({
-      tab_index:0
+      tab_index: 0
     })
     this.init();
   },

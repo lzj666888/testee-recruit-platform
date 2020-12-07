@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "van-image": "/dist/image/index"
+    "van-image": "/dist/image/index",
+    "regist":"../../components/regist/regist"
   },
   "backgroundColor":"#3283dd"
 }

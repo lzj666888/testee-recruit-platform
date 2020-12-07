@@ -24,7 +24,7 @@
 		<view class="b-left">
 			<view class="time">
 				<image src="/images/time.png"></image>
-				<text>{{item.time}}</text>
+				<text>{{item.time}}分钟</text>
 			</view>
 			<view class="time">
 				<image src="/images/money.png"></image>
@@ -62,3 +62,4 @@
 <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" bind:cancel='onCancel' cancel-text="取消" />
 
 <regist id="regist" bindgetuser='GetUserInfo' bindregisted='registed' show_getuserinfo="{{show_getuserinfo}}" show_regist="{{show_regist}}"></regist>
+<view class="haveexp" wx:if="{{!haveexp}}">暂无实验！快去发布实验吧~</view>

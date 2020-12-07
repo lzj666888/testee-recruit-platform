@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    haveexp:true,//是否有实验
     show_getuserinfo: false,
     show_regist: false,
     currentIndex:-1,//选中要删除或者编辑的实验
@@ -116,29 +117,31 @@ Page({
       show: false
     })
   },
-  //删除实验
+  //删除实验，修改状态为已删除
   deleteExperiment:function(e){
     var that = this
     wx.request({
-      url: app.globalData.serverUrl+'/deleteExp', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl+'/updateExperiment', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
         id: that.data.experiments[that.data.currentIndex].id,
+        status:'已删除'
       },
       success(res) {
         console.log(res.data)
         if(res.data.code==1)
         {
-          console.log("删除实验成功")
+          // console.log("删除实验成功")
           var index = that.data.currentIndex
           var arr = that.data.experiments
           arr.splice(index,1)
           that.setData({
             experiments:arr
           })
+          wx.$showtoast('删除成功！','success')
         }
         else{
           console.log("删除实验失败")
@@ -186,7 +189,7 @@ Page({
     setTimeout(function () {
       wx.hideLoading()
     }, 500)
-    that.getExperiments(2,status)
+    that.getExperiments(wx.getStorageSync('id'),status)
   },
 
   //获取实验
@@ -203,12 +206,13 @@ Page({
       success(res) {
         console.log(res.data)
         var data = res.data.data
+        if(data.length===0){that.setData({haveexp:false})}
+        else if(!that.data.haveexp){that.setData({haveexp:true})}
         for (var i = 0; i < data.length; i++) 
-            data[i].sendTimestamp = formatTime(data[i].sendTimestamp)
+            data[i].sendTimestamp = formatTime(data[i].sendTimestamp*1000)
         that.setData({
           experiments:data
         })
-        
       },
       fail(res) {
         wx.showToast({
@@ -224,8 +228,7 @@ Page({
   onLoad: function (options) {
     var that = this
     //获取实验
-    that.getExperiments(2,null)
-
+    that.getExperiments(wx.getStorageSync('id'),null)
     this.getOpenId()
     //检测用户是否已经授权
     wx.getSetting({
@@ -298,30 +301,31 @@ Page({
   //获取  微信小程序 中 用户的唯一标识符
   getOpenId() {
     var code = '';
+    var that = this;
     wx.login({
       success(res) {
         console.log('参数：', res)
-        code = res.code,
-          wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session',
-            method: 'GET',
-            data: {
-              appid: app.globalData.APP_ID,
-              secret: app.globalData.APP_SECRET,
-              grant_type: 'authorization_code',
-              js_code: code
-            },
-            success(res) {
-              console.log('success:', res)
-              app.globalData.openId = res.data.openid
-              console.log('app global openid:', app.globalData.openId)
-            },
-            fail(res) {
-              console.log('fail:', res)
-            }
-          })
+        console.log('wx.login code:', res.code)
+        code = res.code;
+        wx.request({
+          url: app.globalData.serverUrl + '/wx/getOpenId',
+          method: 'GET',
+          data: {
+            code: code,
+            appId:'wx58fee91d79985cee',
+            secret:'032739ca3c5b90d4227318cdc8234ee5'
+          },
+          success(res) {
+            console.log('success:', res)
+            app.globalData.openId = res.data.data;
+            console.log('app global openid:', app.globalData.openId)
+          },
+          fail(res) {
+            console.log('fail:', res)
+          }
+        })
       },
-      fail(res) {
+      fail(res){
         console.log(res)
       }
     })
@@ -346,7 +350,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getExperiments(wx.getStorageSync('id'),null)
   },
 
   /**

@@ -3,7 +3,7 @@
 	<van-cell-group border="{{ false }}">
 		<van-field clearable border="{{ false }}" maxlength='20' label='名称' placeholder="不超过20字" bind:input="getname" />
 		<van-field clearable border="{{ false }}" label='地点' placeholder="例：文逸楼360" bind:input="getplace" />
-		<van-field clearable border="{{ false }}" label='时长' placeholder="例：1.5h" bind:input="gettime" />
+		<van-field clearable border="{{ false }}" label='时长' placeholder="例：40（分钟）" bind:input="gettime" />
 		<view class="reward">
 			<text class="reward_title">报酬</text>
 			<view>

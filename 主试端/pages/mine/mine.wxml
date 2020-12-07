@@ -72,3 +72,5 @@
 		<image src="/images/right_to.png" class="right_to"></image>
 	</view>
 </view>
+<regist id="regist" bindgetuser='GetUserInfo' bindregisted='registed' show_getuserinfo="{{show_getuserinfo}}" show_regist="{{show_regist}}"></regist>
+

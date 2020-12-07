@@ -11,11 +11,11 @@
 <view class="signup_item" wx:for='{{signup_peoples}}' wx:key='{{item.user.id}}' bindtap="todetail" data-index="{{index}}">
 	<view  class="faceUrl">
 		<image src="{{item.user.faceUrl}}"></image>
-	<view class="finished" wx:if='{{item.user.testerSchedule=="已完成"}}' >
+	<view class="finished" wx:if='{{item.testerSchedule=="已完成"}}' >
 			<text>已完成</text>
 			<image src="/images/finished.png"></image>
 		</view>
-		<view class="unfinished" wx:if='{{item.user.testerSchedule=="未完成"}}'>
+		<view class="unfinished" wx:if='{{item.testerSchedule=="未完成"}}'>
 			<text>未完成</text>
 			<image src="/images/unfinished.png"></image>
 		</view>
@@ -29,7 +29,7 @@
 		<view class="info_bottom">{{item.user.college}}</view>
 	</view>
 	<view class="sign_info">
-		<text class="state" style="color:#3283dd" wx:if='{{item.checkStatus=="待通过"}}'>待通过</text>
+		<text class="state" style="color:#3283dd" wx:if='{{item.checkStatus=="待审核"}}'>待审核</text>
 		<text class="state" style="color:red" wx:if='{{item.checkStatus=="未通过"}}'>未通过</text>
 		<text class="state" style="color:green" wx:if='{{item.checkStatus=="已通过"}}'>已通过</text>
 		<text class="sign_time">报名时间：{{item.enrollment_time}}</text>

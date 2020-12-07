@@ -1,5 +1,7 @@
 // pages/signup/signup.js
 const app =getApp()
+const formatTime = require("../../utils/util").formatTime
+
 Page({
 
   /**
@@ -9,17 +11,18 @@ Page({
     experimentId:0,
     signup_peoples:[],
     pageNum:1,          //第几页
-    pageSize:2,       //每一页的数据数量
+    pageSize:20,       //每一页的数据数量
     tab_index: 0,
     tabbars: [
-      '全部', '待通过', '已通过', '未通过'
+      '全部', '待审核', '已通过', '未通过'
     ],
   },
   //跳转到详情页面
   todetail(e){
     var index=e.currentTarget.dataset.index;
+    var obj=this.data.signup_peoples[index]
     wx.navigateTo({
-      url: './detail?tested_id='+this.data.signup_peoples[index].tested_id
+      url: './detail?tested_id='+obj.userId+'&state='+obj.checkStatus+'&time_period='+obj.timePeriod+'&finish='+obj.testerSchedule+'&enrollment_time='+obj.enrollment_time
     })
   },
   //删除关键词
@@ -48,7 +51,7 @@ changetabbar(e){
   console.log(tabindex)
   if(tabindex==1)
   {
-    checkStatus = '待通过'
+    checkStatus = '待审核'
   }else if(tabindex==2)
   {
     checkStatus = '已通过'
@@ -75,9 +78,7 @@ changetabbar(e){
   onLoad: function (options) {
     var that = this
     console.log(options)
-    that.setData({
-      experimentId:options.experimentId
-    })
+    this.data.experimentId=options.experimentId
     var data =
      {pageNum: that.data.pageNum, 
       experimentId:that.data.experimentId,
@@ -96,7 +97,10 @@ changetabbar(e){
         console.log(res.data)
         var dataArr =[]
         for(var i=0; i<res.data.data.length; i++)
-          dataArr.push(res.data.data[i]);
+        {
+            res.data.data[i].enrollment_time=formatTime(res.data.data[i].signTimestamp*1000)
+            dataArr.push(res.data.data[i]);
+        }
         that.setData({
           signup_peoples:dataArr
         })
