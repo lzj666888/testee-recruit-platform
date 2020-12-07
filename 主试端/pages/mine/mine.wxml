@@ -2,10 +2,10 @@
 <!--pages/mine/mine.wxml-->
 <view class="info">
 	<view class="l_info">
-		<van-image class="fimage" round width="3.5rem" height="3.5rem" src="{{zhu_tester.image}}" />
+		<van-image class="fimage" round width="3.5rem" height="3.5rem" src="{{faceurl}}" />
 	</view>
 	<view class="c_info">
-		<text class="name">{{zhu_tester.name}}</text>
+		<text class="name" wx:if="{{name}}">{{name}}</text>
 		<text class="zhu_tester">主试</text>
 	</view>
 	<view class="edit" bindtap="edit">
@@ -16,12 +16,17 @@
 <!-- 分数 -->
 <view class="scores">
 	<view class="score">
-		<text>{{zhu_tester.credit_score}}</text>
+		<text>{{credit_score}}</text>
 		<text>信誉分</text>
 	</view>
 	<view class="score">
-		<text>{{zhu_tester.feedback_score}}</text>
+		<text wx:if="{{feedback_score!=-1}}">{{feedback_score}}</text>
+		<text wx:else>暂无</text>
 		<text>反馈分</text>
+	</view>
+	<view class="score"  wx:if="{{showcoins}}">
+		<text>{{coins}}</text>
+		<text>代币数</text>
 	</view>
 </view>
 <!-- 问号 -->
@@ -43,6 +48,10 @@
 			<view class="scoretxt">
 				2、表现分：被试在完成实验后将会对主试进
         行评分，评分会直接影响到主试的反馈分。
+			</view>
+			<view class="scoretxt">
+				3、代币数：本科生注册为主试时候，需要一定
+				代币数才能发布实验，没发布一个实验消耗50代币。
 			</view>
 	</view>
 </view>

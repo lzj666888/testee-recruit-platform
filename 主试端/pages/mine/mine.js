@@ -1,15 +1,23 @@
 // pages/mine/mine.js
+
 const appdata = getApp().globalData
+const regist = require("../../utils/regist.js").regist
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    feedback_score: -1, //反馈分
+    credit_score: 100,
+    coins: 0,
     show_getuserinfo: false,
     show_regist: false,
     modalName: null, //展示问号内容
-    tester:{}
+    name: null,
+    faceurl: null,
+    showcoins: false //是否展示代币数目
   },
   //注册
   registed() {
@@ -35,6 +43,11 @@ Page({
       this.setData({
         show_getuserinfo: false
       })
+      if (!appdata.isregist) {
+        this.setData({
+          show_regist: true
+        })
+      }
     }
   },
   //跳转到被试招募小程序
@@ -50,21 +63,37 @@ Page({
   },
   //跳转到意见反馈页面
   toadvice() {
-    wx.navigateTo({
-      url: '/pages/advice/advice',
-    })
-  },
-  //跳转到我的收藏中
-  tomycollections() {
-    wx.navigateTo({
-      url: '/pages/mycollection/mycollection'
-    })
+    this.navto('advice')
   },
   //跳转编辑个人信息
   edit: function () {
-    wx.navigateTo({
-      url: '/pages/edit/edit?zhu_testerid=' + this.data.zhu_tester.id,
-    })
+    this.navto('edit')
+  },
+  //封装跳转函数
+  navto(url) {
+    try {
+      var id=wx.getStorageSync('id')
+      if (id) {
+        wx.navigateTo({
+          url: `/pages/${url}/${url}?id=` + id
+        })
+      } else {
+        if (!appdata.isauth) {
+          wx.$showtoast('请先授权！')
+          this.setData({
+            show_getuserinfo: true
+          })
+        } else if (!appdata.isregist) {
+          wx.$showtoast('请先注册！')
+          this.setData({
+            show_regist: true
+          })
+        } 
+      }
+    }catch(e){
+      wx.$showtoast(e)
+    }
+
   },
   showModal(e) {
     this.setData({
@@ -94,18 +123,26 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that=this;
+    var that = this;
     //判断是否已经授权和注册了
-    if (!appdata.isregist) {
+    if (!appdata.isauth) {
+      this.setData({
+        show_getuserinfo: true
+      })
+    } else if (!appdata.isregist) {
       this.setData({
         show_regist: true
       })
-    }
-    else{
+    } else {
       this.setData({
-        tester:appdata.userInfo
+        name: appdata.userInfo.nickName,
+        faceurl: appdata.userInfo.avatarUrl
       })
-      console.log(wx.getStorageSync('identity'))
+      if (wx.getStorageSync('identity') === '本科生') {
+        this.setData({
+          showcoins: true
+        })
+      }
       //获取并缓存用户信息
       wx.request({
         url: appdata.serverUrl + '/getTester', //仅为示例，并非真实的接口地址
@@ -120,7 +157,9 @@ Page({
           console.log(res.data)
           var obj = res.data.data;
           that.setData({
-
+            coins: obj.coins,
+            credit_score: obj.creditScore,
+            feedback_score: obj.performanceScore
           })
           //缓存以及更新用户信息缓存
           wx.setStorageSync('userinfo', obj)

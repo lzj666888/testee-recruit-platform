@@ -1,6 +1,6 @@
 // pages/experimentTrip/experimentTrip.js
-const app=getApp()
-const regist=require("../../utils/regist.js").regist
+const app = getApp()
+const regist = require("../../utils/regist.js").regist
 
 const formatTime = require("../../utils/util").formatTime
 Page({
@@ -9,11 +9,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    haveexp:true,//是否有实验
+    haveexp: true, //是否有实验
     show_getuserinfo: false,
     show_regist: false,
-    currentIndex:-1,//选中要删除或者编辑的实验
-    touchactive:false,
+    currentIndex: -1, //选中要删除或者编辑的实验
+    touchactive: false,
     x: 318, //发布按钮的移动
     y: 350,
     notice: '欢迎加入广大被试招募平台主试端，在这里你可以发布招募实验！',
@@ -30,75 +30,80 @@ Page({
     experiments: []
   },
   //注册
-  registed(){
-    var that=this;
-    var identity= this.selectComponent('#regist').data.radio
-    regist(identity).then(res=>{
+  registed() {
+    var that = this;
+    var identity = this.selectComponent('#regist').data.radio
+    regist(identity).then(res => {
       that.setData({
-        show_regist:false
+        show_regist: false
       })
       wx.$showtoast('注册成功！')
     })
   },
-    //授权
-    GetUserInfo(e) {
-      console.log(e.detail)
-      if (JSON.stringify(e.detail) != '{}') {
-        app.globalData.isauth = true
-        wx.showToast({
-          title: '授权成功！',
-          icon:'none'
-        })
-        app.globalData.userInfo = e.detail
+  //授权
+  GetUserInfo(e) {
+    console.log(e.detail)
+    if (JSON.stringify(e.detail) != '{}') {
+      app.globalData.isauth = true
+      wx.showToast({
+        title: '授权成功！',
+        icon: 'none'
+      })
+      app.globalData.userInfo = e.detail
+      this.setData({
+        show_getuserinfo: false
+      })
+      if (!app.globalData.isregist) {
         this.setData({
-          show_getuserinfo:false
+          show_regist: true
         })
       }
-    },
+
+    }
+  },
   //查看报名详情
-  signup_detail(e){
+  signup_detail(e) {
     var that = this
     var index = e.currentTarget.dataset.index; //获取删除实验index
     console.log(index)
     wx.navigateTo({
-      url: '/pages/signup/signup?experimentId='+that.data.experiments[index].id,
+      url: '/pages/signup/signup?experimentId=' + that.data.experiments[index].id,
     })
   },
-  touchactive(){
+  touchactive() {
     this.setData({
-      touchactive:true
+      touchactive: true
     })
   },
-  touchactiveend(){
-    var time=setTimeout(() => {
+  touchactiveend() {
+    var time = setTimeout(() => {
       this.setData({
-        touchactive:false
+        touchactive: false
       })
       clearTimeout(time)
     }, 1000);
   },
   //跳转发布实验
-  topublish(){
+  topublish() {
     wx.navigateTo({
       url: '/pages/publish/publish',
     })
   },
   //选择删除
   onSelect(event) {
-   
+
     console.log(event.detail); //输出操作的对象{name:'删除实验'}
     //点击删除实验
-    if(event.detail.name=='删除实验')
-    {
+    if (event.detail.name == '删除实验') {
 
       this.deleteExperiment();
 
     }
     //点击编辑实验
-    else{
-      var id=this.data.experiments[this.data.currentIndex].test_id;
+    else {
+      var id = this.data.experiments[this.data.currentIndex].test_id;
       wx.navigateTo({
-        url: '/pages/publish/publish?test_id='+id,
+        url: '/pages/publish/publish?test_id=' + id,
       })
     }
     this.setData({
@@ -118,32 +123,30 @@ Page({
     })
   },
   //删除实验，修改状态为已删除
-  deleteExperiment:function(e){
+  deleteExperiment: function (e) {
     var that = this
     wx.request({
-      url: app.globalData.serverUrl+'/updateExperiment', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/updateExperiment', //仅为示例，并非真实的接口地址
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
         id: that.data.experiments[that.data.currentIndex].id,
-        status:'已删除'
+        status: '已删除'
       },
       success(res) {
         console.log(res.data)
-        if(res.data.code==1)
-        {
+        if (res.data.code == 1) {
           // console.log("删除实验成功")
           var index = that.data.currentIndex
           var arr = that.data.experiments
-          arr.splice(index,1)
+          arr.splice(index, 1)
           that.setData({
-            experiments:arr
+            experiments: arr
           })
-          wx.$showtoast('删除成功！','success')
-        }
-        else{
+          wx.$showtoast('删除成功！', 'success')
+        } else {
           console.log("删除实验失败")
         }
       },
@@ -159,7 +162,7 @@ Page({
   //只是获取下标？
   delete: function (e) {
     var index = e.currentTarget.dataset.index; //获取删除实验index
-    this.data.currentIndex=index
+    this.data.currentIndex = index
     this.setData({
       show: true
     })
@@ -172,47 +175,53 @@ Page({
     var tabindex = e.detail.index; //获取当前tabbar的下标索引
     console.log(tabindex)
     var status
-    if(tabindex==1)
-    {
+    if (tabindex == 1) {
       status = '待发布'
-    }else if(tabindex==2)
-    {
+    } else if (tabindex == 2) {
       status = '招募中'
-    }else if(tabindex==3)
-    {
+    } else if (tabindex == 3) {
       status = '已结束'
     }
-    
+
     wx.showLoading({
       title: ''
     })
     setTimeout(function () {
       wx.hideLoading()
     }, 500)
-    that.getExperiments(wx.getStorageSync('id'),status)
+    that.getExperiments(wx.getStorageSync('id'), status)
   },
 
   //获取实验
-  getExperiments(testerId,status){
+  getExperiments(testerId, status) {
     var that = this
     wx.request({
-      url: app.globalData.serverUrl+'/testerGetExpByExample', //仅为示例，并非真实的接口地址
+      url: app.globalData.serverUrl + '/testerGetExpByExample', //仅为示例，并非真实的接口地址
       method: 'POST',
-      
+
       data: {
         testerId: testerId,
-        status:status
+        status: status
       },
       success(res) {
         console.log(res.data)
         var data = res.data.data
-        if(data.length===0){that.setData({haveexp:false})}
-        else if(!that.data.haveexp){that.setData({haveexp:true})}
-        for (var i = 0; i < data.length; i++) 
-            data[i].sendTimestamp = formatTime(data[i].sendTimestamp*1000)
-        that.setData({
-          experiments:data
-        })
+        if (data) {
+          if (data.length === 0) {
+            that.setData({
+              haveexp: false
+            })
+          } else if (!that.data.haveexp) {
+            that.setData({
+              haveexp: true
+            })
+          }
+          for (var i = 0; i < data.length; i++)
+            data[i].sendTimestamp = formatTime(data[i].sendTimestamp * 1000)
+          that.setData({
+            experiments: data
+          })
+        }
       },
       fail(res) {
         wx.showToast({
@@ -228,7 +237,7 @@ Page({
   onLoad: function (options) {
     var that = this
     //获取实验
-    that.getExperiments(wx.getStorageSync('id'),null)
+    that.getExperiments(wx.getStorageSync('id'), null)
     this.getOpenId()
     //检测用户是否已经授权
     wx.getSetting({
@@ -242,41 +251,37 @@ Page({
             }
           })
           app.globalData.isauth = true //已经授权了
-        }
-        else{
+        } else {
           that.setData({
-            show_getuserinfo:true
+            show_getuserinfo: true
           })
         }
       }
     })
     //检测用户有没有注册
-    try{
-     var testerid= wx.getStorageSync('id')
-     if(testerid){
-       //已经注册过了
-       app.globalData.isregist=true
-     }
-     else{
-        try{
-          var identity=wx.getStorageSync('identity')
-          if(identity){
-            regist(identity).then(res=>{
-              if(res.data.message=='已注册')
-              {
-                wx.setStorageSync('id', res.data.data)//已经注册过了则再存缓存
-              }
-              else{
+    try {
+      var testerid = wx.getStorageSync('id')
+      if (testerid) {
+        //已经注册过了
+        app.globalData.isregist = true
+      } else {
+        try {
+          var identity = wx.getStorageSync('identity')
+          if (identity) {
+            regist(identity).then(res => {
+              if (res.data.message == '已注册') {
+                wx.setStorageSync('id', res.data.data) //已经注册过了则再存缓存
+              } else {
                 //还没注册
                 that.setData({
-                  show_regist:true
+                  show_regist: true
                 })
               }
             })
           }
-        }catch(e){}
-     }
-    }catch(e){}
+        } catch (e) {}
+      }
+    } catch (e) {}
   },
 
   /**
@@ -291,13 +296,17 @@ Page({
    */
   onShow: function () {
     //判断是否已经授权和注册了
-      if(!app.globalData.isregist){
-        this.setData({
-          show_regist:true
-        })
-      }
+    if (!app.globalData.isauth) {
+      this.setData({
+        show_getuserinfo: true
+      })
+    } else if (!app.globalData.isregist) {
+      this.setData({
+        show_regist: true
+      })
+    }
   },
-  
+
   //获取  微信小程序 中 用户的唯一标识符
   getOpenId() {
     var code = '';
@@ -312,8 +321,8 @@ Page({
           method: 'GET',
           data: {
             code: code,
-            appId:'wx58fee91d79985cee',
-            secret:'032739ca3c5b90d4227318cdc8234ee5'
+            appId: 'wx58fee91d79985cee',
+            secret: '032739ca3c5b90d4227318cdc8234ee5'
           },
           success(res) {
             console.log('success:', res)
@@ -325,7 +334,7 @@ Page({
           }
         })
       },
-      fail(res){
+      fail(res) {
         console.log(res)
       }
     })
@@ -350,7 +359,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.getExperiments(wx.getStorageSync('id'),null)
+    this.getExperiments(wx.getStorageSync('id'), null)
   },
 
   /**
