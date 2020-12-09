@@ -1,1 +1,24 @@
 /* pages/timesearch/timesearch.wxss */
+@import "/colorui/main.wxss";
+@import "/colorui/icon.wxss";
+page{
+  background-color: #f6f6f6;
+}
+.top{
+  width: 96%;
+  position: fixed;
+  top: 20rpx;
+  box-shadow: 0 0 6rpx 2rpx #dbdbdb;
+}
+.datas{
+  display: flex;
+}
+.time{
+
+}
+.time text{
+
+}
+.time .times{
+  
+}

@@ -146,7 +146,12 @@ changetabbar(e){
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.data.pageNum=1
+    var data =
+     {pageNum: this.data.pageNum, 
+      experimentId:this.data.experimentId,
+      pageSize: this.data.pageSize };
+    this.getUsers(data)
   },
 
   /**

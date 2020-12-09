@@ -1,4 +1,6 @@
 // pages/edit/edit.js
+const app = getApp()
+
 Page({
 
   /**
@@ -13,9 +15,9 @@ Page({
     grade: '',
     college: '',
     phone: '',
-    phonetrue:false,//为true才提交
+    phonetrue: false, //为true才提交
     wx: '',
-    sex: 'male',//默认初始为男性
+    sex: '男', //默认初始为男性
     send_sms: false //验证码是否已经发送
   },
   //用于自定义样式的
@@ -35,16 +37,60 @@ Page({
   //点击提交
   confirm() {
     var getdata = this.data
-    if (getdata.name && getdata.major && getdata.grade && getdata.college && getdata.phone && getdata.wx && getdata.sex&&getdata.phonetrue) {
-      console.log('提交成功！')
-    }
-    else{
-
+    if (getdata.name && getdata.major && getdata.grade && getdata.college && getdata.phone && getdata.sex && getdata.phonetrue) {
+      //修改个人信息
+      wx.request({
+        url: app.globalData.serverUrl+'/editTester', //仅为示例，并非真实的接口地址
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          openId: getApp().globalData.openId,
+          id: wx.getStorageSync('id'),
+          username: getdata.name,
+          faceUrl: getApp().globalData.userInfo.avatarUrl,
+          college: getdata.college,
+          major: getdata.major,
+          grade: getdata.grade,
+          phone: getdata.phone,
+          wechat: getdata.wx,
+          sex:getdata.sex
+        },
+        success(res) {
+          console.log(res.data)
+          if(res.data.code==1)
+          {
+            wx.showToast({
+              title: '修改成功！',
+            })
+            //更新个人信息缓存
+            wx.setStorageSync('userinfo', res.data.data)
+          }
+          else{
+            wx.showToast({
+              title: '修改失败，请检查网络！',
+              icon:'none'
+            })
+          }
+        },
+        fail(res) {
+          wx.showToast({
+            title: '网络出现异常了~',
+            icon: 'none'
+          })
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '请完善信息！',
+        icon: 'none'
+      })
     }
   },
   //获取验证码
   getsms() {
-    if (this.data.phone&&this.data.phonetrue) {
+    if (this.data.phone && this.data.phonetrue) {
       wx.showToast({
         title: '发送成功',
         icon: 'success',
@@ -70,15 +116,16 @@ Page({
       this.setData({
         error: '手机号码格式有误！'
       })
+      this.data.phonetrue = false
     } else {
       this.setData({
         error: ''
       })
       this.data.phone = e.detail.value
-      this.data.phonetrue=true
+      this.data.phonetrue = true
     }
   },
-  getphone(e){
+  getphone(e) {
     this.data.phone = e.detail
   },
   //获取姓名
@@ -109,8 +156,41 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var id = options.zhu_testerid;
-    console.log(id)
+    console.log(options.id)
+    try {
+      var userinfo = wx.getStorageSync('userinfo')
+      if (userinfo.username) {
+        this.setData({
+          name: userinfo.username
+        })
+      }
+      if (userinfo.major) {
+        this.setData({
+          major: userinfo.major
+        })
+      }
+      if (userinfo.grade) {
+        this.setData({
+          grade: userinfo.grade
+        })
+      }
+      if (userinfo.college) {
+        this.setData({
+          college: userinfo.college
+        })
+      }
+      if (userinfo.phone) {
+        this.setData({
+          phone: userinfo.phone
+        })
+      this.data.phonetrue = true
+      }
+      if (userinfo.wechat) {
+        this.setData({
+          wx: userinfo.wechat
+        })
+      }
+    } catch (e) {}
   },
 
   /**

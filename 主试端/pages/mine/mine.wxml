@@ -1,5 +1,5 @@
 <!--pages/mine/mine.wxml-->
-<!--pages/mine/mine.wxml-->
+<wxs src='../../utils/tools.wxs' module="tools"></wxs>
 <view class="info">
 	<view class="l_info">
 		<van-image class="fimage" round width="3.5rem" height="3.5rem" src="{{faceurl}}" />
@@ -20,7 +20,7 @@
 		<text>信誉分</text>
 	</view>
 	<view class="score">
-		<text wx:if="{{feedback_score!=-1}}">{{feedback_score}}</text>
+		<text wx:if="{{feedback_score!=-1}}">{{tools.parseint(feedback_score)}}</text>
 		<text wx:else>暂无</text>
 		<text>反馈分</text>
 	</view>

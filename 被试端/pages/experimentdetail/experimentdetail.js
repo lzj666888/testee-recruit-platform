@@ -132,12 +132,23 @@ Page({
           if (info.username && info.phone && info.major) {
             console.log(info)
           } else {
-            wx.showToast({
-              title: '请到个人中心完善信息！',
-              icon: 'none'
-            })
+            setTimeout(() => {
+              wx.$showtoast("请先完善信息！")
+            }, 500);
             wx.navigateTo({
               url: '/pages/edit/edit',
+            })
+            return;
+          }
+        } catch (e) {}
+        try {
+          var sno = wx.getStorageSync('sno')
+          if (!sno) {
+            setTimeout(() => {
+              wx.$showtoast("请先验证学号！")
+            }, 500);
+            wx.navigateTo({
+              url: '/pages/validation/validation',
             })
             return;
           }
@@ -521,13 +532,13 @@ Page({
           var _formdata = JSON.parse(res.data.data.timePeriods)
           var keys = Object.keys(_formdata[0]);
           var _keys = Object.keys(_formdata[0]);
-          _keys[0]='时间段/日期'
+          _keys[0] = '时间段/日期'
           keys.shift() //获得日期
-          console.log('keys:'+keys)
+          console.log('keys:' + keys)
           // //遍历formdata如果时间在之前就置为flase
           // for(var i=0;i<_formdata.length;i++)
           // {
-            
+
           // }
           that.setData({
             experiment: res.data.data,

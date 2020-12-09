@@ -1,3 +1,4 @@
+<wxs src='../../utils/tools.wxs' module="tools"></wxs>
 <view class='top'>
 	<text class='tittle'>
 		{{experiment.name}}
@@ -44,7 +45,7 @@
 			<view class="scores">
 				<text>信誉分：{{tester.creditScore}}</text>
 				<text wx:if="{{tester.performanceScore ==-1}}">反馈分：暂无</text>
-				<text wx:else>反馈分：{{tester.performanceScore}}</text>
+				<text wx:else>反馈分：{{tools.parseint(tester.performanceScore)}}</text>
 			</view>
 		</view>
 	</view>

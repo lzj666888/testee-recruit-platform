@@ -1,5 +1,5 @@
 // pages/publish/publish.js
-const appdata=getApp().globalData
+const appdata = getApp().globalData
 
 Page({
 
@@ -7,15 +7,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    show_vancale:false,//使页面加载完后再去渲染这个组件
-    createformshow:false,//生成表格
+    show_vancale: false, //使页面加载完后再去渲染这个组件
+    createformshow: false, //生成表格
     Dates: [],
     dates2: ['时间段\\日期'],
     formdata: [], //表单数据
     result: [], //选择要删除的项
     endtime: '09:00', //结束时间
     starttime: '08:30', //开始时间
-    addperiod_show: false,//添加时间段
+    addperiod_show: false, //添加时间段
     periods: [], //时间段
     dates: [], //保存日期
     caletext: '', //日期
@@ -23,129 +23,174 @@ Page({
     addlabel: null,
     common_labels: ['简单按键', '问卷填写', '脑电实验', '眼动实验', '皮肤电实验', 'FMRI/MRI', '有小礼品', '有趣好玩'],
     show: false, //展示添加标签的面板
-    need: '',//实验要求
-    showneedarea:true,
-    content: '',//实验内容
-    showcontentarea:true,
+    need: '', //实验要求
+    showneedarea: true,
+    content: '', //实验内容
+    showcontentarea: true,
     money: null,
     test_time: null, //实验时
     name: null,
     place: null,
     time: null, //时长
-    duration:null,//耗时
+    duration: null, //耗时
     textarea_height: {
       maxHeight: 70,
       minHeight: 70
     },
     my_labels: [],
-    index: null,//选择的实验类型
+    index: null, //选择的实验类型
     picker: ['线上实验', '线下实验', '问卷调查'],
   },
   //解决第三方的textarea层级问题
-  getneed:function(e){
+  getneed: function (e) {
     this.setData({
-      need:e.detail.value
+      need: e.detail.value
     })
   },
-  getneed1:function(){
+  getneed1: function () {
     this.setData({
       showneedarea: true
     })
-    if(this.data.need=="不超过100字"){
-      this.setData({ need:''})
+    if (this.data.need == "不超过100字") {
+      this.setData({
+        need: ''
+      })
     }
   },
-  ifshowneedArea(e){
-    var show = e.currentTarget.dataset.show=="yes"?true:false;
-    if(show){
-      this.setData({ showneedarea: false})
-    }else{ this.setData({showneedarea:true})}
-    if(this.data.need==''){
-      this.setData({need:'不超过100字'})
+  ifshowneedArea(e) {
+    var show = e.currentTarget.dataset.show == "yes" ? true : false;
+    if (show) {
+      this.setData({
+        showneedarea: false
+      })
+    } else {
+      this.setData({
+        showneedarea: true
+      })
+    }
+    if (this.data.need == '') {
+      this.setData({
+        need: '不超过100字'
+      })
     }
   },
-  getcontent:function(e){
+  getcontent: function (e) {
     this.setData({
-      content:e.detail.value
+      content: e.detail.value
     })
   },
-  getcontent1:function(){
+  getcontent1: function () {
     this.setData({
       showcontentarea: true
     })
-    if(this.data.content=="不超过100字"){
-      this.setData({ content:''})
+    if (this.data.content == "不超过100字") {
+      this.setData({
+        content: ''
+      })
     }
   },
-  ifshowcontentArea(e){
-    var show = e.currentTarget.dataset.show=="yes"?true:false;
-    if(show){
-      this.setData({ showcontentarea: false})
-    }else{ this.setData({showcontentarea:true})}
-    if(this.data.content==''){
-      this.setData({content:'不超过100字'})
+  ifshowcontentArea(e) {
+    var show = e.currentTarget.dataset.show == "yes" ? true : false;
+    if (show) {
+      this.setData({
+        showcontentarea: false
+      })
+    } else {
+      this.setData({
+        showcontentarea: true
+      })
+    }
+    if (this.data.content == '') {
+      this.setData({
+        content: '不超过100字'
+      })
     }
   },
 
 
   //发布实验
   confirm(e) {
-    //要完善信息才能发布实验
-    var that =this
-    if(this.data.name&&this.data.place&&this.data.time&&this.data.duration&&this.data.money&&this.data.index&&this.data.need&&this.data.content&&this.data.string_formdata&&this.data.periods.length!=0&&this.data.dates.length!=0)
-    {
-      //发布实验
-      wx.request({
-      url: appdata.serverUrl+'/insertExperiment', //仅为示例，并非真实的接口地址
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        testerId: wx.getStorageSync('id'),
-        type:that.data.picker[that.data.index],
-        name:that.data.name,
-        content:that.data.content,
-        duration:that.data.duration,
-        reward:that.data.money,
-        place:that.data.place,
-        requirement:that.data.need,
-        time:that.data.time,
-        sendTimestamp:parseInt(new Date().getTime() / 1000),
-        pageView:0,
-        enrollment:0,
-        totalLikes:0,
-        tag:that.data.my_labels.join(','),
-        status:'招募中',
-        faceUrl:appdata.userInfo.avatarUrl,
-        username:'暂定',
-        timePeriods:JSON.stringify(that.data.formdata)
-      },
-      success(res) {
-        console.log(res.data)
-        if(res.data.code==1)
-        {
-          wx.$showtoast('发布成功！','success')
+    //要授权和注册才能发布实验
+    try {
+      var id = wx.getStorageSync('id');
+      if (id) {
+        try {
+          //要已经完善个人信息
+          var obj = wx.getStorageSync('userinfo')
+          if (obj.username && obj.faceUrl && obj.phone) {
+            var that = this
+            //要完善相关信息
+            if (this.data.name && this.data.place && this.data.time && this.data.duration && this.data.money && this.data.index && this.data.need && this.data.content && this.data.string_formdata && this.data.periods.length != 0 && this.data.dates.length != 0) {
+              //发布实验
+              wx.request({
+                url: appdata.serverUrl + '/insertExperiment', //仅为示例，并非真实的接口地址
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                  testerId: id,
+                  type: that.data.picker[that.data.index],
+                  name: that.data.name,
+                  content: that.data.content,
+                  duration: that.data.duration,
+                  reward: that.data.money,
+                  place: that.data.place,
+                  requirement: that.data.need,
+                  time: that.data.time,
+                  sendTimestamp: parseInt(new Date().getTime() / 1000),
+                  pageView: 0,
+                  enrollment: 0,
+                  totalLikes: 0,
+                  tag: that.data.my_labels.join(','),
+                  status: '招募中',
+                  faceUrl: appdata.userInfo.avatarUrl,
+                  username: '暂定',
+                  timePeriods: JSON.stringify(that.data.formdata)
+                },
+                success(res) {
+                  console.log(res.data)
+                  if (res.data.code == 1) {
+                    wx.$showtoast('发布成功！', 'success')
+                  } else {
+                    wx.$showtoast('发布失败，请检查网络！')
+                  }
+                },
+                fail(res) {
+                  wx.showToast({
+                    title: '网络出现异常了~',
+                    icon: 'none'
+                  })
+                }
+              })
+            } else {
+              wx.$showtoast('请完善相关信息')
+            }
+          }
+          else{
+            wx.$showtoast('请完善个人信息！')
+            wx.navigateTo({
+              url: '/pages/edit/edit?id='+id,
+            })
+          }
+        } catch (e) {
+
         }
-        else{
-          wx.$showtoast('发布失败，请检查网络！')
-        }
-      },
-      fail(res) {
-        wx.showToast({
-          title: '网络出现异常了~',
-          icon: 'none'
+      } else {
+        wx.$showtoast('请先授权与注册！')
+        wx.navigateBack({
+          delta: 1,
         })
       }
-    })
+
+    } catch (e) {
+
     }
-    else{
-      wx.$showtoast('请完善相关信息')
-    }
+
   },
   //上传报名表
-  uploadform(){
-    this.data.string_formdata=JSON.stringify(this.data.formdata)
+  uploadform() {
+    this.data.string_formdata = JSON.stringify(this.data.formdata)
     console.log(JSON.stringify(this.data.formdata))
     wx.showToast({
       title: '上传成功！',
@@ -162,9 +207,9 @@ Page({
     })
   },
   //关闭生成框
-  onclosecreate(){
+  onclosecreate() {
     this.setData({
-      createformshow:false
+      createformshow: false
     })
   },
   //生成时间表格
@@ -176,20 +221,19 @@ Page({
       })
       return;
     }
-    if(this.data.dates.length===0)
-    {
+    if (this.data.dates.length === 0) {
       wx.showToast({
         title: '请先选择日期~',
         icon: 'none'
       })
       return;
     }
-    var D=[]
-    var _dates2=['时间段\\日期']
+    var D = []
+    var _dates2 = ['时间段\\日期']
     //格式化日期
     for (var i = 0; i < this.data.dates.length; i++) {
       date = new Date(this.data.dates[i]);
-      var d=`${date.getMonth() + 1}月${date.getDate()}日`
+      var d = `${date.getMonth() + 1}月${date.getDate()}日`
       D.push(d)
       _dates2.push(d)
     }
@@ -208,9 +252,9 @@ Page({
     }
     this.setData({
       formdata: _formdata,
-      Dates:D,
-      dates2:_dates2,
-      createformshow:true
+      Dates: D,
+      dates2: _dates2,
+      createformshow: true
     })
   },
   //删除选中的时间段
@@ -353,17 +397,14 @@ Page({
         duration: 1000
       })
       return;
-    }
-    else if(this.data.my_labels.indexOf(this.data.addlabel)!=-1)
-    {
+    } else if (this.data.my_labels.indexOf(this.data.addlabel) != -1) {
       wx.showToast({
         title: '已经添加了该标签哦~',
         icon: 'none',
         duration: 1000
       })
       return;
-    }
-    else if (this.data.my_labels.length >= 6) {
+    } else if (this.data.my_labels.length >= 6) {
       wx.showToast({
         title: '最多能添加6个标签哦~',
         icon: 'none',
@@ -450,10 +491,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(JSON.stringify(options)!='{}')
-    {
-      var id=options.test_id//获取编辑实验的id
-      console.log('编辑实验id为'+id)
+    if (JSON.stringify(options) != '{}') {
+      var id = options.test_id //获取编辑实验的id
+      console.log('编辑实验id为' + id)
     }
   },
   /**
@@ -462,7 +502,7 @@ Page({
   onReady: function () {
     //让其他组件先渲染完再去加载日历组件
     this.setData({
-      show_vancale:true
+      show_vancale: true
     })
   },
 

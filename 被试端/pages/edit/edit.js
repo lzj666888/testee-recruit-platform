@@ -64,6 +64,9 @@ Page({
             wx.showToast({
               title: '修改成功！',
             })
+            wx.navigateBack({
+              delta: 1,
+            })
             //更新个人信息缓存
             wx.setStorageSync('userinfo', res.data.data)
           }

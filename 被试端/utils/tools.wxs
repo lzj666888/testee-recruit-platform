@@ -1,0 +1,7 @@
+	//小数取整
+	function parseint(num){
+		return parseInt(num)
+	}
+	module.exports={
+		parseint:parseint
+	} 

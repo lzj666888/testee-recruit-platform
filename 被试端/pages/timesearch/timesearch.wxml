@@ -1,2 +1,20 @@
 <!--pages/timesearch/timesearch.wxml-->
-<text>pages/timesearch/timesearch.wxml</text>
+<wxs src='../../utils/tools.wxs' module="tools"></wxs>
+<view class="top">
+  <view class="datas">
+    <view class="time">
+      <text>总时长（小时）</text>
+      <text class="times">{{totaltime}}</text>
+    </view>
+    <view class="time">
+      <text>目标时长（小时）</text>
+      <text class="times">{{targettime}}</text></view>
+  </view>
+  <view class="flex margin-top">
+    <view class="cu-progress round">
+      <view class="bg-blue" style="width:{{loading?(tools.parseint(totaltime/targettime)+'%'):''}};"></view>
+    </view>
+    <text wx:if="{{!='100%'}}" class="margin-left">{{tools.parseint(totaltime/targettime)}}</text>
+    <text wx:else class="cuIcon-roundcheckfill text-green margin-left-sm"></text>
+  </view>
+</view>

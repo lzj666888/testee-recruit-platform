@@ -2,11 +2,11 @@
 <view class="getform">
   <view class="getsno">
     <text>学号：</text>
-    <input type="number" placeholder="请输入学号" bindinput="getsno" confirm-type="next"/>
+    <input value="{{sno}}" type="number" placeholder="请输入学号" bindinput="getsno" confirm-type="next"/>
   </view>
   <view class="getsno">
     <text>密码：</text>
-    <input type="number" password placeholder="请输入密码" bindinput="getmima"/>
+    <input value="{{mima}}" type="number" password placeholder="请输入密码" bindinput="getmima"/>
   </view>
 </view>
-<button>提交</button>
+<button bindtap="confirm">提交</button>
