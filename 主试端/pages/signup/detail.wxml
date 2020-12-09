@@ -1,4 +1,5 @@
 <!--pages/signup/detail.wxml-->
+<wxs module="tools" src='../../utils/tools.wxs'></wxs>
 <text class="state" style="color:#3283dd" wx:if='{{state=="待审核"}}'>待审核</text>
 <text class="state" style="color:red" wx:if='{{state=="未通过"}}'>未通过</text>
 <text class="state" style="color:green" wx:if='{{state=="已通过"}}'>已通过</text>
@@ -14,14 +15,15 @@
     <view class="scores">
       <text>信誉分：{{tested.creditScore}}</text>
       <text wx:if="{{tested.performanceScore==-1}}">表现分：暂无</text>
-      <text wx:else>表现分：{{tested.performanceScore}}</text>
+      <text wx:else>表现分：{{tools.parseint(tested.performanceScore)}}</text>
     </view>
   </view>
 </view>
 <view class="info2">
   <view class="grade">年级：{{tested.grade}}</view>
   <view class="major">专业：{{tested.major}}</view>
-  <view class="collage">学院：{{tested.collage}}</view>
+  <view class="collage">学院：{{tested.college}}</view>
+  <view class="collage">学号：{{tested.sno}}</view>
   <view class="phone">
     <text>联系方式：{{tested.phone}}</text>
     <image src="/images/call.png" bindtap="call"></image>
@@ -37,15 +39,15 @@
       <image src="/images/chat.png"></image>
       <view>私信他</view>
     </view>
-    <view>报名时间：{{enrollment_time}}</view>
+    <view style="text-align:end;">报名时间：{{enrollment_time}}</view>
   </view>
 </view>
 <view class="btns" wx:if="{{state=='待审核'}}">
-  <button bindtap="refuse" style="background-color:red;">拒绝</button>
-  <button bindtap="accept" style="background-color:#43cf7c">通过</button>
+  <button bindtap="action" data-type="拒绝" style="background-color:red;">拒绝</button>
+  <button bindtap="action" data-type="通过" style="background-color:#3283dd">通过</button>
 </view>
 <!-- 评分模块，已通过的时候才会显示出来 -->
-<view class="rate" wx:if='{{state=="已通过"&&finish!="未完成"}}'>
+<!-- <view class="rate" wx:if='{{state=="已通过"&&finish!="未完成"}}'>
   <van-rate value="{{ value }}" size="{{ 22 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
     bind:change="onChange" />
   <view wx:if='{{finish=="待完成"}}' class="unfinish">
@@ -56,6 +58,23 @@
   <view wx:if='{{finish=="已完成"}}' class="finish">
     <text>您确认被试完成实验并进行了评分！</text>
   </view>
-</view>
-<view wx:if="{{state=='未通过'}}" class="pass">您已拒接被试申请！</view>
-<view wx:if="{{finish=='未完成'}}" class="pass">被试未在预定时段内完成实验！</view>
+</view> -->
+	<!-- 评分模块，已通过的时候才会显示出来 -->
+	<view class="rate" wx:if='{{state=="已通过"}}'>
+		<van-rate style="margin-top:20rpx;" wx:if="{{finish!='未完成'}}" readonly="{{rate_disable}}" value="{{ value }}" size="{{ 25 }}" color="#f4ea2a" void-color="#eee" void-icon="star"
+			bind:change="onChange" />
+		<view wx:if='{{finish=="待完成"}}' class="unfinish">
+			<button class="confirm" bindtap="markexp">确认完成</button>
+			<!-- <button class="cancel" bindtap="cancelexp">主试主动取消被试实验</button> -->
+			<view class="cancel">
+			<text class="bei_cancel" bindtap="cancel" data-type="zhu">取消被试资格</text>
+			<text class="zhu_cancel" bindtap="cancel" data-type="bei">被试未能完成</text>
+			</view>
+			<text>确认被试完成实验并进行评分，待被试确认完成实验后，会自动提交加实验时请求!</text>
+		</view>
+		<view wx:if='{{finish=="已完成"}}' class="finish">
+			<text>您确认被试完成实验并进行了评分！</text>
+		</view>
+		<view class="finish" wx:if="{{finish=='未完成'}}" style="color:red;margin-top:80rpx;">您已经取消被试的实验资格了！</view>
+	</view>
+<view wx:if="{{state=='未通过'}}" class="pass">您已拒绝被试申请！</view>

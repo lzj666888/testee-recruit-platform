@@ -5,20 +5,72 @@ page{
   background-color: #f6f6f6;
 }
 .top{
-  width: 96%;
+  width: 100%;
   position: fixed;
-  top: 20rpx;
   box-shadow: 0 0 6rpx 2rpx #dbdbdb;
+  z-index: 100;
+  background-color: white;
+  max-height: 25%;
+  top: 0;
 }
 .datas{
   display: flex;
+  margin-top: 30rpx;
 }
 .time{
-
+  flex: 1;
+  margin-top: 20rpx;
+  color: #707070;
+  font-size: 26rpx;
 }
 .time text{
-
+  display: block;
+  text-align: center;
 }
 .time .times{
+  text-align: center;
+    font-size: 46rpx;
+    margin-top: 10rpx;
+}
+.progress{
+  display: flex;
+  align-items: center;
+  margin: 30rpx 14rpx;
+}
+.progress text{
+  color: #3283dd;
+  margin-left: 12rpx;
+}
+.select{
+display: flex;
+margin-bottom: 20rpx;
+align-items: center;
+}
+.select_item{
+  background-color: #f2f2f2;
+  color: #515151;
+  margin: 0 14rpx;
+  width: 110rpx;
+  text-align: center;
+  height: 46rpx;
+  line-height: 46rpx;
+  border-radius: 40rpx;
+  font-size: 22rpx;
+  flex:1;
+}
+.select_item_active{
+  background-color: #5ca0ec;
+  color: white;
+}
+.bottom{
+margin-top: 40%;
+}
+.content_item{
+
+}
+.content_item text:first-child{
+  color: #707070;
+}
+.content_item text:last-child{
   
 }

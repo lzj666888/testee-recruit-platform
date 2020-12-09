@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "useApiHostProcess": false
+    "urlCheck": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",

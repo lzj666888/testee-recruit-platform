@@ -22,7 +22,10 @@ Page({
     var index=e.currentTarget.dataset.index;
     var obj=this.data.signup_peoples[index]
     wx.navigateTo({
-      url: './detail?tested_id='+obj.userId+'&state='+obj.checkStatus+'&time_period='+obj.timePeriod+'&finish='+obj.testerSchedule+'&enrollment_time='+obj.enrollment_time
+      url: './detail?tested_id='+obj.userId+'&state='
+      +obj.checkStatus+'&time_period='+obj.timePeriod+'&finish='
+      +obj.testerSchedule+'&enrollment_time='+obj.enrollment_time
+      +'&sign_id='+obj.id+'&exp_id='+this.data.experimentId
     })
   },
   //删除关键词

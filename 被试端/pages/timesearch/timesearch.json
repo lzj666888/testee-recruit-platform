@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "getauth":"../../components/getauth/getauth"
+  },
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "实验时"
 }

@@ -59,7 +59,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '请完善信息！',
+        title: '账号或密码错误！',
         icon: 'none'
       })
     }

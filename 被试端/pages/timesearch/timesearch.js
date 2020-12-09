@@ -1,12 +1,18 @@
 // pages/timesearch/timesearch.js
+const regist = require("../../utils/api").regist
+const app = getApp()
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    totaltime:12,//总时长
-    targettime:72,//目标时长
+    show_getuserinfo: false, //是否显示授权面板
+    currentIndex:0,
+    teams:['全部','大一','大二','大三','大四'],
+    totaltime:'12.00',//总时长
+    targettime:'72.00',//目标时长
     timerecords:[{
       timestamp:'2020.10.01 11:30',
       time:1.5,
@@ -51,17 +57,37 @@ Page({
     },
   ]
   },
-
+    //授权
+    GetUserInfo(e) {
+      console.log(e.detail)
+      if (JSON.stringify(e.detail) != '{}') {
+        getApp().globalData.isauth = true
+        getApp().globalData.userInfo = e.detail
+        regist(this.selectComponent('#auth').data.radio)
+        wx.showToast({
+          title: '授权成功！',
+          icon: 'none'
+        })
+        this.setData({
+          show_getuserinfo: false
+        })
+      }
+    },
+  selectItem(e){
+    var _index=e.currentTarget.dataset.index
+    console.log(_index)
+    if(_index==this.data.currentIndex)
+    {return;}
+    wx.$showloading()
+    this.setData({
+      currentIndex:_index
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this;
-    setTimeout(function() {
-      that.setData({
-        loading: true
-      })
-    }, 500)
+
   },
 
   /**
@@ -75,7 +101,34 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (!getApp().globalData.isauth) {
+      wx.showToast({
+        title: '请先授权',
+        icon: 'none'
+      })
+      this.setData({
+        show_getuserinfo: true
+      })
+      return;
+    }
+    try {
+      var sno = wx.getStorageSync('sno')
+      if (!sno) {
+        setTimeout(() => {
+          wx.$showtoast("请先验证学号！")
+        }, 500);
+        wx.navigateTo({
+          url: '/pages/validation/validation',
+        })
+        return;
+      }
+    } catch (e) {}
+    let that = this;
+    setTimeout(function() {
+      that.setData({
+        loading: true
+      })
+    }, 500)
   },
 
   /**

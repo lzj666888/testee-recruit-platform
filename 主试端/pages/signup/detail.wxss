@@ -112,7 +112,7 @@
   border-radius: 30rpx;
 }
 /* 评分模块 */
-.rate{
+/* .rate{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,6 +137,54 @@
   font-size: 22rpx;
   color: #8a8a8a;
 }
+*/
+/* 评分模块 */
+.rate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.confirm{
+  width: 260rpx !important;
+  font-size: 28rpx;
+  color: white;
+  height: 70rpx;
+  /* line-height: 50rpx; */
+  margin: 20rpx;
+  border-radius: 22rpx;
+}
+.confirm{
+  background-color: #3283dd;
+}
+.finish text,.unfinish text{
+  font-size: 22rpx;
+  color: #8a8a8a;
+  width: 74%;
+    display: block;
+    margin: 0 auto;
+    letter-spacing: 1rpx;
+    line-height: 30rpx;
+}
+.finish text{
+  width: 100%;
+}
+.cancel{
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+.cancel  .zhu_cancel,.cancel .bei_cancel{
+  color: red;
+  margin: 20rpx 0;
+  text-decoration: underline;
+  text-align: center;
+}
+.cancel .bei_cancel{
+  color: #3283dd;
+}
 .pass{
   color:red;font-weight:bold;font-size:32rpx;margin-top:50rpx;text-align:center;
-}
+} 
